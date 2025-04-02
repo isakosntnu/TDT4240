@@ -1,0 +1,7 @@
+com.drawguess.game.android-pngs-0 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/build/generated/res/pngs/debug
+com.drawguess.game.android-resValues-1 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/build/generated/res/resValues/debug
+com.drawguess.game.android-packageDebugResources-2 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.drawguess.game.android-packageDebugResources-3 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.drawguess.game.android-merged_res-4 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/build/intermediates/merged_res/debug
+com.drawguess.game.android-android-5 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/res
+com.drawguess.game.android-debug-6 /Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/src/debug/res
