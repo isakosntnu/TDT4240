@@ -4,7 +4,17 @@
             "outputFile": "com.drawguess.game.android-mergeDebugResources-2:/values/values.xml",
             "map": [
                 {
-                    "source": "/Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/res/values/strings.xml",
+                    "source": "/Users/isaksjoberg/Desktop/SKOLE/DrawGuess/TDT4240/android/res/values/color.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                },
+                {
+                    "source": "/Users/isaksjoberg/Desktop/SKOLE/DrawGuess/TDT4240/android/res/values/strings.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",
@@ -21,7 +31,7 @@
                     }
                 },
                 {
-                    "source": "/Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/res/values/styles.xml",
+                    "source": "/Users/isaksjoberg/Desktop/SKOLE/DrawGuess/TDT4240/android/res/values/styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -37,16 +47,6 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "332"
-                    }
-                },
-                {
-                    "source": "/Users/isaksjoberg/Desktop/SKOLE/progarkproject-057d81ccc9c20d07f20fbe1516e007ef9a3af9bb/android/res/values/color.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "55",
-                        "endOffsets": "106"
                     }
                 }
             ]
