@@ -10,8 +10,8 @@ import com.drawguess.game.states.MainMenuState;
 import com.drawguess.game.states.StateManager;
 
 public class WordBattle extends ApplicationAdapter {
-	public static final int WIDTH = 480;
-	public static final int HEIGHT = 800;
+	public static  int WIDTH;
+	public static  int HEIGHT;
 	public static final String TITLE = "WordBattle";
 	private StateManager stateManager;
 	public SpriteBatch batch;
