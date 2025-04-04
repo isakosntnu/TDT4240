@@ -19,6 +19,9 @@ public class WordBattle extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+		WIDTH = Gdx.graphics.getWidth();
+		HEIGHT = Gdx.graphics.getHeight();
+
 		batch = new SpriteBatch();
 		stateManager = new StateManager();
 		ScreenUtils.clear(1, 0, 0, 1);
