@@ -36,7 +36,7 @@ android {
   }
   defaultConfig {
     applicationId 'io.github.drawguess'
-    minSdkVersion 19
+    minSdkVersion 21
     targetSdkVersion 34
     versionCode 1
     versionName "1.0"
@@ -69,6 +69,9 @@ dependencies {
 
   implementation platform('com.google.firebase:firebase-bom:33.12.0')
   implementation 'com.google.firebase:firebase-analytics'
+  // Firestore
+  implementation 'com.google.firebase:firebase-firestore'
+
 
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

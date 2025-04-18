@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "io.github.drawguess.android-mergeDebugResources-9:/values-v21/values-v21.xml",
+            "outputFile": "io.github.drawguess.android-mergeDebugResources-19:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "/Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/00407c58809ab410cc3ec986170a8591/transformed/core-1.13.1/res/values-v21/values-v21.xml",
+                    "source": "/Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/res/values-v21/values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",

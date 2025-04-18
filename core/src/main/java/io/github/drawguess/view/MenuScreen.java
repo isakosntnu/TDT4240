@@ -85,6 +85,7 @@ public class MenuScreen implements Screen {
         buttonImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.getFirebase().createGame(); // 🔥 Oppretter nytt spill
                 game.setScreen(new GameScreen(game));
                 return true;
             }
