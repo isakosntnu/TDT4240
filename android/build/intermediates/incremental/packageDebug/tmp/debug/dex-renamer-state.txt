@@ -1,12 +1,12 @@
-#Fri Apr 18 13:38:32 CEST 2025
-base.0=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeLibDexDebug/1/classes.dex
-base.2=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeLibDexDebug/10/classes.dex
-base.3=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
-base.4=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeLibDexDebug/9/classes.dex
-base.5=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.6=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/dex/debug/mergeProjectDexDebug/3/classes.dex
-base.7=/Users/benjaminfaerestrand/Documents/DrawGuessTest/android/build/intermediates/desugar_lib_dex/debug/l8DexDesugarLibDebug/classes1000.dex
+#Fri Apr 18 17:43:59 CEST 2025
+base.0=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeLibDexDebug/1/classes.dex
+base.2=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeLibDexDebug/10/classes.dex
+base.3=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
+base.4=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeLibDexDebug/9/classes.dex
+base.5=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.6=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/dex/debug/mergeProjectDexDebug/3/classes.dex
+base.7=/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/desugar_lib_dex/debug/l8DexDesugarLibDebug/classes1000.dex
 path.0=classes.dex
 path.1=1/classes.dex
 path.2=10/classes.dex
