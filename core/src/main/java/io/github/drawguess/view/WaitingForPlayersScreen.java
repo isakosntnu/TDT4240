@@ -47,7 +47,7 @@ public class WaitingForPlayersScreen implements Screen {
         pinLabel.setFontScale(2f);
         rootTable.add(pinLabel).padBottom(40).row();
 
-        Label title = new Label("Waiting on players", skin);
+        Label title = new Label("Waiting on players...", skin);
         title.setFontScale(1.5f);
         rootTable.add(title).padBottom(50).row();
 

@@ -31,14 +31,23 @@ public class LeaderboardScreen implements Screen {
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Tabell for innhold
-        Table table = new Table();
-        table.setFillParent(true);
-        table.top().padTop(100); // juster top-padding etter behov
-        stage.addActor(table);
+        // Rot-tabell
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.top().padTop(150);
+        stage.addActor(rootTable);
 
-        // Eksempel på spillerdata
-        String[] names = {"Liam", "Emma", "Sofie", "Noah", "Lucas"};
+        // Tittel
+        Label pinLabel = new Label("LEADERBOARD", skin);
+        pinLabel.setFontScale(2f);
+        rootTable.add(pinLabel).padBottom(40).row();
+
+        // Tabell for spillere
+        Table playerTable = new Table();
+        rootTable.add(playerTable).width(Gdx.graphics.getWidth() * 0.9f).row(); // bredere tabell
+
+        // Eksempel-data
+        String[] names = {"Ninon", "Arya", "Benjamin", "Jacob", "Isak"};
         int[] scores = {660, 630, 580, 540, 510};
 
         for (int i = 0; i < names.length; i++) {
@@ -47,9 +56,9 @@ public class LeaderboardScreen implements Screen {
             Label scoreLabel = new Label(String.valueOf(scores[i]), skin);
             scoreLabel.setFontScale(1.5f);
 
-            table.add(nameLabel).expandX().left().padBottom(15).padLeft(60);
-            table.add(scoreLabel).right().padBottom(15).padRight(60);
-            table.row();
+            playerTable.add(nameLabel).expandX().left().padBottom(15).padLeft(100).spaceRight(150);
+            playerTable.add(scoreLabel).right().padBottom(15).padRight(100);
+            playerTable.row();
         }
 
         // Tilbake-knapp

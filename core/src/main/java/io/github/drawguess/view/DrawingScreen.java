@@ -137,7 +137,7 @@ public class DrawingScreen implements Screen {
         });
         stage.addActor(editToolButton);
 
-        undoTexture = new Texture("left.png");
+        undoTexture = new Texture("undobtn.png");
         undoButton = new Image(undoTexture);
         undoButton.setSize(100, 60);
         undoButton.setPosition(30, 30);

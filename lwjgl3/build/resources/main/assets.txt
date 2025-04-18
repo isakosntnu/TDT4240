@@ -39,6 +39,7 @@ textfield2.png
 uiskin.atlas
 uiskin.json
 uiskin.png
+undobtn.png
 whiteboard copy.png
 whiteboard.png
 yellow.png
