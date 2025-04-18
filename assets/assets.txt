@@ -4,6 +4,7 @@ bg1.png
 bgmenu.png
 black.png
 blue.png
+board.png
 button.png
 cyan.png
 default.fnt

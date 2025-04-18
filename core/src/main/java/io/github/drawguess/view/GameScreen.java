@@ -29,6 +29,9 @@ public class GameScreen implements Screen {
     private Texture guessButtonTexture;
     private Image guessButtonImage;
 
+    private Texture waitingButtonTexture;
+    private Image waitingButtonImage;
+
     public GameScreen(final DrawGuessMain game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
@@ -97,6 +100,19 @@ public class GameScreen implements Screen {
             }
         });
         stage.addActor(guessButtonImage);
+
+        waitingButtonTexture = new Texture("right.png");
+        waitingButtonImage = new Image(waitingButtonTexture);
+        waitingButtonImage.setSize(200, 100);
+        waitingButtonImage.setPosition(centerX, centerY - 360);
+        waitingButtonImage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new WaitingForPlayersScreen(game));
+                return true;
+            }
+        });
+        stage.addActor(waitingButtonImage);
     }
 
     @Override
@@ -124,5 +140,6 @@ public class GameScreen implements Screen {
         leaderboardButtonTexture.dispose();
         drawingButtonTexture.dispose();
         guessButtonTexture.dispose();
+        waitingButtonTexture.dispose();
     }
 }
