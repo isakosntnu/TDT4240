@@ -13,6 +13,11 @@ public interface FirebaseInterface {
                        byte[] pngData,
                        SuccessCallback<String> onSuccess,
                        FailureCallback onError);
+    
+    void getPlayerDrawingUrl(String gameId, 
+                            String playerId, 
+                            SuccessCallback<String> onSuccess, 
+                            FailureCallback onError);
 
     void setPlayerFinished(String gameId,
                            String playerId,
