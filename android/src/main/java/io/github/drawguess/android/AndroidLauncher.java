@@ -4,6 +4,7 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.android.manager.SocketManager;
 
 public class AndroidLauncher extends AndroidApplication {
     @Override
@@ -12,6 +13,8 @@ public class AndroidLauncher extends AndroidApplication {
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useImmersiveMode = true;
+
+        SocketManager.init();
 
         initialize(new DrawGuessMain(new AndroidFirebase()), config);
     }

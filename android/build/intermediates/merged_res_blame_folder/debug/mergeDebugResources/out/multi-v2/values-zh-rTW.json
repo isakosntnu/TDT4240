@@ -4,7 +4,7 @@
             "outputFile": "io.github.drawguess.android-mergeDebugResources-19:/values-zh-rTW/values-zh-rTW.xml",
             "map": [
                 {
-                    "source": "/Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/res/values-zh-rTW/values.xml",
+                    "source": "/Users/aryaraeesi/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/res/values-zh-rTW/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/res/values-zh-rTW/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "199",
-                        "endColumns": "98",
-                        "endOffsets": "297"
-                    },
-                    "to": {
-                        "startLines": "17",
-                        "startColumns": "4",
-                        "startOffsets": "1580",
-                        "endColumns": "102",
-                        "endOffsets": "1678"
-                    }
-                },
-                {
-                    "source": "/Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/res/values-zh-rTW/values-zh-rTW.xml",
+                    "source": "/Users/aryaraeesi/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/res/values-zh-rTW/values-zh-rTW.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -52,6 +35,23 @@
                         "startOffsets": "55,147,246,340,434,527,620,2535",
                         "endColumns": "91,98,93,93,92,92,95,100",
                         "endOffsets": "142,241,335,429,522,615,711,2631"
+                    }
+                },
+                {
+                    "source": "/Users/aryaraeesi/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/res/values-zh-rTW/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "199",
+                        "endColumns": "98",
+                        "endOffsets": "297"
+                    },
+                    "to": {
+                        "startLines": "17",
+                        "startColumns": "4",
+                        "startOffsets": "1580",
+                        "endColumns": "102",
+                        "endOffsets": "1678"
                     }
                 }
             ]
