@@ -71,6 +71,9 @@ dependencies {
   implementation 'com.google.firebase:firebase-analytics'
   // Firestore
   implementation 'com.google.firebase:firebase-firestore'
+  //Storage
+  implementation 'com.google.firebase:firebase-storage'
+
 
 
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"

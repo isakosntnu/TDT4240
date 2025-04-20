@@ -14,47 +14,72 @@ import io.github.drawguess.DrawGuessMain;
 public class MenuScreen implements Screen {
     private final DrawGuessMain game;
     private Stage stage;
+
     private Texture buttonTexture;
     private Image buttonImage;
+
     private Texture backgroundTexture;
     private Image backgroundImage;
+
     private Texture logoTexture;
     private Image logoImage;
+
     private Texture joinButtonTexture;
     private Image joinButtonImage;
 
-
-
-
     public MenuScreen(final DrawGuessMain game) {
         this.game = game;
-        stage = new Stage(new ScreenViewport());
+        this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        // (1) Bakgrunn
         backgroundTexture = new Texture("bgmenu.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
-        stage.addActor(backgroundImage); // Bakgrunn legges først
+        stage.addActor(backgroundImage);
 
+        // (2) Logo
+        logoTexture = new Texture("logo.png");
+        logoImage = new Image(logoTexture);
+        float logoWidth = screenWidth * 0.6f;
+        float logoHeight = screenHeight * 0.2f;
+        logoImage.setSize(logoWidth, logoHeight);
+        logoImage.setPosition(
+            (screenWidth - logoWidth) / 2f,
+            screenHeight - logoHeight - screenHeight * 0.1f
+        );
+        stage.addActor(logoImage);
+
+        // (3) Start Game-knapp
         buttonTexture = new Texture("startgamebtn.png");
         buttonImage = new Image(buttonTexture);
-        buttonImage.setSize(200, 50);
+        float buttonWidth = screenWidth * 0.6f;
+        float buttonHeight = screenHeight * 0.09f;
+        buttonImage.setSize(buttonWidth, buttonHeight);
         buttonImage.setPosition(
-            (Gdx.graphics.getWidth() - buttonImage.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - buttonImage.getHeight() ) / 2f - 100
+            (screenWidth - buttonWidth) / 2f,
+            screenHeight * 0.4f
         );
+        buttonImage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new CreateGameScreen(game));
+                return true;
+            }
+        });
+        stage.addActor(buttonImage);
 
+        // (4) Join Game-knapp
         joinButtonTexture = new Texture("joingamebtn.png");
         joinButtonImage = new Image(joinButtonTexture);
-        joinButtonImage.setSize(200, 50);
-
-        // Plasser rett under "Start Game"-knappen
+        joinButtonImage.setSize(buttonWidth, buttonHeight);
         joinButtonImage.setPosition(
-            (Gdx.graphics.getWidth() - joinButtonImage.getWidth()) / 2f,
-            buttonImage.getY() - joinButtonImage.getHeight() - 30 // 20px spacing
+            (screenWidth - buttonWidth) / 2f,
+            buttonImage.getY() - buttonHeight - screenHeight * 0.03f
         );
-
-        // Klikk-event (valgfritt)
         joinButtonImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -62,43 +87,12 @@ public class MenuScreen implements Screen {
                 return true;
             }
         });
-        
-
         stage.addActor(joinButtonImage);
-
-
-        logoTexture = new Texture("logo.png");
-        logoImage = new Image(logoTexture);
-
-        // Skalere ned hvis ønskelig
-        logoImage.setSize(300, 200); // eller bruk logoTexture.getWidth()/getHeight()
-
-        // Plasser øverst midtstilt
-        logoImage.setPosition(
-            (Gdx.graphics.getWidth() - logoImage.getWidth()) / 2f,
-            Gdx.graphics.getHeight() - logoImage.getHeight() - 200 // 200px padding fra toppen
-        );
-
-        // Legg til logo over bakgrunnen men under knappen
-        stage.addActor(logoImage);
-
-        buttonImage.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.getFirebase().createGame(); // 🔥 Oppretter nytt spill
-                game.setScreen(new GameScreen(game));
-                return true;
-            }
-        });
-
-        stage.addActor(buttonImage);
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1); // svart bakgrunn
+    @Override public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-
         stage.act(delta);
         stage.draw();
     }
@@ -108,19 +102,16 @@ public class MenuScreen implements Screen {
     }
 
     @Override public void show() {}
-    @Override public void hide() {
-        dispose();
-    }
-
+    @Override public void hide() { dispose(); }
     @Override public void pause() {}
     @Override public void resume() {}
 
-    @Override public void dispose() {
+    @Override
+    public void dispose() {
         stage.dispose();
         buttonTexture.dispose();
         backgroundTexture.dispose();
         logoTexture.dispose();
         joinButtonTexture.dispose();
-
     }
 }

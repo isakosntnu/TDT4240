@@ -29,7 +29,7 @@ public class JoinGameScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         // (1) Bakgrunn
-        backgroundTexture = new Texture("joingame.png");
+        backgroundTexture = new Texture("canvas.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);

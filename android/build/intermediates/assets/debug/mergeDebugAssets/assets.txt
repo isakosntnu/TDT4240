@@ -6,6 +6,8 @@ black.png
 blue.png
 board.png
 button.png
+canvas.png
+creategame.png
 cyan.png
 default.fnt
 default.png

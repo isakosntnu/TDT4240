@@ -6,12 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.controller.DrawingController;
+import io.github.drawguess.controller.PlayerController;
 import io.github.drawguess.controller.SizeController;
+
+
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,9 +34,6 @@ public class DrawingScreen implements Screen {
     private final Texture whiteboardTexture;
     private final Image whiteboardImage;
 
-    private final Texture backTexture;
-    private final Image backButton;
-
     private final Texture undoTexture;
     private final Image undoButton;
 
@@ -44,7 +46,7 @@ public class DrawingScreen implements Screen {
 
     private final Texture eraserTexture;
 
-    private int currentSize = 1; // Default pensize
+    private int currentSize = 1;
 
     public DrawingScreen(DrawGuessMain game) {
         this.game = game;
@@ -52,27 +54,26 @@ public class DrawingScreen implements Screen {
 
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
-        
+        float iconSize = screenHeight * 0.08f;
+
+        // UI skin for buttons
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        // Bakgrunnstavle
         whiteboardTexture = new Texture("whiteboard.png");
         whiteboardImage = new Image(whiteboardTexture);
         whiteboardImage.setSize(screenWidth, screenHeight);
         whiteboardImage.setPosition(0, 0);
         stage.addActor(whiteboardImage);
 
-        // Grenser til canvas basert på skjermprosent
-        float drawMinXPct = 0.08f;
-        float drawMaxXPct = 0.92f;
-        float drawMinYPct = 0.12f;
-        float drawMaxYPct = 0.80f;
+        // Canvas-grenser
+        float minX = screenWidth * 0.08f;
+        float maxX = screenWidth * 0.92f;
+        float minY = screenHeight * 0.12f;
+        float maxY = screenHeight * 0.80f;
 
-        float minX = screenWidth * drawMinXPct;
-        float maxX = screenWidth * drawMaxXPct;
-        float minY = screenHeight * drawMinYPct;
-        float maxY = screenHeight * drawMaxYPct;
-
-
-
-        canvas = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
+        // Canvas
+        canvas = new Pixmap((int) screenWidth, (int) screenHeight, Pixmap.Format.RGBA8888);
         canvas.setColor(0, 0, 0, 0);
         canvas.fill();
         canvasTexture = new Texture(canvas);
@@ -82,12 +83,13 @@ public class DrawingScreen implements Screen {
 
         controller = new DrawingController(canvas, canvasTexture, minX, maxX, minY, maxY);
 
+        // Edit panel
         editPanelTexture = new Texture("editpanel.png");
         editPanelBackground = new Image(editPanelTexture);
-        editPanelBackground.setSize(400, 200);
+        editPanelBackground.setSize(screenWidth * 0.6f, screenHeight * 0.2f);
 
         editPanelGroup = new Group();
-        editPanelGroup.setSize(400, 200);
+        editPanelGroup.setSize(editPanelBackground.getWidth(), editPanelBackground.getHeight());
         float centerX = (screenWidth - editPanelGroup.getWidth()) / 2f;
         float centerY = (screenHeight - editPanelGroup.getHeight()) / 2f;
         editPanelGroup.setPosition(centerX, centerY);
@@ -95,6 +97,7 @@ public class DrawingScreen implements Screen {
         editPanelGroup.addActor(editPanelBackground);
         stage.addActor(editPanelGroup);
 
+        // Pen size-knapper
         Texture[] sizeTextures = {
             new Texture("size1.png"),
             new Texture("size2.png"),
@@ -108,23 +111,11 @@ public class DrawingScreen implements Screen {
             controller.selectPen(controller.getSelectedColor(), currentSize);
         });
 
-        backTexture = new Texture("backbtn.png");
-        backButton = new Image(backTexture);
-        backButton.setSize(80, 30);
-        backButton.setPosition(30, screenHeight - 40);
-        backButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-                return true;
-            }
-        });
-        stage.addActor(backButton);
-
+        // Edit-tool
         editToolTexture = new Texture("edittool.png");
         editToolButton = new Image(editToolTexture);
-        editToolButton.setSize(60, 60);
-        editToolButton.setPosition(screenWidth - 70, screenHeight - 70);
+        editToolButton.setSize(iconSize, iconSize);
+        editToolButton.setPosition(screenWidth - iconSize - 20, screenHeight - iconSize - 20);
         editToolButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -137,10 +128,16 @@ public class DrawingScreen implements Screen {
         });
         stage.addActor(editToolButton);
 
+        // 🔘 Bunnknapper
+        float barHeight = screenHeight * 0.1f;
+        float penY = -barHeight * 0.4f;
+        float undoY = screenHeight * 0.02f;
+
+        // Undo-knapp
         undoTexture = new Texture("undobtn.png");
         undoButton = new Image(undoTexture);
-        undoButton.setSize(100, 60);
-        undoButton.setPosition(30, 30);
+        undoButton.setSize(barHeight * 1.2f, barHeight * 0.8f);
+        undoButton.setPosition(screenWidth * 0.02f, undoY);
         undoButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -150,9 +147,16 @@ public class DrawingScreen implements Screen {
         });
         stage.addActor(undoButton);
 
+        // Eraser-knapp
         eraserTexture = new Texture("eraser.png");
-        ToolButtonFactory.addEraserButton(stage, controller, "eraser.png", screenWidth - 310, -10);
+        float eraserSize = barHeight * 0.6f;
+        float eraserX = undoButton.getX() + undoButton.getWidth() + screenWidth * 0.02f;
+        ToolButtonFactory.addEraserButton(
+            stage, controller, "eraser.png",
+            eraserX, penY, eraserSize
+        );
 
+        // Fargeknapper
         Map<Color, String> colors = new LinkedHashMap<>();
         colors.put(Color.BLACK, "black.png");
         colors.put(Color.RED, "red.png");
@@ -163,19 +167,62 @@ public class DrawingScreen implements Screen {
         colors.put(Color.ORANGE, "orange.png");
         colors.put(Color.CYAN, "cyan.png");
 
-        float baseX = screenWidth - 50;
-        float spacing = 30;
-        float y = -20;
+        int totalColors = colors.size();
+        float startX = eraserX + eraserSize + screenWidth * 0.02f;
+        float availableWidth = screenWidth - startX - screenWidth * 0.02f;
+        float buttonWidth = availableWidth / totalColors;
+        float buttonHeight = barHeight;
+
         int index = 0;
         for (Map.Entry<Color, String> entry : colors.entrySet()) {
-            float x = baseX - index * spacing;
-            ToolButtonFactory.addColorPenButton(stage, controller, entry.getKey(), entry.getValue(), x, y, () -> currentSize);
+            float x = startX + index * buttonWidth;
+            ToolButtonFactory.addColorPenButton(
+                stage, controller,
+                entry.getKey(),
+                entry.getValue(),
+                x, penY,
+                buttonWidth, buttonHeight,
+                () -> currentSize
+            );
             index++;
         }
 
         ToolButtonFactory.selectInitialColor(controller.getSelectedColor());
         controller.selectPen(controller.getSelectedColor(), currentSize);
 
+        TextButton finishButton = new TextButton("FINISH DRAWING", skin);
+        float finishWidth = screenWidth * 0.28f;
+        float finishHeight = screenHeight * 0.075f;
+        finishButton.setSize(finishWidth, finishHeight);
+        finishButton.setPosition(20, screenHeight - finishHeight - 20);
+
+        // Dynamisk fontskalering basert på knappestørrelse
+        BitmapFont font = finishButton.getLabel().getStyle().font;
+        GlyphLayout layout = new GlyphLayout(font, finishButton.getText());
+
+        float scaleX = (finishWidth * 0.9f) / layout.width;
+        float scaleY = (finishHeight * 0.8f) / layout.height;
+        float finalScale = Math.min(scaleX, scaleY); // Ikke større enn høyde/bredde
+
+        finishButton.getLabel().setFontScale(finalScale);
+
+        PlayerController pc = new PlayerController(game);
+
+        finishButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent e, float x, float y,
+                                     int pointer, int button) {
+        
+                pc.finishDrawing(canvas);           
+                game.setScreen(new WaitingScreen(game));
+                return true;
+            }
+        });
+        
+        stage.addActor(finishButton);
+
+
+        // Input
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
         multiplexer.addProcessor(controller);
@@ -205,7 +252,6 @@ public class DrawingScreen implements Screen {
         whiteboardTexture.dispose();
         canvasTexture.dispose();
         canvas.dispose();
-        backTexture.dispose();
         undoTexture.dispose();
         eraserTexture.dispose();
         editToolTexture.dispose();
