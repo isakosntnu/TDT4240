@@ -1,0 +1,118 @@
+package io.github.drawguess.view;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Scaling;
+import io.github.drawguess.DrawGuessMain;
+
+public class GuessingScreen implements Screen {
+
+    private final DrawGuessMain game;
+    private final Stage stage;
+
+    private Texture backgroundTexture;
+    private Image backgroundImage;
+
+    private Texture drawingTexture;
+    private Image drawingImage;
+
+    private Label questionLabel;
+    private Label playerCounter;
+    private TextField guessInput;
+    private TextButton submitButton;
+
+    private boolean hasGuessed = false;
+    private int totalPlayers = 8;
+    private int playersAnswered = 5;
+
+    public GuessingScreen(DrawGuessMain game) {
+        this.game = game;
+        this.stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        // Bakgrunn
+        backgroundTexture = new Texture("guessbg.png");
+        backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setFillParent(true);
+        stage.addActor(backgroundImage);
+
+        // Tegning i rammen (ca. midt-toppen)
+        drawingTexture = new Texture("placeholder.png");
+        drawingImage = new Image(drawingTexture);
+        drawingImage.setScaling(Scaling.fit);
+        drawingImage.setSize(250, 300);
+        drawingImage.setPosition(
+                (Gdx.graphics.getWidth() - drawingImage.getWidth()) / 2f,
+                Gdx.graphics.getHeight() - drawingImage.getHeight() - 80
+        );
+        stage.addActor(drawingImage);
+
+        // Tabell for "arket" nederst
+        Table sheetTable = new Table();
+        sheetTable.setFillParent(true);
+        sheetTable.bottom().padBottom(50); 
+        stage.addActor(sheetTable);
+
+        // Tekst: Hva er dette?
+        questionLabel = new Label("What is this?", skin);
+        questionLabel.setFontScale(1.4f);
+        sheetTable.add(questionLabel).padBottom(20).row();
+
+        // Spillerstatus
+        playerCounter = new Label(playersAnswered + " of " + totalPlayers + " has answered", skin);
+        sheetTable.add(playerCounter).padBottom(20).row();
+
+        // Input
+        guessInput = new TextField("", skin);
+        guessInput.setMessageText("Write down your guess here...");
+        guessInput.setMaxLength(40);
+        sheetTable.add(guessInput).width(400).height(80).padBottom(20).row();
+        guessInput.getStyle().font.getData().setScale(1.2f); 
+
+
+        // Knapp under input
+        submitButton = new TextButton("Guess", skin);
+        submitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!hasGuessed && !guessInput.getText().trim().isEmpty()) {
+                    hasGuessed = true;
+                    submitButton.setText("Sent!");
+                    guessInput.setDisabled(true);
+                    submitGuess(guessInput.getText().trim());
+                }
+            }
+        });
+        sheetTable.add(submitButton).width(150).height(50);
+    }
+
+    private void submitGuess(String guess) {
+        System.out.println("Gjettet: " + guess);
+    }
+
+    @Override public void show() {}
+    @Override public void render(float delta) {
+        stage.act(delta);
+        stage.draw();
+    }
+    @Override public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        backgroundTexture.dispose();
+        drawingTexture.dispose();
+    }
+}

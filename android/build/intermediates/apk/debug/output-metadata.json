@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.drawguess.game",
+  "applicationId": "io.github.drawguess",
   "variantName": "debug",
   "elements": [
     {
@@ -16,5 +16,6 @@
       "outputFile": "android-debug.apk"
     }
   ],
-  "elementType": "File"
+  "elementType": "File",
+  "minSdkVersionForDexing": 24
 }
