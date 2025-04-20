@@ -133,12 +133,13 @@ public class AndroidFirebase implements FirebaseInterface {
 
 
     @Override
-    public void setPlayerFinished(String gameId, String playerId, String drawingUrl) {
+    public void setPlayerFinished(String gameId, String playerId, String drawingUrl, String word) {
         Map<String, Object> update = new HashMap<>();
         update.put("finished", true);
         update.put("drawingUrl", drawingUrl);
         update.put("finishedAt", FieldValue.serverTimestamp());
-
+        update.put("word", word);  // lagre ordet
+    
         db.collection("games").document(gameId)
             .collection("players").document(playerId)
             .update(update)
@@ -147,4 +148,22 @@ public class AndroidFirebase implements FirebaseInterface {
             .addOnFailureListener(e ->
                 Log.w("Firebase", "Failed to mark player as finished", e));
     }
+
+    @Override
+    public void getPlayerWord(String gameId, String playerId,
+                              SuccessCallback<String> onSuccess,
+                              FailureCallback onError) {
+        db.collection("games").document(gameId)
+            .collection("players").document(playerId)
+            .get()
+            .addOnSuccessListener(snapshot -> {
+                if (snapshot.exists() && snapshot.contains("word")) {
+                    onSuccess.onSuccess(snapshot.getString("word"));
+                } else {
+                    onError.onFailure(new Exception("Word not found"));
+                }
+            })
+            .addOnFailureListener(onError::onFailure);
+    }
+    
 }

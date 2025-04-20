@@ -1,7 +1,9 @@
 package io.github.drawguess.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameSession {
 
@@ -15,6 +17,7 @@ public class GameSession {
     private final Player hostPlayer;
     private final List<Player> players;
     private Status status;
+    private final Map<String, String> playerWords = new HashMap<>();
 
     public GameSession(Player hostPlayer) {
         this.gameId = generateGameId();
@@ -23,6 +26,17 @@ public class GameSession {
         this.players.add(hostPlayer);
         this.status = Status.WAITING_FOR_PLAYERS;
     }
+
+    
+
+    public void setWordForPlayer(String playerId, String word) {
+        playerWords.put(playerId, word);
+    }
+
+    public String getWordForPlayer(String playerId) {
+        return playerWords.getOrDefault(playerId, "");
+    }
+
 
     private String generateGameId() {
         return String.valueOf((int)(Math.random() * 900000) + 100000);

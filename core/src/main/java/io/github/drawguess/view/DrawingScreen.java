@@ -229,6 +229,8 @@ public class DrawingScreen implements Screen {
 
         // Word to draw
         String wordToDraw = gameController.getRandomWord();
+        GameManager.getInstance().getSession().setWordForPlayer(GameManager.getInstance().getPlayerId(), wordToDraw);
+
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
 
         // "Draw:" label
