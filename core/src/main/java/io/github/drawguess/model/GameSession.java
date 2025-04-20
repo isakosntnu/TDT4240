@@ -16,6 +16,7 @@ public class GameSession {
     private final List<Player> players;
     private Status status;
 
+    // 🎯 Brukes når HOST lager spillet
     public GameSession(Player hostPlayer) {
         this.gameId = generateGameId();
         this.hostPlayer = hostPlayer;
@@ -24,6 +25,15 @@ public class GameSession {
         this.status = Status.WAITING_FOR_PLAYERS;
     }
 
+    // ✅ Brukes når en SPILLER joiner eksisterende spill
+    public GameSession(String gameId, Player hostPlayer, List<Player> players, Status status) {
+        this.gameId = gameId;
+        this.hostPlayer = hostPlayer;
+        this.players = players;
+        this.status = status;
+    }
+
+    // Intern metode for å lage 6-sifret PIN
     private String generateGameId() {
         return String.valueOf((int)(Math.random() * 900000) + 100000);
     }

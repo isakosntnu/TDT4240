@@ -4,6 +4,7 @@ import io.github.drawguess.model.GameSession;
 import io.github.drawguess.server.FirebaseInterface;
 
 public class DesktopFirebase implements FirebaseInterface {
+
     @Override
     public void createGame(GameSession session) {
         System.out.println("[LWJGL3] createGame() called — dummy");
@@ -21,13 +22,18 @@ public class DesktopFirebase implements FirebaseInterface {
 
     @Override
     public void setPlayerFinished(String gameId, String playerId, String downloadUrl) {
-        System.out.println("setPlayerFinished() called [desktop mock]");
+        System.out.println("[LWJGL3] setPlayerFinished(" + gameId + ", " + playerId + ", " + downloadUrl + ") — dummy");
     }
 
     @Override
     public void uploadDrawing(String gameId, String playerId, byte[] pngData, SuccessCallback<String> onSuccess,
-            FailureCallback onError) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'uploadDrawing'");
+                              FailureCallback onError) {
+        System.out.println("[LWJGL3] uploadDrawing() called — dummy, returning fake URL");
+        onSuccess.onSuccess("https://fake-url.com/image.png");
+    }
+
+    @Override
+    public void emitUserJoined(String gameId, String username) {
+        System.out.println("[LWJGL3] emitUserJoined(" + gameId + ", " + username + ") called — dummy");
     }
 }
