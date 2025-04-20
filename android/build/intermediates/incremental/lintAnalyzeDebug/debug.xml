@@ -16,7 +16,7 @@
         manifests="AndroidManifest.xml"
         javaDirectories="src/main/java:src/debug/java:src/main/kotlin:src/debug/kotlin"
         resDirectories="res:src/debug/res"
-        assetsDirectories="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/assets:src/debug/assets"/>
+        assetsDirectories="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/assets:src/debug/assets"/>
   </sourceProviders>
   <testSourceProviders>
   </testSourceProviders>

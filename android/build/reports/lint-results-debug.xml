@@ -12,8 +12,8 @@
         errorLine1="        android:label=&quot;@string/app_name&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml"
-            line="16"
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml"
+            line="19"
             column="9"/>
     </issue>
 
@@ -30,8 +30,8 @@
         errorLine1="        android:screenOrientation=&quot;portrait&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml"
-            line="17"
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml"
+            line="20"
             column="9"/>
     </issue>
 
@@ -46,8 +46,8 @@
         errorLine1="        android:screenOrientation=&quot;portrait&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml"
-            line="17"
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml"
+            line="20"
             column="9"/>
     </issue>
 
@@ -64,8 +64,8 @@
         errorLine1="      android:fullBackupContent=&quot;true&quot;"
         errorLine2="                                 ~~~~">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml"
-            line="7"
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml"
+            line="10"
             column="34"/>
     </issue>
 
@@ -80,7 +80,7 @@
         errorLine1="    &lt;color name=&quot;ic_background_color&quot;>#F5A623FF&lt;/color>"
         errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/values/color.xml"
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/values/color.xml"
             line="3"
             column="12"/>
     </issue>
@@ -94,7 +94,7 @@
         summary="The launcher icon shape should use a distinct silhouette"
         explanation="According to the Android Design Guide (https://d.android.com/r/studio-ui/designer/material/iconography) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square.">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/drawable-hdpi/ic_launcher.png"/>
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/drawable-hdpi/ic_launcher.png"/>
     </issue>
 
     <issue
@@ -106,7 +106,7 @@
         summary="The launcher icon shape should use a distinct silhouette"
         explanation="According to the Android Design Guide (https://d.android.com/r/studio-ui/designer/material/iconography) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square.">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/drawable-mdpi/ic_launcher.png"/>
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/drawable-mdpi/ic_launcher.png"/>
     </issue>
 
     <issue
@@ -118,7 +118,7 @@
         summary="The launcher icon shape should use a distinct silhouette"
         explanation="According to the Android Design Guide (https://d.android.com/r/studio-ui/designer/material/iconography) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square.">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/drawable-xhdpi/ic_launcher.png"/>
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/drawable-xhdpi/ic_launcher.png"/>
     </issue>
 
     <issue
@@ -130,7 +130,7 @@
         summary="The launcher icon shape should use a distinct silhouette"
         explanation="According to the Android Design Guide (https://d.android.com/r/studio-ui/designer/material/iconography) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square.">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/drawable-xxhdpi/ic_launcher.png"/>
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/drawable-xxhdpi/ic_launcher.png"/>
     </issue>
 
     <issue
@@ -142,7 +142,7 @@
         summary="The launcher icon shape should use a distinct silhouette"
         explanation="According to the Android Design Guide (https://d.android.com/r/studio-ui/designer/material/iconography) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square.">
         <location
-            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/drawable-xxxhdpi/ic_launcher.png"/>
+            file="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/drawable-xxxhdpi/ic_launcher.png"/>
     </issue>
 
 </issues>

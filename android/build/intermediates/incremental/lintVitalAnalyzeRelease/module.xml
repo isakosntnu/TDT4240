@@ -1,9 +1,9 @@
 <lint-module
     format="1"
-    dir="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android"
+    dir="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android"
     name=":android"
     type="APP"
-    maven="TDT4240 copy:android:1.0.0"
+    maven="TDT4240:android:1.0.0"
     agpVersion="8.5.2"
     buildFolder="build"
     bootClassPath="/Users/benjaminfaerestrand/Library/Android/sdk/platforms/android-34/android.jar:/Users/benjaminfaerestrand/Library/Android/sdk/build-tools/34.0.0/core-lambda-stubs.jar"

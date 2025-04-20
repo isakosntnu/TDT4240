@@ -14,11 +14,11 @@ io.github.drawguess.android-play-services-base-18.5.0-12 /Users/benjaminfaerestr
 io.github.drawguess.android-play-services-basement-18.5.0-13 /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/res
 io.github.drawguess.android-lifecycle-runtime-2.6.2-14 /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f190483055c929ac5aed93f9ddd48ebe/transformed/lifecycle-runtime-2.6.2/res
 io.github.drawguess.android-startup-runtime-1.1.1-15 /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/fb1fa65308d003ac60874319a3bc77e4/transformed/startup-runtime-1.1.1/res
-io.github.drawguess.android-pngs-16 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/generated/res/pngs/release
-io.github.drawguess.android-res-17 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/generated/res/processReleaseGoogleServices
-io.github.drawguess.android-resValues-18 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/generated/res/resValues/release
-io.github.drawguess.android-packageReleaseResources-19 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/intermediates/incremental/release/packageReleaseResources/merged.dir
-io.github.drawguess.android-packageReleaseResources-20 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
-io.github.drawguess.android-release-21 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/intermediates/merged_res/release/mergeReleaseResources
-io.github.drawguess.android-android-22 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res
-io.github.drawguess.android-release-23 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/src/release/res
+io.github.drawguess.android-pngs-16 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/generated/res/pngs/release
+io.github.drawguess.android-res-17 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/generated/res/processReleaseGoogleServices
+io.github.drawguess.android-resValues-18 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/generated/res/resValues/release
+io.github.drawguess.android-packageReleaseResources-19 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+io.github.drawguess.android-packageReleaseResources-20 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+io.github.drawguess.android-release-21 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/intermediates/merged_res/release/mergeReleaseResources
+io.github.drawguess.android-android-22 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res
+io.github.drawguess.android-release-23 /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/src/release/res

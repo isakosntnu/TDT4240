@@ -3,8 +3,10 @@ package io.github.drawguess.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
@@ -25,6 +27,8 @@ public class WaitingScreen implements Screen {
 
     private Table playerTable;
     private Map<String, Label> statusLabels;
+
+    private TextButton nextRound;
 
     public WaitingScreen(DrawGuessMain game) {
         this.game = game;
@@ -56,6 +60,23 @@ public class WaitingScreen implements Screen {
         for (Player player : session.getPlayers()) {
             addPlayerRow(player.getName(), player.hasFinishedDrawing());
         }
+
+        nextRound = new TextButton("Next Round", skin);
+        nextRound.getLabel().setFontScale(screenHeight * 0.0015f);
+
+        rootTable.row().padTop(60);
+        rootTable.add(nextRound).expandY().bottom().padBottom(30);
+
+        nextRound.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Next Round Started!");
+        
+                // 
+        
+                game.setScreen(new GuessingScreen(game)); 
+            }
+        });
     }
 
     private void addPlayerRow(String playerName, boolean isFinished) {

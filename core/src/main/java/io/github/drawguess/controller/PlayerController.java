@@ -27,7 +27,7 @@ public class PlayerController {
             return;
         }
 
-        // 1️⃣ Lag PNG-bilde i minne
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         PixmapIO.PNG writer = new PixmapIO.PNG();
@@ -47,7 +47,7 @@ public class PlayerController {
         byte[] pngData = baos.toByteArray();
         Gdx.app.log("PlayerController", "Encoded PNG, size: " + pngData.length + " bytes");
 
-        // 2️⃣ Last opp til Firebase
+
         String playerId = GameManager.getInstance().getPlayerId();
         String gameId = session.getGameId();
 
