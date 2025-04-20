@@ -1,7 +1,10 @@
 package io.github.drawguess;
 
 import com.badlogic.gdx.Game;
-import io.github.drawguess.server.FirebaseInterface;
+import com.badlogic.gdx.Gdx;
+
+import io.github.drawguess.manager.SocketManager;
+import io.github.drawguess.services.FirebaseInterface;
 import io.github.drawguess.view.MenuScreen;
 
 public class DrawGuessMain extends Game {
@@ -17,6 +20,15 @@ public class DrawGuessMain extends Game {
 
     @Override
     public void create() {
-        this.setScreen(new MenuScreen(this));
+        SocketManager.getInstance().connect(() -> {
+            Gdx.app.log("Main", "✅ Connected callback triggered");
+    
+            // Bare for test: simuler en join
+            SocketManager.getInstance().emitJoinLobby("Benjamin", "123456");
+        });
+    
+        setScreen(new MenuScreen(this));
     }
+    
+
 }

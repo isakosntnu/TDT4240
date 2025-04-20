@@ -2404,7 +2404,6 @@ androidx.fragment.app.FragmentManager:
     public static final int POP_BACK_STACK_INCLUSIVE
     public abstract void addOnBackStackChangedListener(androidx.fragment.app.FragmentManager$OnBackStackChangedListener)
     public static void enableDebugLogging(boolean)
-    public abstract boolean executePendingTransactions()
     public abstract androidx.fragment.app.Fragment findFragmentById(int)
     public abstract androidx.fragment.app.FragmentManager$BackStackEntry getBackStackEntryAt(int)
     public abstract int getBackStackEntryCount()
@@ -2444,7 +2443,6 @@ androidx.fragment.app.FragmentManagerImpl:
     static final java.lang.String VIEW_STATE_TAG
     public void addOnBackStackChangedListener(androidx.fragment.app.FragmentManager$OnBackStackChangedListener)
     public void execSingleAction(androidx.fragment.app.FragmentManagerImpl$OpGenerator,boolean)
-    public boolean executePendingTransactions()
     int getActiveFragmentCount()
     java.util.List getActiveFragments()
     public androidx.fragment.app.FragmentManager$BackStackEntry getBackStackEntryAt(int)
@@ -5356,7 +5354,6 @@ com.badlogic.gdx.graphics.Pixmap:
     public void <init>(com.badlogic.gdx.graphics.g2d.Gdx2DPixmap)
     public void <init>(java.nio.ByteBuffer)
     public void <init>(java.nio.ByteBuffer,int,int)
-    public void <init>(byte[],int,int)
     public static com.badlogic.gdx.graphics.Pixmap createFromFrameBuffer(int,int,int,int)
     public static void downloadFromUrl(java.lang.String,com.badlogic.gdx.graphics.Pixmap$DownloadPixmapResponseListener)
     public void drawCircle(int,int,int)
@@ -7464,10 +7461,12 @@ com.badlogic.gdx.utils.IntMap:
     public java.lang.Object remove(int)
     public void shrink(int)
     public com.badlogic.gdx.utils.IntMap$Values values()
-com.badlogic.gdx.utils.IntSet$IntSetIterator
+com.badlogic.gdx.utils.IntSet$IntSetIterator:
+    private static final int INDEX_ILLEGAL
+    private static final int INDEX_ZERO
+    public void remove()
+    public com.badlogic.gdx.utils.IntArray toArray()
 com.badlogic.gdx.utils.IntSet:
-    private transient com.badlogic.gdx.utils.IntSet$IntSetIterator iterator1
-    private transient com.badlogic.gdx.utils.IntSet$IntSetIterator iterator2
     public void <init>(int)
     public void <init>(com.badlogic.gdx.utils.IntSet)
     public void addAll(com.badlogic.gdx.utils.IntArray)
@@ -7480,23 +7479,14 @@ com.badlogic.gdx.utils.IntSet:
     public void ensureCapacity(int)
     public int first()
     public boolean isEmpty()
-    public com.badlogic.gdx.utils.IntSet$IntSetIterator iterator()
     public boolean notEmpty()
     public void shrink(int)
     public static varargs com.badlogic.gdx.utils.IntSet with(int[])
 com.badlogic.gdx.utils.Json$ReadOnlySerializer:
     public abstract java.lang.Object read(com.badlogic.gdx.utils.Json,com.badlogic.gdx.utils.JsonValue,java.lang.Class)
-    public void write(com.badlogic.gdx.utils.Json,java.lang.Object,java.lang.Class)
-com.badlogic.gdx.utils.Json$Serializable:
-    public abstract void write(com.badlogic.gdx.utils.Json)
-com.badlogic.gdx.utils.Json$Serializer:
-    public abstract void write(com.badlogic.gdx.utils.Json,java.lang.Object,java.lang.Class)
 com.badlogic.gdx.utils.Json:
     private static final boolean debug
-    private boolean quoteLongValues
-    private com.badlogic.gdx.utils.JsonWriter writer
     public void <init>(com.badlogic.gdx.utils.JsonWriter$OutputType)
-    private java.lang.String convertToString(java.lang.Object)
     public java.lang.Object fromJson(java.lang.Class,java.io.InputStream)
     public java.lang.Object fromJson(java.lang.Class,java.io.Reader)
     public java.lang.Object fromJson(java.lang.Class,java.lang.Class,com.badlogic.gdx.files.FileHandle)
@@ -7506,10 +7496,8 @@ com.badlogic.gdx.utils.Json:
     public java.lang.Object fromJson(java.lang.Class,java.lang.Class,char[],int,int)
     public java.lang.Object fromJson(java.lang.Class,java.lang.String)
     public java.lang.Object fromJson(java.lang.Class,char[],int,int)
-    private java.lang.Object[] getDefaultValues(java.lang.Class)
     public boolean getIgnoreUnknownFields()
     public com.badlogic.gdx.utils.Json$Serializer getSerializer(java.lang.Class)
-    public java.lang.String getTag(java.lang.Class)
     public com.badlogic.gdx.utils.JsonWriter getWriter()
     public java.lang.String prettyPrint(java.lang.Object)
     public java.lang.String prettyPrint(java.lang.Object,int)
@@ -7535,34 +7523,20 @@ com.badlogic.gdx.utils.Json:
     public void setQuoteLongValues(boolean)
     public void setReadDeprecated(boolean)
     public void setSortFields(boolean)
-    public void setWriter(java.io.Writer)
-    public java.lang.String toJson(java.lang.Object)
     public java.lang.String toJson(java.lang.Object,java.lang.Class)
-    public java.lang.String toJson(java.lang.Object,java.lang.Class,java.lang.Class)
     public void toJson(java.lang.Object,com.badlogic.gdx.files.FileHandle)
     public void toJson(java.lang.Object,java.io.Writer)
     public void toJson(java.lang.Object,java.lang.Class,com.badlogic.gdx.files.FileHandle)
     public void toJson(java.lang.Object,java.lang.Class,java.io.Writer)
     public void toJson(java.lang.Object,java.lang.Class,java.lang.Class,com.badlogic.gdx.files.FileHandle)
-    public void toJson(java.lang.Object,java.lang.Class,java.lang.Class,java.io.Writer)
-    public void writeArrayEnd()
-    public void writeArrayStart()
-    public void writeArrayStart(java.lang.String)
     public void writeField(java.lang.Object,java.lang.String)
     public void writeField(java.lang.Object,java.lang.String,java.lang.Class)
     public void writeField(java.lang.Object,java.lang.String,java.lang.String)
     public void writeField(java.lang.Object,java.lang.String,java.lang.String,java.lang.Class)
-    public void writeFields(java.lang.Object)
-    public void writeObjectEnd()
     public void writeObjectStart()
-    public void writeObjectStart(java.lang.Class,java.lang.Class)
     public void writeObjectStart(java.lang.String)
     public void writeObjectStart(java.lang.String,java.lang.Class,java.lang.Class)
-    public void writeType(java.lang.Class)
     public void writeValue(java.lang.Object)
-    public void writeValue(java.lang.Object,java.lang.Class)
-    public void writeValue(java.lang.Object,java.lang.Class,java.lang.Class)
-    public void writeValue(java.lang.String,java.lang.Object)
     public void writeValue(java.lang.String,java.lang.Object,java.lang.Class)
     public void writeValue(java.lang.String,java.lang.Object,java.lang.Class,java.lang.Class)
 com.badlogic.gdx.utils.JsonReader:
@@ -7644,8 +7618,12 @@ com.badlogic.gdx.utils.JsonValue:
     public int size()
     public java.lang.String toJson(com.badlogic.gdx.utils.JsonWriter$OutputType)
     public com.badlogic.gdx.utils.JsonValue$ValueType type()
-com.badlogic.gdx.utils.JsonWriter$JsonObject
-com.badlogic.gdx.utils.JsonWriter
+com.badlogic.gdx.utils.JsonWriter:
+    public com.badlogic.gdx.utils.JsonWriter array(java.lang.String)
+    public java.io.Writer getWriter()
+    public com.badlogic.gdx.utils.JsonWriter json(java.lang.String)
+    public com.badlogic.gdx.utils.JsonWriter json(java.lang.String,java.lang.String)
+    public com.badlogic.gdx.utils.JsonWriter object(java.lang.String)
 com.badlogic.gdx.utils.LittleEndianInputStream
 com.badlogic.gdx.utils.Logger
 com.badlogic.gdx.utils.LongArray
@@ -7780,7 +7758,6 @@ com.badlogic.gdx.utils.OrderedMap:
     public void <init>(com.badlogic.gdx.utils.OrderedMap)
     public boolean alter(java.lang.Object,java.lang.Object)
     public boolean alterIndex(int,java.lang.Object)
-    public com.badlogic.gdx.utils.Array orderedKeys()
     public void putAll(com.badlogic.gdx.utils.OrderedMap)
 com.badlogic.gdx.utils.OrderedSet:
     public void <init>(int)
@@ -8001,8 +7978,6 @@ com.badlogic.gdx.utils.compression.rangecoder.Encoder
 com.badlogic.gdx.utils.reflect.Annotation
 com.badlogic.gdx.utils.reflect.ArrayReflection:
     public void <init>()
-    public static java.lang.Object get(java.lang.Object,int)
-    public static int getLength(java.lang.Object)
 com.badlogic.gdx.utils.reflect.ClassReflection:
     public void <init>()
     public static com.badlogic.gdx.utils.reflect.Annotation getAnnotation(java.lang.Class,java.lang.Class)
@@ -9542,7 +9517,6 @@ com.google.android.gms.tasks.Task:
     public com.google.android.gms.tasks.Task addOnCompleteListener(android.app.Activity,com.google.android.gms.tasks.OnCompleteListener)
     public abstract com.google.android.gms.tasks.Task addOnFailureListener(android.app.Activity,com.google.android.gms.tasks.OnFailureListener)
     public abstract com.google.android.gms.tasks.Task addOnSuccessListener(android.app.Activity,com.google.android.gms.tasks.OnSuccessListener)
-    public com.google.android.gms.tasks.Task continueWith(com.google.android.gms.tasks.Continuation)
     public com.google.android.gms.tasks.Task continueWithTask(com.google.android.gms.tasks.Continuation)
     public abstract java.lang.Object getResult(java.lang.Class)
     public com.google.android.gms.tasks.Task onSuccessTask(com.google.android.gms.tasks.SuccessContinuation)
@@ -9589,7 +9563,6 @@ com.google.android.gms.tasks.zzw:
     public final com.google.android.gms.tasks.Task addOnCompleteListener(android.app.Activity,com.google.android.gms.tasks.OnCompleteListener)
     public final com.google.android.gms.tasks.Task addOnFailureListener(android.app.Activity,com.google.android.gms.tasks.OnFailureListener)
     public final com.google.android.gms.tasks.Task addOnSuccessListener(android.app.Activity,com.google.android.gms.tasks.OnSuccessListener)
-    public final com.google.android.gms.tasks.Task continueWith(com.google.android.gms.tasks.Continuation)
     public final com.google.android.gms.tasks.Task continueWithTask(com.google.android.gms.tasks.Continuation)
     public final java.lang.Object getResult(java.lang.Class)
     public final com.google.android.gms.tasks.Task onSuccessTask(com.google.android.gms.tasks.SuccessContinuation)
@@ -13274,8 +13247,6 @@ com.google.firebase.firestore.AggregateQuery
 com.google.firebase.firestore.AggregateQuerySnapshot
 com.google.firebase.firestore.AggregateSource
 com.google.firebase.firestore.Blob:
-    private void <init>(com.google.protobuf.ByteString)
-    public static com.google.firebase.firestore.Blob fromByteString(com.google.protobuf.ByteString)
     public static com.google.firebase.firestore.Blob fromBytes(byte[])
     public byte[] toBytes()
 com.google.firebase.firestore.BuildConfig
@@ -13297,28 +13268,40 @@ com.google.firebase.firestore.DocumentReference:
     public com.google.firebase.firestore.ListenerRegistration addSnapshotListener(com.google.firebase.firestore.SnapshotListenOptions,com.google.firebase.firestore.EventListener)
     public com.google.firebase.firestore.ListenerRegistration addSnapshotListener(java.util.concurrent.Executor,com.google.firebase.firestore.EventListener)
     public com.google.firebase.firestore.ListenerRegistration addSnapshotListener(java.util.concurrent.Executor,com.google.firebase.firestore.MetadataChanges,com.google.firebase.firestore.EventListener)
-    private com.google.firebase.firestore.ListenerRegistration addSnapshotListenerInternal(java.util.concurrent.Executor,com.google.firebase.firestore.core.EventManager$ListenOptions,android.app.Activity,com.google.firebase.firestore.EventListener)
-    private com.google.firebase.firestore.core.Query asQuery()
     public com.google.android.gms.tasks.Task delete()
-    public com.google.android.gms.tasks.Task get()
-    public com.google.android.gms.tasks.Task get(com.google.firebase.firestore.Source)
     public java.lang.String getId()
     com.google.firebase.firestore.model.DocumentKey getKey()
     public com.google.firebase.firestore.CollectionReference getParent()
-    private com.google.android.gms.tasks.Task getViaSnapshotListener(com.google.firebase.firestore.Source)
     private static com.google.firebase.firestore.core.EventManager$ListenOptions internalOptions(com.google.firebase.firestore.MetadataChanges)
     private static com.google.firebase.firestore.core.EventManager$ListenOptions internalOptions(com.google.firebase.firestore.MetadataChanges,com.google.firebase.firestore.ListenSource)
-    private synthetic void lambda$addSnapshotListenerInternal$6(com.google.firebase.firestore.EventListener,com.google.firebase.firestore.core.ViewSnapshot,com.google.firebase.firestore.FirebaseFirestoreException)
-    private static synthetic void lambda$addSnapshotListenerInternal$7(com.google.firebase.firestore.core.AsyncEventListener,com.google.firebase.firestore.core.FirestoreClient,com.google.firebase.firestore.core.QueryListener)
-    private static synthetic com.google.firebase.firestore.ListenerRegistration lambda$addSnapshotListenerInternal$8(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.core.EventManager$ListenOptions,com.google.firebase.firestore.core.AsyncEventListener,android.app.Activity,com.google.firebase.firestore.core.FirestoreClient)
     private static synthetic com.google.android.gms.tasks.Task lambda$delete$2(java.util.List,com.google.firebase.firestore.core.FirestoreClient)
-    private synthetic com.google.android.gms.tasks.Task lambda$get$3(com.google.firebase.firestore.core.FirestoreClient)
-    private synthetic com.google.firebase.firestore.DocumentSnapshot lambda$get$4(com.google.android.gms.tasks.Task)
-    private static synthetic void lambda$getViaSnapshotListener$5(com.google.android.gms.tasks.TaskCompletionSource,com.google.android.gms.tasks.TaskCompletionSource,com.google.firebase.firestore.Source,com.google.firebase.firestore.DocumentSnapshot,com.google.firebase.firestore.FirebaseFirestoreException)
     public varargs com.google.android.gms.tasks.Task update(com.google.firebase.firestore.FieldPath,java.lang.Object,java.lang.Object[])
     public varargs com.google.android.gms.tasks.Task update(java.lang.String,java.lang.Object,java.lang.Object[])
-com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior
-com.google.firebase.firestore.DocumentSnapshot
+com.google.firebase.firestore.DocumentSnapshot:
+    public java.lang.Object get(com.google.firebase.firestore.FieldPath)
+    public java.lang.Object get(com.google.firebase.firestore.FieldPath,java.lang.Class)
+    public java.lang.Object get(com.google.firebase.firestore.FieldPath,java.lang.Class,com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
+    public java.lang.Object get(java.lang.String)
+    public java.lang.Object get(java.lang.String,java.lang.Class)
+    public java.lang.Object get(java.lang.String,java.lang.Class,com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
+    public com.google.firebase.firestore.Blob getBlob(java.lang.String)
+    public java.lang.Boolean getBoolean(java.lang.String)
+    public java.util.Map getData()
+    public java.util.Map getData(com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
+    public java.util.Date getDate(java.lang.String)
+    public java.util.Date getDate(java.lang.String,com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
+    com.google.firebase.firestore.model.Document getDocument()
+    public com.google.firebase.firestore.DocumentReference getDocumentReference(java.lang.String)
+    public java.lang.Double getDouble(java.lang.String)
+    public com.google.firebase.firestore.GeoPoint getGeoPoint(java.lang.String)
+    public java.lang.String getId()
+    public java.lang.Long getLong(java.lang.String)
+    public com.google.firebase.firestore.DocumentReference getReference()
+    public com.google.firebase.Timestamp getTimestamp(java.lang.String)
+    public com.google.firebase.Timestamp getTimestamp(java.lang.String,com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
+    public com.google.firebase.firestore.VectorValue getVectorValue(java.lang.String)
+    public java.lang.Object toObject(java.lang.Class)
+    public java.lang.Object toObject(java.lang.Class,com.google.firebase.firestore.DocumentSnapshot$ServerTimestampBehavior)
 com.google.firebase.firestore.FieldPath:
     public static com.google.firebase.firestore.FieldPath documentId()
 com.google.firebase.firestore.FieldValue$ArrayRemoveFieldValue:
@@ -13432,9 +13415,6 @@ com.google.firebase.firestore.FirestoreKt
 com.google.firebase.firestore.FirestoreMultiDbComponent:
     public synchronized void onDeleted(java.lang.String,com.google.firebase.FirebaseOptions)
     public synchronized void remove(java.lang.String)
-com.google.firebase.firestore.GeoPoint:
-    public void <init>(double,double)
-com.google.firebase.firestore.ListenerRegistration
 com.google.firebase.firestore.LoadBundleTask$ManagedListener
 com.google.firebase.firestore.LoadBundleTask
 com.google.firebase.firestore.LoadBundleTaskProgress$TaskState
@@ -13549,8 +13529,8 @@ com.google.firebase.firestore.SetOptions:
 com.google.firebase.firestore.SnapshotListenOptions$1
 com.google.firebase.firestore.SnapshotListenOptions$Builder
 com.google.firebase.firestore.SnapshotListenOptions
-com.google.firebase.firestore.SnapshotMetadata
-com.google.firebase.firestore.Source
+com.google.firebase.firestore.SnapshotMetadata:
+    public boolean hasPendingWrites()
 com.google.firebase.firestore.Transaction$Function
 com.google.firebase.firestore.Transaction
 com.google.firebase.firestore.TransactionOptions$1
@@ -13558,10 +13538,7 @@ com.google.firebase.firestore.TransactionOptions$Builder
 com.google.firebase.firestore.TransactionOptions
 com.google.firebase.firestore.UserDataReader:
     public com.google.firebase.firestore.core.UserData$ParsedUpdateData parseUpdateData(java.util.List)
-com.google.firebase.firestore.UserDataWriter$1
-com.google.firebase.firestore.UserDataWriter
 com.google.firebase.firestore.VectorValue:
-    void <init>(double[])
     public double[] toArray()
 com.google.firebase.firestore.WriteBatch$Function
 com.google.firebase.firestore.WriteBatch
@@ -13624,32 +13601,16 @@ com.google.firebase.firestore.bundle.BundledDocumentMetadata
 com.google.firebase.firestore.bundle.BundledQuery
 com.google.firebase.firestore.bundle.NamedQuery
 com.google.firebase.firestore.bundle.package-info
-com.google.firebase.firestore.core.ActivityScope$1
-com.google.firebase.firestore.core.ActivityScope$CallbackList
-com.google.firebase.firestore.core.ActivityScope$StopListenerFragment
-com.google.firebase.firestore.core.ActivityScope$StopListenerSupportFragment
-com.google.firebase.firestore.core.ActivityScope
-com.google.firebase.firestore.core.AsyncEventListener
+com.google.firebase.firestore.core.ActivityScope:
+    private static final java.lang.String FRAGMENT_TAG
+    private static final java.lang.String SUPPORT_FRAGMENT_TAG
+    public void <init>()
 com.google.firebase.firestore.core.ComponentProvider:
     public void setRemoteProvider(com.google.firebase.firestore.remote.RemoteComponenetProvider)
 com.google.firebase.firestore.core.CompositeFilter:
     private com.google.firebase.firestore.core.FieldFilter findFirstMatchingFilter(com.google.firebase.firestore.util.Function)
-com.google.firebase.firestore.core.DocumentViewChangeSet
-com.google.firebase.firestore.core.EventManager$1
-com.google.firebase.firestore.core.EventManager$ListenOptions:
-    public void <init>()
-com.google.firebase.firestore.core.EventManager$ListenerRemovalAction
-com.google.firebase.firestore.core.EventManager$ListenerSetupAction
-com.google.firebase.firestore.core.EventManager$QueryListenersInfo:
-    private int targetId
-    static synthetic com.google.firebase.firestore.core.ViewSnapshot access$100(com.google.firebase.firestore.core.EventManager$QueryListenersInfo)
-    static synthetic int access$200(com.google.firebase.firestore.core.EventManager$QueryListenersInfo)
-    static synthetic int access$202(com.google.firebase.firestore.core.EventManager$QueryListenersInfo,int)
-    boolean hasRemoteListeners()
 com.google.firebase.firestore.core.EventManager:
-    public int addQueryListener(com.google.firebase.firestore.core.QueryListener)
     public void addSnapshotsInSyncListener(com.google.firebase.firestore.EventListener)
-    public void removeQueryListener(com.google.firebase.firestore.core.QueryListener)
     public void removeSnapshotsInSyncListener(com.google.firebase.firestore.EventListener)
 com.google.firebase.firestore.core.FirestoreClient:
     private static final java.lang.String LOG_TAG
@@ -13659,7 +13620,6 @@ com.google.firebase.firestore.core.FirestoreClient:
     public void deleteAllFieldIndexes()
     public com.google.android.gms.tasks.Task disableNetwork()
     public com.google.android.gms.tasks.Task enableNetwork()
-    public com.google.android.gms.tasks.Task getDocumentFromLocalCache(com.google.firebase.firestore.model.DocumentKey)
     public com.google.android.gms.tasks.Task getDocumentsFromLocalCache(com.google.firebase.firestore.core.Query)
     public com.google.android.gms.tasks.Task getNamedQuery(java.lang.String)
     private synthetic void lambda$addSnapshotsInSyncListener$18(com.google.firebase.firestore.EventListener)
@@ -13667,32 +13627,24 @@ com.google.firebase.firestore.core.FirestoreClient:
     private synthetic void lambda$deleteAllFieldIndexes$23()
     private synthetic void lambda$disableNetwork$4()
     private synthetic void lambda$enableNetwork$5()
-    private static synthetic com.google.firebase.firestore.model.Document lambda$getDocumentFromLocalCache$10(com.google.android.gms.tasks.Task)
-    private synthetic com.google.firebase.firestore.model.Document lambda$getDocumentFromLocalCache$9(com.google.firebase.firestore.model.DocumentKey)
     private synthetic com.google.firebase.firestore.core.ViewSnapshot lambda$getDocumentsFromLocalCache$11(com.google.firebase.firestore.core.Query)
     private synthetic void lambda$getNamedQuery$20(java.lang.String,com.google.android.gms.tasks.TaskCompletionSource)
-    private synthetic void lambda$listen$7(com.google.firebase.firestore.core.QueryListener)
     private synthetic void lambda$loadBundle$19(com.google.firebase.firestore.bundle.BundleReader,com.google.firebase.firestore.LoadBundleTask)
     private synthetic void lambda$removeSnapshotsInSyncListener$24(com.google.firebase.firestore.EventListener)
     private static synthetic void lambda$runAggregateQuery$14(com.google.android.gms.tasks.TaskCompletionSource,java.util.Map)
     private static synthetic void lambda$runAggregateQuery$15(com.google.android.gms.tasks.TaskCompletionSource,java.lang.Exception)
     private synthetic void lambda$runAggregateQuery$16(com.google.firebase.firestore.core.Query,java.util.List,com.google.android.gms.tasks.TaskCompletionSource)
     private synthetic void lambda$setIndexAutoCreationEnabled$22(boolean)
-    private synthetic void lambda$stopListening$8(com.google.firebase.firestore.core.QueryListener)
     private synthetic void lambda$terminate$6()
     private synthetic com.google.android.gms.tasks.Task lambda$transaction$13(com.google.firebase.firestore.TransactionOptions,com.google.firebase.firestore.util.Function)
     private synthetic void lambda$waitForPendingWrites$17(com.google.android.gms.tasks.TaskCompletionSource)
-    public com.google.firebase.firestore.core.QueryListener listen(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.core.EventManager$ListenOptions,com.google.firebase.firestore.EventListener)
     public void loadBundle(java.io.InputStream,com.google.firebase.firestore.LoadBundleTask)
     public void removeSnapshotsInSyncListener(com.google.firebase.firestore.EventListener)
     public com.google.android.gms.tasks.Task runAggregateQuery(com.google.firebase.firestore.core.Query,java.util.List)
     public void setIndexAutoCreationEnabled(boolean)
-    public void stopListening(com.google.firebase.firestore.core.QueryListener)
     public com.google.android.gms.tasks.Task terminate()
     public com.google.android.gms.tasks.Task transaction(com.google.firebase.firestore.TransactionOptions,com.google.firebase.firestore.util.Function)
     public com.google.android.gms.tasks.Task waitForPendingWrites()
-com.google.firebase.firestore.core.LimboDocumentChange:
-    public void <init>(com.google.firebase.firestore.core.LimboDocumentChange$Type,com.google.firebase.firestore.model.DocumentKey)
 com.google.firebase.firestore.core.ListenSequence:
     public static final long INVALID
 com.google.firebase.firestore.core.Query:
@@ -13700,28 +13652,16 @@ com.google.firebase.firestore.core.Query:
     public com.google.firebase.firestore.core.Query endAt(com.google.firebase.firestore.core.Bound)
     public com.google.firebase.firestore.core.Query filter(com.google.firebase.firestore.core.Filter)
     public java.lang.String getCanonicalId()
-    public long getLimit()
     public com.google.firebase.firestore.core.Query limitToLast(long)
     public com.google.firebase.firestore.core.Query orderBy(com.google.firebase.firestore.core.OrderBy)
     public com.google.firebase.firestore.core.Query startAt(com.google.firebase.firestore.core.Bound)
     public synchronized com.google.firebase.firestore.core.Target toAggregateTarget()
-com.google.firebase.firestore.core.QueryListener:
-    private final com.google.firebase.firestore.core.Query query
-    public void <init>(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.core.EventManager$ListenOptions,com.google.firebase.firestore.EventListener)
-    public com.google.firebase.firestore.core.Query getQuery()
-com.google.firebase.firestore.core.QueryView:
-    void <init>(com.google.firebase.firestore.core.Query,int,com.google.firebase.firestore.core.View)
 com.google.firebase.firestore.core.SyncEngine:
     public java.util.Map getActiveLimboDocumentResolutions()
     public java.util.List getEnqueuedLimboDocumentResolutions()
-    private com.google.firebase.firestore.core.ViewSnapshot initializeViewAndComputeSnapshot(com.google.firebase.firestore.core.Query,int,com.google.protobuf.ByteString)
-    public int listen(com.google.firebase.firestore.core.Query,boolean)
-    public void listenToRemoteStore(com.google.firebase.firestore.core.Query)
     public void loadBundle(com.google.firebase.firestore.bundle.BundleReader,com.google.firebase.firestore.LoadBundleTask)
     public void registerPendingWritesTask(com.google.android.gms.tasks.TaskCompletionSource)
     public com.google.android.gms.tasks.Task runAggregateQuery(com.google.firebase.firestore.core.Query,java.util.List)
-    void stopListening(com.google.firebase.firestore.core.Query,boolean)
-    void stopListeningToRemoteStore(com.google.firebase.firestore.core.Query)
     public com.google.android.gms.tasks.Task transaction(com.google.firebase.firestore.util.AsyncQueue,com.google.firebase.firestore.TransactionOptions,com.google.firebase.firestore.util.Function)
 com.google.firebase.firestore.core.Target:
     public static final long NO_LIMIT
@@ -13744,39 +13684,8 @@ com.google.firebase.firestore.core.UserData$ParsedUpdateData:
     public com.google.firebase.firestore.model.mutation.FieldMask getFieldMask()
     public java.util.List getFieldTransforms()
 com.google.firebase.firestore.core.UserData
-com.google.firebase.firestore.core.View$1
-com.google.firebase.firestore.core.View$DocumentChanges:
-    final com.google.firebase.firestore.core.DocumentViewChangeSet changeSet
-    final com.google.firebase.firestore.model.DocumentSet documentSet
-    final com.google.firebase.database.collection.ImmutableSortedSet mutatedKeys
-    private final boolean needsRefill
-    private void <init>(com.google.firebase.firestore.model.DocumentSet,com.google.firebase.firestore.core.DocumentViewChangeSet,com.google.firebase.database.collection.ImmutableSortedSet,boolean)
-    synthetic void <init>(com.google.firebase.firestore.model.DocumentSet,com.google.firebase.firestore.core.DocumentViewChangeSet,com.google.firebase.database.collection.ImmutableSortedSet,boolean,com.google.firebase.firestore.core.View$1)
-    static synthetic boolean access$100(com.google.firebase.firestore.core.View$DocumentChanges)
 com.google.firebase.firestore.core.View:
-    private boolean current
-    private com.google.firebase.firestore.model.DocumentSet documentSet
-    private com.google.firebase.database.collection.ImmutableSortedSet limboDocuments
-    private com.google.firebase.database.collection.ImmutableSortedSet mutatedKeys
-    private final com.google.firebase.firestore.core.Query query
-    private com.google.firebase.firestore.core.ViewSnapshot$SyncState syncState
-    private com.google.firebase.database.collection.ImmutableSortedSet syncedDocuments
-    public void <init>(com.google.firebase.firestore.core.Query,com.google.firebase.database.collection.ImmutableSortedSet)
-    public com.google.firebase.firestore.core.ViewChange applyChanges(com.google.firebase.firestore.core.View$DocumentChanges)
-    public com.google.firebase.firestore.core.ViewChange applyChanges(com.google.firebase.firestore.core.View$DocumentChanges,com.google.firebase.firestore.remote.TargetChange)
-    private void applyTargetChange(com.google.firebase.firestore.remote.TargetChange)
-    private static int changeTypeOrder(com.google.firebase.firestore.core.DocumentViewChange)
     com.google.firebase.database.collection.ImmutableSortedSet getLimboDocuments()
-    public com.google.firebase.firestore.core.ViewSnapshot$SyncState getSyncState()
-    private synthetic int lambda$applyChanges$0(com.google.firebase.firestore.core.DocumentViewChange,com.google.firebase.firestore.core.DocumentViewChange)
-    private boolean shouldBeLimboDoc(com.google.firebase.firestore.model.DocumentKey)
-    private boolean shouldWaitForSyncedDocument(com.google.firebase.firestore.model.Document,com.google.firebase.firestore.model.Document)
-    private java.util.List updateLimboDocuments()
-com.google.firebase.firestore.core.ViewChange:
-    private final java.util.List limboChanges
-    private final com.google.firebase.firestore.core.ViewSnapshot snapshot
-    public void <init>(com.google.firebase.firestore.core.ViewSnapshot,java.util.List)
-com.google.firebase.firestore.core.ViewSnapshot$SyncState
 com.google.firebase.firestore.core.package-info
 com.google.firebase.firestore.index.FirestoreIndexValueWriter:
     public static final int DOCUMENT_NAME_OFFSET
@@ -13857,9 +13766,7 @@ com.google.firebase.firestore.local.LocalDocumentsView:
 com.google.firebase.firestore.local.LocalSerializer:
     public com.google.firebase.firestore.bundle.BundledQuery decodeBundledQuery(com.google.firestore.bundle.BundledQuery)
     public com.google.firestore.bundle.BundledQuery encodeBundledQuery(com.google.firebase.firestore.bundle.BundledQuery)
-com.google.firebase.firestore.local.LocalStore$AllocateQueryHolder
 com.google.firebase.firestore.local.LocalStore:
-    public com.google.firebase.firestore.local.TargetData allocateTarget(com.google.firebase.firestore.core.Target)
     public com.google.firebase.database.collection.ImmutableSortedMap applyBundledDocuments(com.google.firebase.database.collection.ImmutableSortedMap,java.lang.String)
     public void configureFieldIndexes(java.util.List)
     public void deleteAllFieldIndexes()
@@ -13869,7 +13776,6 @@ com.google.firebase.firestore.local.LocalStore:
     public com.google.firebase.database.collection.ImmutableSortedSet getRemoteDocumentKeys(int)
     public com.google.protobuf.ByteString getSessionToken()
     public boolean hasNewerBundle(com.google.firebase.firestore.bundle.BundleMetadata)
-    private synthetic void lambda$allocateTarget$8(com.google.firebase.firestore.local.LocalStore$AllocateQueryHolder,com.google.firebase.firestore.core.Target)
     private synthetic com.google.firebase.database.collection.ImmutableSortedMap lambda$applyBundledDocuments$11(com.google.firebase.database.collection.ImmutableSortedMap,com.google.firebase.firestore.local.TargetData)
     private synthetic void lambda$configureFieldIndexes$15(java.util.List)
     private synthetic void lambda$deleteAllFieldIndexes$16()
@@ -13879,7 +13785,6 @@ com.google.firebase.firestore.local.LocalStore:
     private synthetic void lambda$saveBundle$10(com.google.firebase.firestore.bundle.BundleMetadata)
     private synthetic void lambda$saveNamedQuery$12(com.google.firebase.firestore.bundle.NamedQuery,com.google.firebase.firestore.local.TargetData,int,com.google.firebase.database.collection.ImmutableSortedSet)
     private static com.google.firebase.firestore.core.Target newUmbrellaTarget(java.lang.String)
-    public com.google.firebase.firestore.model.Document readDocument(com.google.firebase.firestore.model.DocumentKey)
     public void saveBundle(com.google.firebase.firestore.bundle.BundleMetadata)
     public void saveNamedQuery(com.google.firebase.firestore.bundle.NamedQuery,com.google.firebase.database.collection.ImmutableSortedSet)
     public void setIndexAutoCreationEnabled(boolean)
@@ -13936,8 +13841,6 @@ com.google.firebase.firestore.local.QueryEngine:
     public void setIndexAutoCreationEnabled(boolean)
     void setIndexAutoCreationMinCollectionSize(int)
     void setRelativeIndexReadCostPerDocument(double)
-com.google.firebase.firestore.local.QueryResult:
-    public com.google.firebase.database.collection.ImmutableSortedSet getRemoteKeys()
 com.google.firebase.firestore.local.ReferenceSet:
     public boolean isEmpty()
     public void removeAllReferences()
@@ -13985,13 +13888,11 @@ com.google.firebase.firestore.local.SQLiteSchema:
     static final int VERSION
     void runSchemaUpgrades()
 com.google.firebase.firestore.local.SQLiteTargetCache:
-    public void addTargetData(com.google.firebase.firestore.local.TargetData)
     public boolean containsKey(com.google.firebase.firestore.model.DocumentKey)
     public void removeTargetData(com.google.firebase.firestore.local.TargetData)
 com.google.firebase.firestore.local.Scheduler:
     public abstract void stop()
 com.google.firebase.firestore.local.TargetCache:
-    public abstract void addTargetData(com.google.firebase.firestore.local.TargetData)
     public abstract boolean containsKey(com.google.firebase.firestore.model.DocumentKey)
     public abstract void forEachTarget(com.google.firebase.firestore.util.Consumer)
     public abstract long getHighestListenSequenceNumber()
@@ -14007,9 +13908,7 @@ com.google.firebase.firestore.model.BasePath:
 com.google.firebase.firestore.model.DatabaseId:
     public static final java.lang.String DEFAULT_DATABASE_ID
     public static com.google.firebase.firestore.model.DatabaseId forProject(java.lang.String)
-    public static com.google.firebase.firestore.model.DatabaseId fromName(java.lang.String)
 com.google.firebase.firestore.model.Document:
-    public abstract boolean hasLocalMutations()
     public abstract boolean isValidDocument()
 com.google.firebase.firestore.model.DocumentCollections:
     public void <init>()
@@ -14018,14 +13917,9 @@ com.google.firebase.firestore.model.DocumentKey:
     public static final java.lang.String KEY_FIELD_NAME
     public static com.google.firebase.firestore.model.DocumentKey fromPathString(java.lang.String)
 com.google.firebase.firestore.model.DocumentSet:
-    public com.google.firebase.firestore.model.DocumentSet add(com.google.firebase.firestore.model.Document)
     public boolean contains(com.google.firebase.firestore.model.DocumentKey)
-    public com.google.firebase.firestore.model.Document getDocument(com.google.firebase.firestore.model.DocumentKey)
-    public com.google.firebase.firestore.model.Document getFirstDocument()
-    public com.google.firebase.firestore.model.Document getLastDocument()
     public com.google.firebase.firestore.model.Document getPredecessor(com.google.firebase.firestore.model.DocumentKey)
     public int indexOf(com.google.firebase.firestore.model.DocumentKey)
-    public com.google.firebase.firestore.model.DocumentSet remove(com.google.firebase.firestore.model.DocumentKey)
     public java.util.List toList()
 com.google.firebase.firestore.model.FieldIndex:
     public static final int INITIAL_LARGEST_BATCH_ID
@@ -14411,9 +14305,6 @@ com.google.firebase.firestore.remote.RemoteStore:
     public com.google.android.gms.tasks.Task runAggregateQuery(com.google.firebase.firestore.core.Query,java.util.List)
     public void shutdown()
 com.google.firebase.firestore.remote.Stream
-com.google.firebase.firestore.remote.TargetChange:
-    public static com.google.firebase.firestore.remote.TargetChange createSynthesizedTargetChangeForCurrentChange(boolean,com.google.protobuf.ByteString)
-    public boolean isCurrent()
 com.google.firebase.firestore.remote.TestingHooks:
     com.google.firebase.firestore.ListenerRegistration addExistenceFilterMismatchListener(com.google.firebase.firestore.remote.TestingHooks$ExistenceFilterMismatchListener)
     private synthetic void lambda$addExistenceFilterMismatchListener$0(java.util.concurrent.atomic.AtomicReference)
@@ -14425,11 +14316,9 @@ com.google.firebase.firestore.remote.WatchChangeAggregator:
 com.google.firebase.firestore.remote.package-info
 com.google.firebase.firestore.util.ApiUtil:
     public void <init>()
-    public static java.lang.AssertionError newAssertionError(java.lang.String,java.lang.Throwable)
     static java.lang.Object newInstance(java.lang.reflect.Constructor)
 com.google.firebase.firestore.util.Assert:
     public void <init>()
-    public static varargs java.lang.AssertionError fail(java.lang.Throwable,java.lang.String,java.lang.Object[])
 com.google.firebase.firestore.util.AsyncQueue$DelayedTask:
     static synthetic long access$1300(com.google.firebase.firestore.util.AsyncQueue$DelayedTask)
     static synthetic com.google.firebase.firestore.util.AsyncQueue$TimerId access$900(com.google.firebase.firestore.util.AsyncQueue$DelayedTask)
@@ -14869,7 +14758,6 @@ com.google.firebase.storage.StorageTask:
     public synthetic bridge com.google.android.gms.tasks.Task addOnSuccessListener(android.app.Activity,com.google.android.gms.tasks.OnSuccessListener)
     public com.google.firebase.storage.StorageTask addOnSuccessListener(android.app.Activity,com.google.android.gms.tasks.OnSuccessListener)
     public boolean cancel()
-    public com.google.android.gms.tasks.Task continueWith(com.google.android.gms.tasks.Continuation)
     public com.google.android.gms.tasks.Task continueWithTask(com.google.android.gms.tasks.Continuation)
     public com.google.firebase.storage.StorageTask$ProvideError getResult(java.lang.Class)
     public synthetic bridge java.lang.Object getResult(java.lang.Class)
@@ -19296,22 +19184,34 @@ io.github.drawguess.R$string
 io.github.drawguess.R$style
 io.github.drawguess.R
 io.github.drawguess.android.AndroidFirebase:
-    public void joinGame(java.lang.String,java.lang.String)
-    private static synthetic void lambda$joinGame$4(java.lang.String,java.lang.Void)
-    private static synthetic void lambda$joinGame$5(java.lang.Exception)
     public void sendGuess(java.lang.String)
 io.github.drawguess.controller.DrawingController:
     public void dispose()
     public com.badlogic.gdx.graphics.Pixmap getCanvas()
     public com.badlogic.gdx.graphics.Texture getCanvasTexture()
+io.github.drawguess.controller.GameController$$InternalSyntheticLambda$1$7ef4848952daf838eabfa8975f3a623b8c7d5d1e74138a4c46add4b0237e9ed7$0:
+    public final void onLobbyUpdate(com.badlogic.gdx.utils.Array)
+io.github.drawguess.controller.GameController:
+    public static synthetic void $r8$lambda$3IDnq82tHAUQ-OIIgOTcL5aNmYI(io.github.drawguess.model.GameSession,com.badlogic.gdx.utils.Array)
+    private static synthetic boolean lambda$createGame$0(java.lang.String,io.github.drawguess.model.Player)
+    private static synthetic void lambda$createGame$1(io.github.drawguess.model.GameSession,com.badlogic.gdx.utils.Array)
+io.github.drawguess.controller.JoinGameController$$InternalSyntheticLambda$1$1d9419b902e6dbba1d06c923fc6e37ba456101ab3164299e66779373de42b953$0:
+    public final void onLobbyUpdate(com.badlogic.gdx.utils.Array)
+io.github.drawguess.controller.JoinGameController:
+    public static synthetic void $r8$lambda$9vmQA9zZQjfDN_J_6dcNOjo-VFA(io.github.drawguess.model.GameSession,com.badlogic.gdx.utils.Array)
+    private static synthetic boolean lambda$tryJoinGame$0(java.lang.String,io.github.drawguess.model.Player)
+    private static synthetic void lambda$tryJoinGame$1(io.github.drawguess.model.GameSession,com.badlogic.gdx.utils.Array)
 io.github.drawguess.factory.PlayerFactory:
     public void <init>()
-    public static io.github.drawguess.model.Player createPlayer(java.lang.String)
 io.github.drawguess.factory.ToolButtonFactory:
     private static final float SELECTED_OFFSET
     public void <init>()
-io.github.drawguess.manager.GameManager:
-    public void setPlayerId(java.lang.String)
+io.github.drawguess.manager.SocketManager$LobbyUpdateListener:
+    public abstract void onLobbyUpdate(com.badlogic.gdx.utils.Array)
+io.github.drawguess.manager.SocketManager:
+    private static final java.lang.String SERVER_URL
+    public void disconnect()
+    public boolean isConnected()
 io.github.drawguess.model.GameSession:
     public void addPlayer(io.github.drawguess.model.Player)
     public io.github.drawguess.model.GameSession$Status getStatus()
@@ -19331,11 +19231,17 @@ io.github.drawguess.model.ecs.entities.ToolFactory:
     public static boolean isPen(io.github.drawguess.model.ecs.entities.Entity)
 io.github.drawguess.model.ecs.systems.DrawingSystem:
     public void <init>()
-io.github.drawguess.server.FirebaseInterface:
-    public abstract void joinGame(java.lang.String,java.lang.String)
+io.github.drawguess.services.FirebaseInterface:
     public abstract void sendGuess(java.lang.String)
+io.github.drawguess.view.GuessingScreen$1
+io.github.drawguess.view.GuessingScreen
 io.github.drawguess.view.LeaderboardScreen$1
 io.github.drawguess.view.LeaderboardScreen
+io.github.drawguess.view.LobbyScreen$$InternalSyntheticLambda$2$4c6625ce13b6b86e09232689fdc4faf57cf21dd27c43630f14a8af93fb8bf5ca$0:
+    public final void onLobbyUpdate(com.badlogic.gdx.utils.Array)
+io.github.drawguess.view.LobbyScreen:
+    public static synthetic void $r8$lambda$gZWkCD2xCKSpBswvq6x0e83K9JA(io.github.drawguess.view.LobbyScreen,com.badlogic.gdx.utils.Array)
+    private synthetic void lambda$show$0(com.badlogic.gdx.utils.Array)
 io.github.drawguess.view.WaitingScreen:
     public void updatePlayerStatus(java.lang.String,boolean)
 io.grpc.Attributes$Builder:
@@ -20444,8 +20350,6 @@ io.grpc.internal.TransportTracer:
     public io.grpc.InternalChannelz$TransportStats getStats()
     public void reportRemoteStreamStarted()
 io.grpc.internal.package-info
-io.grpc.okhttp.AsyncSink:
-    public okio.Timeout timeout()
 io.grpc.okhttp.ExceptionHandlingFrameWriter:
     public void headers(int,java.util.List)
     public void pushPromise(int,int,java.util.List)
@@ -20508,8 +20412,6 @@ io.grpc.okhttp.OkHttpClientStream:
     public static final int ABSENT_ID
 io.grpc.okhttp.OkHttpClientTransport$2:
     public io.grpc.internal.TransportTracer$FlowControlWindows read()
-io.grpc.okhttp.OkHttpClientTransport$3$1:
-    public okio.Timeout timeout()
 io.grpc.okhttp.OkHttpClientTransport$ClientFrameHandler:
     public void alternateService(int,java.lang.String,okio.ByteString,java.lang.String,int,long)
 io.grpc.okhttp.OkHttpClientTransport:
@@ -20636,8 +20538,6 @@ io.grpc.okhttp.internal.framed.Hpack:
     private static final int SETTINGS_HEADER_TABLE_SIZE
     private static final int SETTINGS_HEADER_TABLE_SIZE_LIMIT
     private void <init>()
-io.grpc.okhttp.internal.framed.Http2$ContinuationSource:
-    public okio.Timeout timeout()
 io.grpc.okhttp.internal.framed.Http2$Reader:
     public void readConnectionPreface()
 io.grpc.okhttp.internal.framed.Http2$Writer:
@@ -20916,6 +20816,165 @@ io.perfmark.PerfMark:
     public static io.perfmark.TaskCloseable traceTask(java.lang.Object,io.perfmark.StringFunction)
 io.perfmark.StringFunction
 io.perfmark.package-info
+io.socket.backo.Backoff:
+    public io.socket.backo.Backoff setFactor(int)
+io.socket.client.AckWithTimeout:
+    public void <init>(long)
+io.socket.client.IO$Options:
+    public static io.socket.client.SocketOptionBuilder builder()
+io.socket.client.IO:
+    public static void setDefaultOkHttpCallFactory(okhttp3.Call$Factory)
+    public static void setDefaultOkHttpWebSocketFactory(okhttp3.WebSocket$Factory)
+    public static io.socket.client.Socket socket(java.net.URI)
+io.socket.client.Manager:
+    public static final java.lang.String EVENT_CLOSE
+    public static final java.lang.String EVENT_ERROR
+    public static final java.lang.String EVENT_OPEN
+    public static final java.lang.String EVENT_PACKET
+    public static final java.lang.String EVENT_RECONNECT
+    public static final java.lang.String EVENT_RECONNECT_ATTEMPT
+    public static final java.lang.String EVENT_RECONNECT_ERROR
+    public static final java.lang.String EVENT_RECONNECT_FAILED
+    public static final java.lang.String EVENT_TRANSPORT
+    public void <init>(io.socket.client.Manager$Options)
+    public void <init>(java.net.URI)
+    public boolean reconnection()
+    public int reconnectionAttempts()
+    public io.socket.client.Socket socket(java.lang.String)
+    public long timeout()
+io.socket.client.On:
+    private void <init>()
+io.socket.client.Socket$4
+io.socket.client.Socket$8
+io.socket.client.Socket:
+    public static final java.lang.String EVENT_CONNECT
+    public static final java.lang.String EVENT_CONNECT_ERROR
+    public static final java.lang.String EVENT_DISCONNECT
+    static final java.lang.String EVENT_MESSAGE
+    static synthetic java.lang.String access$1200(io.socket.client.Socket)
+    static synthetic void access$1300(io.socket.client.Socket)
+    public io.socket.client.Socket close()
+    public io.socket.client.Socket disconnect()
+    public java.lang.String id()
+    public io.socket.client.Manager io()
+    public io.socket.client.Socket offAnyIncoming()
+    public io.socket.client.Socket offAnyIncoming(io.socket.emitter.Emitter$Listener)
+    public io.socket.client.Socket offAnyOutgoing()
+    public io.socket.client.Socket offAnyOutgoing(io.socket.emitter.Emitter$Listener)
+    public io.socket.client.Socket onAnyIncoming(io.socket.emitter.Emitter$Listener)
+    public io.socket.client.Socket onAnyOutgoing(io.socket.emitter.Emitter$Listener)
+    public varargs io.socket.client.Socket send(java.lang.Object[])
+io.socket.client.SocketIOException:
+    public void <init>()
+    public void <init>(java.lang.Throwable)
+io.socket.client.SocketOptionBuilder
+io.socket.client.Url:
+    private void <init>()
+io.socket.emitter.Emitter:
+    public boolean hasListeners(java.lang.String)
+    public java.util.List listeners(java.lang.String)
+io.socket.engineio.client.EngineIOException:
+    public void <init>()
+io.socket.engineio.client.Socket:
+    public static final java.lang.String EVENT_CLOSE
+    public static final java.lang.String EVENT_DATA
+    public static final java.lang.String EVENT_DRAIN
+    public static final java.lang.String EVENT_ERROR
+    public static final java.lang.String EVENT_FLUSH
+    public static final java.lang.String EVENT_HANDSHAKE
+    public static final java.lang.String EVENT_HEARTBEAT
+    public static final java.lang.String EVENT_MESSAGE
+    public static final java.lang.String EVENT_OPEN
+    public static final java.lang.String EVENT_PACKET
+    public static final java.lang.String EVENT_PACKET_CREATE
+    public static final java.lang.String EVENT_PING
+    public static final java.lang.String EVENT_PONG
+    public static final java.lang.String EVENT_TRANSPORT
+    public static final java.lang.String EVENT_UPGRADE
+    public static final java.lang.String EVENT_UPGRADE_ERROR
+    public static final java.lang.String EVENT_UPGRADING
+    private static final java.lang.String PROBE_ERROR
+    public static final int PROTOCOL
+    public void <init>(java.lang.String)
+    public void <init>(java.lang.String,io.socket.engineio.client.Socket$Options)
+    public void <init>(java.net.URI)
+    public java.lang.String id()
+    public void send(java.lang.String)
+    public void send(byte[])
+    public static void setDefaultOkHttpCallFactory(okhttp3.Call$Factory)
+    public static void setDefaultOkHttpWebSocketFactory(okhttp3.WebSocket$Factory)
+io.socket.engineio.client.Transport:
+    public static final java.lang.String EVENT_CLOSE
+    public static final java.lang.String EVENT_DRAIN
+    public static final java.lang.String EVENT_ERROR
+    public static final java.lang.String EVENT_OPEN
+    public static final java.lang.String EVENT_PACKET
+    public static final java.lang.String EVENT_REQUEST_HEADERS
+    public static final java.lang.String EVENT_RESPONSE_HEADERS
+io.socket.engineio.client.transports.Polling:
+    public static final java.lang.String EVENT_POLL
+    public static final java.lang.String EVENT_POLL_COMPLETE
+    public static final java.lang.String NAME
+    protected void onData(byte[])
+io.socket.engineio.client.transports.PollingXHR$Request:
+    public static final java.lang.String EVENT_DATA
+    public static final java.lang.String EVENT_ERROR
+    public static final java.lang.String EVENT_REQUEST_HEADERS
+    public static final java.lang.String EVENT_RESPONSE_HEADERS
+    public static final java.lang.String EVENT_SUCCESS
+    private static final java.lang.String TEXT_CONTENT_TYPE
+io.socket.engineio.client.transports.WebSocket:
+    public static final java.lang.String NAME
+io.socket.engineio.parser.Base64$Coder:
+    public abstract int maxOutputSize(int)
+    public abstract boolean process(byte[],int,int,boolean)
+io.socket.engineio.parser.Base64$Decoder:
+    private static final int EQUALS
+    private static final int SKIP
+    public int maxOutputSize(int)
+io.socket.engineio.parser.Base64$Encoder:
+    public static final int LINE_GROUPS
+    public int maxOutputSize(int)
+io.socket.engineio.parser.Base64:
+    public static final int CRLF
+    public static final int DEFAULT
+    public static final int NO_CLOSE
+    public static final int NO_PADDING
+    public static final int NO_WRAP
+    public static final int URL_SAFE
+    public static java.lang.String encodeToString(byte[],int,int,int)
+io.socket.engineio.parser.Packet:
+    public static final java.lang.String CLOSE
+    public static final java.lang.String ERROR
+    public static final java.lang.String MESSAGE
+    public static final java.lang.String NOOP
+    public static final java.lang.String OPEN
+    public static final java.lang.String PING
+    public static final java.lang.String PONG
+    public static final java.lang.String UPGRADE
+io.socket.engineio.parser.Parser:
+    public static final int PROTOCOL
+    private static final char SEPARATOR
+    private void <init>()
+io.socket.global.Global:
+    private void <init>()
+io.socket.parseqs.ParseQS:
+    private void <init>()
+io.socket.parser.Binary:
+    private static final java.lang.String KEY_NUM
+    private static final java.lang.String KEY_PLACEHOLDER
+io.socket.parser.Parser:
+    public static final int ACK
+    public static final int BINARY_ACK
+    public static final int BINARY_EVENT
+    public static final int CONNECT
+    public static final int CONNECT_ERROR
+    public static final int DISCONNECT
+    public static final int EVENT
+    public static final int protocol
+io.socket.yeast.Yeast:
+    private void <init>()
+    public static long decode(java.lang.String)
 javax.annotation.CheckForNull
 javax.annotation.CheckForSigned
 javax.annotation.CheckReturnValue
@@ -27180,6 +27239,521 @@ kotlinx.coroutines.tasks.TasksKt$awaitImpl$2$1
 kotlinx.coroutines.tasks.TasksKt$awaitImpl$2$2
 kotlinx.coroutines.tasks.TasksKt
 kotlinx.coroutines.time.TimeKt
+okhttp3.Cache$1
+okhttp3.Cache$2
+okhttp3.Cache$CacheRequestImpl$1
+okhttp3.Cache$CacheRequestImpl
+okhttp3.Cache$CacheResponseBody$1
+okhttp3.Cache$CacheResponseBody
+okhttp3.Cache$Entry
+okhttp3.Cache:
+    private static final int ENTRY_BODY
+    private static final int ENTRY_COUNT
+    private static final int ENTRY_METADATA
+    private static final int VERSION
+    final okhttp3.internal.cache.DiskLruCache cache
+    private int hitCount
+    private int networkCount
+    private int requestCount
+    int writeAbortCount
+    int writeSuccessCount
+    public void <init>(java.io.File,long)
+    void <init>(java.io.File,long,okhttp3.internal.io.FileSystem)
+    private void abortQuietly(okhttp3.internal.cache.DiskLruCache$Editor)
+    public void close()
+    public void delete()
+    public java.io.File directory()
+    public void evictAll()
+    public void flush()
+    okhttp3.Response get(okhttp3.Request)
+    public synchronized int hitCount()
+    public void initialize()
+    public boolean isClosed()
+    public static java.lang.String key(okhttp3.HttpUrl)
+    public long maxSize()
+    public synchronized int networkCount()
+    okhttp3.internal.cache.CacheRequest put(okhttp3.Response)
+    static int readInt(okio.BufferedSource)
+    void remove(okhttp3.Request)
+    public synchronized int requestCount()
+    public long size()
+    synchronized void trackConditionalCacheHit()
+    synchronized void trackResponse(okhttp3.internal.cache.CacheStrategy)
+    void update(okhttp3.Response,okhttp3.Response)
+    public java.util.Iterator urls()
+    public synchronized int writeAbortCount()
+    public synchronized int writeSuccessCount()
+okhttp3.CacheControl$Builder:
+    public okhttp3.CacheControl$Builder immutable()
+    public okhttp3.CacheControl$Builder maxAge(int,java.util.concurrent.TimeUnit)
+    public okhttp3.CacheControl$Builder minFresh(int,java.util.concurrent.TimeUnit)
+    public okhttp3.CacheControl$Builder noStore()
+    public okhttp3.CacheControl$Builder noTransform()
+okhttp3.CacheControl:
+    public boolean immutable()
+    public boolean noTransform()
+    public int sMaxAgeSeconds()
+okhttp3.Call:
+    public abstract okhttp3.Call clone()
+    public abstract okhttp3.Response execute()
+    public abstract boolean isCanceled()
+    public abstract boolean isExecuted()
+    public abstract okhttp3.Request request()
+okhttp3.CertificatePinner$Builder:
+    public varargs okhttp3.CertificatePinner$Builder add(java.lang.String,java.lang.String[])
+okhttp3.CertificatePinner$Pin:
+    private static final java.lang.String WILDCARD
+    void <init>(java.lang.String,java.lang.String)
+okhttp3.CertificatePinner:
+    public varargs void check(java.lang.String,java.security.cert.Certificate[])
+okhttp3.Challenge
+okhttp3.CipherSuite:
+    public java.lang.String javaName()
+okhttp3.Connection:
+    public abstract okhttp3.Handshake handshake()
+    public abstract okhttp3.Protocol protocol()
+    public abstract okhttp3.Route route()
+    public abstract java.net.Socket socket()
+okhttp3.ConnectionPool:
+    public synchronized int connectionCount()
+    public void evictAll()
+    public synchronized int idleConnectionCount()
+okhttp3.ConnectionSpec$Builder:
+    public okhttp3.ConnectionSpec$Builder allEnabledCipherSuites()
+    public okhttp3.ConnectionSpec$Builder allEnabledTlsVersions()
+okhttp3.Cookie$Builder
+okhttp3.Cookie:
+    void <init>(okhttp3.Cookie$Builder)
+    public java.lang.String domain()
+    public long expiresAt()
+    public boolean hostOnly()
+    public boolean httpOnly()
+    public boolean matches(okhttp3.HttpUrl)
+    public java.lang.String path()
+    private static boolean pathMatch(okhttp3.HttpUrl,java.lang.String)
+    public boolean persistent()
+    public boolean secure()
+okhttp3.Credentials
+okhttp3.Dispatcher:
+    public void <init>(java.util.concurrent.ExecutorService)
+    public synchronized void cancelAll()
+    synchronized void executed(okhttp3.RealCall)
+    void finished(okhttp3.RealCall)
+    public synchronized int getMaxRequests()
+    public synchronized int getMaxRequestsPerHost()
+    public synchronized java.util.List queuedCalls()
+    public synchronized int queuedCallsCount()
+    public synchronized java.util.List runningCalls()
+    public synchronized void setIdleCallback(java.lang.Runnable)
+    public void setMaxRequests(int)
+    public void setMaxRequestsPerHost(int)
+okhttp3.FormBody$Builder
+okhttp3.FormBody
+okhttp3.Handshake:
+    public static okhttp3.Handshake get(okhttp3.TlsVersion,okhttp3.CipherSuite,java.util.List,java.util.List)
+    public java.util.List localCertificates()
+    public java.security.Principal localPrincipal()
+    public java.security.Principal peerPrincipal()
+    public okhttp3.TlsVersion tlsVersion()
+okhttp3.Headers$Builder:
+    public okhttp3.Headers$Builder add(java.lang.String)
+    public okhttp3.Headers$Builder add(java.lang.String,java.util.Date)
+    public okhttp3.Headers$Builder addAll(okhttp3.Headers)
+    public okhttp3.Headers$Builder addUnsafeNonAscii(java.lang.String,java.lang.String)
+    public java.lang.String get(java.lang.String)
+    public okhttp3.Headers$Builder set(java.lang.String,java.util.Date)
+okhttp3.Headers:
+    private void <init>(java.lang.String[])
+    public long byteCount()
+    public java.util.Date getDate(java.lang.String)
+    public java.util.Set names()
+    public static okhttp3.Headers of(java.util.Map)
+    public static varargs okhttp3.Headers of(java.lang.String[])
+okhttp3.HttpUrl$Builder:
+    static final java.lang.String INVALID_HOST
+    public okhttp3.HttpUrl$Builder addEncodedPathSegment(java.lang.String)
+    public okhttp3.HttpUrl$Builder addEncodedPathSegments(java.lang.String)
+    public okhttp3.HttpUrl$Builder addEncodedQueryParameter(java.lang.String,java.lang.String)
+    public okhttp3.HttpUrl$Builder addPathSegment(java.lang.String)
+    public okhttp3.HttpUrl$Builder addPathSegments(java.lang.String)
+    private okhttp3.HttpUrl$Builder addPathSegments(java.lang.String,boolean)
+    public okhttp3.HttpUrl$Builder addQueryParameter(java.lang.String,java.lang.String)
+    public okhttp3.HttpUrl$Builder encodedFragment(java.lang.String)
+    public okhttp3.HttpUrl$Builder encodedPassword(java.lang.String)
+    public okhttp3.HttpUrl$Builder encodedPath(java.lang.String)
+    public okhttp3.HttpUrl$Builder encodedUsername(java.lang.String)
+    public okhttp3.HttpUrl$Builder fragment(java.lang.String)
+    public okhttp3.HttpUrl$Builder query(java.lang.String)
+    private void removeAllCanonicalQueryParameters(java.lang.String)
+    public okhttp3.HttpUrl$Builder removeAllEncodedQueryParameters(java.lang.String)
+    public okhttp3.HttpUrl$Builder removeAllQueryParameters(java.lang.String)
+    public okhttp3.HttpUrl$Builder removePathSegment(int)
+    public okhttp3.HttpUrl$Builder setEncodedPathSegment(int,java.lang.String)
+    public okhttp3.HttpUrl$Builder setEncodedQueryParameter(java.lang.String,java.lang.String)
+    public okhttp3.HttpUrl$Builder setPathSegment(int,java.lang.String)
+    public okhttp3.HttpUrl$Builder setQueryParameter(java.lang.String,java.lang.String)
+okhttp3.HttpUrl:
+    static final java.lang.String FORM_ENCODE_SET
+    static final java.lang.String FRAGMENT_ENCODE_SET
+    static final java.lang.String FRAGMENT_ENCODE_SET_URI
+    static final java.lang.String PASSWORD_ENCODE_SET
+    static final java.lang.String PATH_SEGMENT_ENCODE_SET
+    static final java.lang.String PATH_SEGMENT_ENCODE_SET_URI
+    static final java.lang.String QUERY_COMPONENT_ENCODE_SET
+    static final java.lang.String QUERY_COMPONENT_ENCODE_SET_URI
+    static final java.lang.String QUERY_COMPONENT_REENCODE_SET
+    static final java.lang.String QUERY_ENCODE_SET
+    static final java.lang.String USERNAME_ENCODE_SET
+    static java.lang.String canonicalize(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,java.nio.charset.Charset)
+    public java.lang.String fragment()
+    public static okhttp3.HttpUrl get(java.net.URI)
+    public static okhttp3.HttpUrl get(java.net.URL)
+    public java.lang.String password()
+    public java.util.List pathSegments()
+    public int pathSize()
+    public java.lang.String queryParameter(java.lang.String)
+    public java.lang.String queryParameterName(int)
+    public java.util.Set queryParameterNames()
+    public java.lang.String queryParameterValue(int)
+    public java.util.List queryParameterValues(java.lang.String)
+    public int querySize()
+    public java.lang.String topPrivateDomain()
+    public java.net.URL url()
+    public java.lang.String username()
+okhttp3.Interceptor$Chain:
+    public abstract okhttp3.Call call()
+    public abstract okhttp3.Connection connection()
+    public abstract okhttp3.Interceptor$Chain withConnectTimeout(int,java.util.concurrent.TimeUnit)
+    public abstract okhttp3.Interceptor$Chain withReadTimeout(int,java.util.concurrent.TimeUnit)
+    public abstract okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit)
+okhttp3.MediaType:
+    private static final java.lang.String QUOTED
+    private static final java.lang.String TOKEN
+    public java.lang.String subtype()
+    public java.lang.String type()
+okhttp3.MultipartBody$Builder
+okhttp3.MultipartBody$Part
+okhttp3.MultipartBody
+okhttp3.OkHttpClient$1:
+    public boolean isInvalidHttpUrlHost(java.lang.IllegalArgumentException)
+    public void setCache(okhttp3.OkHttpClient$Builder,okhttp3.internal.cache.InternalCache)
+okhttp3.OkHttpClient$Builder:
+    public okhttp3.OkHttpClient$Builder addInterceptor(okhttp3.Interceptor)
+    public okhttp3.OkHttpClient$Builder addNetworkInterceptor(okhttp3.Interceptor)
+    public okhttp3.OkHttpClient$Builder authenticator(okhttp3.Authenticator)
+    public okhttp3.OkHttpClient$Builder cache(okhttp3.Cache)
+    public okhttp3.OkHttpClient$Builder callTimeout(long,java.util.concurrent.TimeUnit)
+    public okhttp3.OkHttpClient$Builder callTimeout(java.time.Duration)
+    public okhttp3.OkHttpClient$Builder certificatePinner(okhttp3.CertificatePinner)
+    public okhttp3.OkHttpClient$Builder connectTimeout(long,java.util.concurrent.TimeUnit)
+    public okhttp3.OkHttpClient$Builder connectTimeout(java.time.Duration)
+    public okhttp3.OkHttpClient$Builder connectionPool(okhttp3.ConnectionPool)
+    public okhttp3.OkHttpClient$Builder connectionSpecs(java.util.List)
+    public okhttp3.OkHttpClient$Builder cookieJar(okhttp3.CookieJar)
+    public okhttp3.OkHttpClient$Builder dispatcher(okhttp3.Dispatcher)
+    public okhttp3.OkHttpClient$Builder dns(okhttp3.Dns)
+    public okhttp3.OkHttpClient$Builder eventListenerFactory(okhttp3.EventListener$Factory)
+    public okhttp3.OkHttpClient$Builder followRedirects(boolean)
+    public okhttp3.OkHttpClient$Builder followSslRedirects(boolean)
+    public okhttp3.OkHttpClient$Builder hostnameVerifier(javax.net.ssl.HostnameVerifier)
+    public java.util.List interceptors()
+    public java.util.List networkInterceptors()
+    public okhttp3.OkHttpClient$Builder pingInterval(long,java.util.concurrent.TimeUnit)
+    public okhttp3.OkHttpClient$Builder pingInterval(java.time.Duration)
+    public okhttp3.OkHttpClient$Builder proxy(java.net.Proxy)
+    public okhttp3.OkHttpClient$Builder proxyAuthenticator(okhttp3.Authenticator)
+    public okhttp3.OkHttpClient$Builder proxySelector(java.net.ProxySelector)
+    public okhttp3.OkHttpClient$Builder readTimeout(java.time.Duration)
+    public okhttp3.OkHttpClient$Builder retryOnConnectionFailure(boolean)
+    void setInternalCache(okhttp3.internal.cache.InternalCache)
+    public okhttp3.OkHttpClient$Builder socketFactory(javax.net.SocketFactory)
+    public okhttp3.OkHttpClient$Builder sslSocketFactory(javax.net.ssl.SSLSocketFactory)
+    public okhttp3.OkHttpClient$Builder sslSocketFactory(javax.net.ssl.SSLSocketFactory,javax.net.ssl.X509TrustManager)
+    public okhttp3.OkHttpClient$Builder writeTimeout(long,java.util.concurrent.TimeUnit)
+    public okhttp3.OkHttpClient$Builder writeTimeout(java.time.Duration)
+okhttp3.OkHttpClient:
+    public okhttp3.Cache cache()
+okhttp3.RealCall$AsyncCall:
+    okhttp3.Request request()
+okhttp3.RealCall:
+    public synthetic bridge okhttp3.Call clone()
+    public okhttp3.Response execute()
+    public synchronized boolean isExecuted()
+    public okhttp3.Request request()
+okhttp3.Request$Builder:
+    public okhttp3.Request$Builder cacheControl(okhttp3.CacheControl)
+    public okhttp3.Request$Builder delete()
+    public okhttp3.Request$Builder delete(okhttp3.RequestBody)
+    public okhttp3.Request$Builder get()
+    public okhttp3.Request$Builder head()
+    public okhttp3.Request$Builder patch(okhttp3.RequestBody)
+    public okhttp3.Request$Builder post(okhttp3.RequestBody)
+    public okhttp3.Request$Builder put(okhttp3.RequestBody)
+    public okhttp3.Request$Builder tag(java.lang.Class,java.lang.Object)
+    public okhttp3.Request$Builder tag(java.lang.Object)
+    public okhttp3.Request$Builder url(java.net.URL)
+okhttp3.Request:
+    public java.util.List headers(java.lang.String)
+    public java.lang.Object tag()
+    public java.lang.Object tag(java.lang.Class)
+okhttp3.RequestBody$1
+okhttp3.RequestBody$3
+okhttp3.RequestBody:
+    public static okhttp3.RequestBody create(okhttp3.MediaType,java.io.File)
+    public static okhttp3.RequestBody create(okhttp3.MediaType,okio.ByteString)
+okhttp3.Response$Builder:
+    public okhttp3.Response$Builder removeHeader(java.lang.String)
+okhttp3.Response:
+    public okhttp3.Response cacheResponse()
+    public java.util.List challenges()
+    public java.util.List headers(java.lang.String)
+    public boolean isRedirect()
+    public okhttp3.Response networkResponse()
+    public okhttp3.ResponseBody peekBody(long)
+    public okhttp3.Protocol protocol()
+okhttp3.ResponseBody$BomAwareReader
+okhttp3.ResponseBody:
+    private java.io.Reader reader
+    public final java.io.InputStream byteStream()
+    public final byte[] bytes()
+    public final java.io.Reader charStream()
+    public static okhttp3.ResponseBody create(okhttp3.MediaType,java.lang.String)
+    public static okhttp3.ResponseBody create(okhttp3.MediaType,okio.ByteString)
+okhttp3.TlsVersion:
+    public java.lang.String javaName()
+okhttp3.WebSocket:
+    public abstract void cancel()
+    public abstract long queueSize()
+    public abstract okhttp3.Request request()
+okhttp3.internal.Internal:
+    public static void initializeInstanceForTests()
+    public abstract boolean isInvalidHttpUrlHost(java.lang.IllegalArgumentException)
+    public abstract void setCache(okhttp3.OkHttpClient$Builder,okhttp3.internal.cache.InternalCache)
+okhttp3.internal.Util:
+    private void <init>()
+    public static void closeQuietly(java.net.ServerSocket)
+okhttp3.internal.Version:
+    private void <init>()
+okhttp3.internal.annotations.EverythingIsNonNull
+okhttp3.internal.cache.DiskLruCache$1
+okhttp3.internal.cache.DiskLruCache$2
+okhttp3.internal.cache.DiskLruCache$3
+okhttp3.internal.cache.DiskLruCache$Editor$1
+okhttp3.internal.cache.DiskLruCache$Editor
+okhttp3.internal.cache.DiskLruCache$Entry
+okhttp3.internal.cache.DiskLruCache$Snapshot
+okhttp3.internal.cache.DiskLruCache
+okhttp3.internal.cache.FaultHidingSink
+okhttp3.internal.cache2.FileOperator
+okhttp3.internal.cache2.Relay$RelaySource
+okhttp3.internal.cache2.Relay
+okhttp3.internal.connection.RealConnection:
+    private static final int MAX_TUNNEL_ATTEMPTS
+    private static final java.lang.String NPE_THROW_WITH_NULL
+    public okhttp3.Protocol protocol()
+    public static okhttp3.internal.connection.RealConnection testConnection(okhttp3.ConnectionPool,okhttp3.Route,java.net.Socket,long)
+okhttp3.internal.http.HttpCodec:
+    public static final int DISCARD_STREAM_TIMEOUT_MILLIS
+okhttp3.internal.http.HttpDate:
+    public static final long MAX_DATE
+    private void <init>()
+okhttp3.internal.http.HttpHeaders:
+    private void <init>()
+    public static boolean hasVaryAll(okhttp3.Headers)
+    public static boolean hasVaryAll(okhttp3.Response)
+    private static void parseChallengeHeader(java.util.List,okio.Buffer)
+    public static java.util.List parseChallenges(okhttp3.Headers,java.lang.String)
+    private static java.lang.String readQuotedString(okio.Buffer)
+    private static java.lang.String readToken(okio.Buffer)
+    private static java.lang.String repeat(char,int)
+    private static int skipAll(okio.Buffer,byte)
+    private static boolean skipWhitespaceAndCommas(okio.Buffer)
+    public static java.util.Set varyFields(okhttp3.Headers)
+    private static java.util.Set varyFields(okhttp3.Response)
+    public static okhttp3.Headers varyHeaders(okhttp3.Headers,okhttp3.Headers)
+    public static okhttp3.Headers varyHeaders(okhttp3.Response)
+    public static boolean varyMatches(okhttp3.Response,okhttp3.Headers,okhttp3.Request)
+okhttp3.internal.http.HttpMethod:
+    private void <init>()
+okhttp3.internal.http.RealInterceptorChain:
+    public okhttp3.Interceptor$Chain withConnectTimeout(int,java.util.concurrent.TimeUnit)
+    public okhttp3.Interceptor$Chain withReadTimeout(int,java.util.concurrent.TimeUnit)
+    public okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit)
+okhttp3.internal.http.RequestLine:
+    private void <init>()
+okhttp3.internal.http.RetryAndFollowUpInterceptor:
+    private static final int MAX_FOLLOW_UPS
+okhttp3.internal.http.StatusLine:
+    public static final int HTTP_CONTINUE
+    public static final int HTTP_PERM_REDIRECT
+    public static final int HTTP_TEMP_REDIRECT
+    public static okhttp3.internal.http.StatusLine get(okhttp3.Response)
+okhttp3.internal.http1.Http1Codec$ChunkedSource:
+    private static final long NO_CHUNK_YET
+okhttp3.internal.http1.Http1Codec:
+    private static final int HEADER_LIMIT
+    private static final int STATE_CLOSED
+    private static final int STATE_IDLE
+    private static final int STATE_OPEN_REQUEST_BODY
+    private static final int STATE_OPEN_RESPONSE_BODY
+    private static final int STATE_READING_RESPONSE_BODY
+    private static final int STATE_READ_RESPONSE_HEADERS
+    private static final int STATE_WRITING_REQUEST_BODY
+    public boolean isClosed()
+okhttp3.internal.http2.Header:
+    public static final java.lang.String RESPONSE_STATUS_UTF8
+    public static final java.lang.String TARGET_AUTHORITY_UTF8
+    public static final java.lang.String TARGET_METHOD_UTF8
+    public static final java.lang.String TARGET_PATH_UTF8
+    public static final java.lang.String TARGET_SCHEME_UTF8
+okhttp3.internal.http2.Hpack$Reader:
+    int maxDynamicTableByteCount()
+okhttp3.internal.http2.Hpack$Writer:
+    private static final int SETTINGS_HEADER_TABLE_SIZE
+    private static final int SETTINGS_HEADER_TABLE_SIZE_LIMIT
+okhttp3.internal.http2.Hpack:
+    private static final int PREFIX_4_BITS
+    private static final int PREFIX_5_BITS
+    private static final int PREFIX_6_BITS
+    private static final int PREFIX_7_BITS
+    private void <init>()
+okhttp3.internal.http2.Http2:
+    static final byte FLAG_ACK
+    static final byte FLAG_COMPRESSED
+    static final byte FLAG_END_HEADERS
+    static final byte FLAG_END_PUSH_PROMISE
+    static final byte FLAG_END_STREAM
+    static final byte FLAG_NONE
+    static final byte FLAG_PADDED
+    static final byte FLAG_PRIORITY
+    static final int INITIAL_MAX_FRAME_SIZE
+    static final byte TYPE_CONTINUATION
+    static final byte TYPE_DATA
+    static final byte TYPE_GOAWAY
+    static final byte TYPE_HEADERS
+    static final byte TYPE_PING
+    static final byte TYPE_PRIORITY
+    static final byte TYPE_PUSH_PROMISE
+    static final byte TYPE_RST_STREAM
+    static final byte TYPE_SETTINGS
+    static final byte TYPE_WINDOW_UPDATE
+okhttp3.internal.http2.Http2Codec:
+    private static final java.lang.String CONNECTION
+    private static final java.lang.String ENCODING
+    private static final java.lang.String HOST
+    private static final java.lang.String KEEP_ALIVE
+    private static final java.lang.String PROXY_CONNECTION
+    private static final java.lang.String TE
+    private static final java.lang.String TRANSFER_ENCODING
+    private static final java.lang.String UPGRADE
+okhttp3.internal.http2.Http2Connection$Builder:
+    public okhttp3.internal.http2.Http2Connection$Builder pushObserver(okhttp3.internal.http2.PushObserver)
+    public okhttp3.internal.http2.Http2Connection$Builder socket(java.net.Socket)
+okhttp3.internal.http2.Http2Connection$ReaderRunnable:
+    public void alternateService(int,java.lang.String,okio.ByteString,java.lang.String,int,long)
+okhttp3.internal.http2.Http2Connection:
+    static final int AWAIT_PING
+    static final int DEGRADED_PING
+    static final long DEGRADED_PONG_TIMEOUT_NS
+    static final int INTERVAL_PING
+    static final int OKHTTP_CLIENT_WINDOW_SIZE
+    synchronized void awaitPong()
+    public okhttp3.Protocol getProtocol()
+    public synchronized int openStreamCount()
+    public okhttp3.internal.http2.Http2Stream pushStream(int,java.util.List,boolean)
+    public void setSettings(okhttp3.internal.http2.Settings)
+    void writePing()
+    void writePingAndAwaitPong()
+    void writeSynReply(int,boolean,java.util.List)
+okhttp3.internal.http2.Http2Reader$Handler:
+    public abstract void alternateService(int,java.lang.String,okio.ByteString,java.lang.String,int,long)
+okhttp3.internal.http2.Http2Stream$FramingSink:
+    private static final long EMIT_BUFFER_SIZE
+okhttp3.internal.http2.Http2Stream:
+    public okhttp3.internal.http2.Http2Connection getConnection()
+    public synchronized okhttp3.internal.http2.ErrorCode getErrorCode()
+    public synchronized void setHeadersListener(okhttp3.internal.http2.Header$Listener)
+    public void writeHeaders(java.util.List,boolean)
+okhttp3.internal.http2.Http2Writer:
+    public synchronized void headers(int,java.util.List)
+    public synchronized void synReply(boolean,int,java.util.List)
+okhttp3.internal.http2.Settings:
+    static final int COUNT
+    static final int DEFAULT_INITIAL_WINDOW_SIZE
+    static final int ENABLE_PUSH
+    static final int HEADER_TABLE_SIZE
+    static final int INITIAL_WINDOW_SIZE
+    static final int MAX_CONCURRENT_STREAMS
+    static final int MAX_FRAME_SIZE
+    static final int MAX_HEADER_LIST_SIZE
+    boolean getEnablePush(boolean)
+    int getMaxHeaderListSize(int)
+okhttp3.internal.io.FileSystem$1
+okhttp3.internal.io.FileSystem
+okhttp3.internal.platform.AndroidPlatform:
+    private static final int MAX_LOG_LENGTH
+    protected javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+okhttp3.internal.platform.ConscryptPlatform:
+    public javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+okhttp3.internal.platform.Jdk9Platform:
+    public javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+okhttp3.internal.platform.Platform:
+    public static final int INFO
+    public static final int WARN
+    public okhttp3.internal.tls.CertificateChainCleaner buildCertificateChainCleaner(javax.net.ssl.SSLSocketFactory)
+    public java.lang.String getPrefix()
+    static java.lang.Object readFieldOrNull(java.lang.Object,java.lang.Class,java.lang.String)
+    protected javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+okhttp3.internal.publicsuffix.PublicSuffixDatabase:
+    private static final byte EXCEPTION_MARKER
+    public static final java.lang.String PUBLIC_SUFFIX_RESOURCE
+    void setListBytes(byte[],byte[])
+okhttp3.internal.tls.BasicCertificateChainCleaner:
+    private static final int MAX_SIGNERS
+okhttp3.internal.tls.CertificateChainCleaner:
+    public static varargs okhttp3.internal.tls.CertificateChainCleaner get(java.security.cert.X509Certificate[])
+okhttp3.internal.tls.DistinguishedNameParser
+okhttp3.internal.tls.OkHostnameVerifier:
+    private static final int ALT_DNS_NAME
+    private static final int ALT_IPA_NAME
+okhttp3.internal.ws.RealWebSocket:
+    private static final long CANCEL_AFTER_CLOSE_MILLIS
+    private static final long MAX_QUEUE_SIZE
+    void awaitTermination(int,java.util.concurrent.TimeUnit)
+    synchronized boolean pong(okio.ByteString)
+    boolean processNextFrame()
+    public synchronized long queueSize()
+    synchronized int receivedPingCount()
+    synchronized int receivedPongCount()
+    public okhttp3.Request request()
+    synchronized int sentPingCount()
+    void tearDown()
+okhttp3.internal.ws.WebSocketProtocol:
+    static final java.lang.String ACCEPT_MAGIC
+    static final int B0_FLAG_FIN
+    static final int B0_FLAG_RSV1
+    static final int B0_FLAG_RSV2
+    static final int B0_FLAG_RSV3
+    static final int B0_MASK_OPCODE
+    static final int B1_FLAG_MASK
+    static final int B1_MASK_LENGTH
+    static final int CLOSE_CLIENT_GOING_AWAY
+    static final long CLOSE_MESSAGE_MAX
+    static final int CLOSE_NO_STATUS_CODE
+    static final int OPCODE_BINARY
+    static final int OPCODE_CONTINUATION
+    static final int OPCODE_CONTROL_CLOSE
+    static final int OPCODE_CONTROL_PING
+    static final int OPCODE_CONTROL_PONG
+    static final int OPCODE_FLAG_CONTROL
+    static final int OPCODE_TEXT
+    static final long PAYLOAD_BYTE_MAX
+    static final int PAYLOAD_LONG
+    static final int PAYLOAD_SHORT
+    static final long PAYLOAD_SHORT_MAX
+    private void <init>()
+    public static java.lang.String acceptHeader(java.lang.String)
+okhttp3.package-info
 okio.-Base64:
     public static final byte[] decodeBase64ToArray(java.lang.String)
     public static final byte[] getBASE64()
@@ -27204,33 +27778,19 @@ okio.-SegmentedByteString:
     public static final long minOf(int,long)
     public static final long minOf(long,int)
     public static final int resolveDefaultParameter(byte[],int)
-    public static final okio.Buffer$UnsafeCursor resolveDefaultParameter(okio.Buffer$UnsafeCursor)
-    public static final int reverseBytes(int)
     public static final long reverseBytes(long)
-    public static final short reverseBytes(short)
     public static final long rightRotate(long,int)
     public static final int shl(byte,int)
     public static final int shr(byte,int)
-    public static final java.lang.String toHexString(byte)
     public static final java.lang.String toHexString(long)
     public static final byte xor(byte,byte)
-okio.AsyncTimeout$sink$1:
-    public okio.AsyncTimeout timeout()
-    public synthetic bridge okio.Timeout timeout()
-okio.AsyncTimeout$source$1:
-    public okio.AsyncTimeout timeout()
-    public synthetic bridge okio.Timeout timeout()
 okio.AsyncTimeout:
     private static final int TIMEOUT_WRITE_SIZE
     public final java.lang.Object withTimeout(kotlin.jvm.functions.Function0)
 okio.BlackholeSink
 okio.Buffer$UnsafeCursor:
-    public boolean readWrite
     public final long expandBuffer(int)
-    public final okio.Segment getSegment$okio()
-    public final int next()
     public final long resizeBuffer(long)
-    public final int seek(long)
 okio.Buffer$inputStream$1
 okio.Buffer:
     public final byte -deprecated_getByte(long)
@@ -27243,10 +27803,6 @@ okio.Buffer:
     public static synthetic okio.Buffer copyTo$default(okio.Buffer,okio.Buffer,long,int,java.lang.Object)
     public static synthetic okio.Buffer copyTo$default(okio.Buffer,okio.Buffer,long,long,int,java.lang.Object)
     private final okio.ByteString digest(java.lang.String)
-    public okio.Buffer emit()
-    public synthetic bridge okio.BufferedSink emit()
-    public okio.Buffer emitCompleteSegments()
-    public synthetic bridge okio.BufferedSink emitCompleteSegments()
     private final okio.ByteString hmac(java.lang.String,okio.ByteString)
     public final okio.ByteString hmacSha1(okio.ByteString)
     public final okio.ByteString hmacSha256(okio.ByteString)
@@ -27260,24 +27816,15 @@ okio.Buffer:
     public java.io.InputStream inputStream()
     public final okio.ByteString md5()
     public okio.BufferedSource peek()
-    public boolean rangeEquals(long,okio.ByteString)
-    public boolean rangeEquals(long,okio.ByteString,int,int)
     public int read(byte[])
     public long readAll(okio.Sink)
     public final okio.Buffer$UnsafeCursor readAndWriteUnsafe()
-    public final okio.Buffer$UnsafeCursor readAndWriteUnsafe(okio.Buffer$UnsafeCursor)
     public static synthetic okio.Buffer$UnsafeCursor readAndWriteUnsafe$default(okio.Buffer,okio.Buffer$UnsafeCursor,int,java.lang.Object)
     public long readDecimalLong()
     public final okio.Buffer readFrom(java.io.InputStream)
     public final okio.Buffer readFrom(java.io.InputStream,long)
     private final void readFrom(java.io.InputStream,long,boolean)
-    public void readFully(okio.Buffer,long)
-    public long readHexadecimalUnsignedLong()
-    public int readIntLe()
-    public long readLong()
     public long readLongLe()
-    public short readShortLe()
-    public java.lang.String readString(java.nio.charset.Charset)
     public final okio.Buffer$UnsafeCursor readUnsafe()
     public final okio.Buffer$UnsafeCursor readUnsafe(okio.Buffer$UnsafeCursor)
     public static synthetic okio.Buffer$UnsafeCursor readUnsafe$default(okio.Buffer,okio.Buffer$UnsafeCursor,int,java.lang.Object)
@@ -27288,26 +27835,19 @@ okio.Buffer:
     public final okio.ByteString sha1()
     public final okio.ByteString sha256()
     public final okio.ByteString sha512()
-    public okio.Timeout timeout()
     public okio.Buffer write(okio.ByteString,int,int)
     public okio.Buffer write(okio.Source,long)
-    public synthetic bridge okio.BufferedSink write(okio.ByteString)
     public synthetic bridge okio.BufferedSink write(okio.ByteString,int,int)
     public synthetic bridge okio.BufferedSink write(okio.Source,long)
-    public synthetic bridge okio.BufferedSink write(byte[],int,int)
-    public long writeAll(okio.Source)
     public okio.Buffer writeDecimalLong(long)
     public synthetic bridge okio.BufferedSink writeDecimalLong(long)
-    public synthetic bridge okio.BufferedSink writeHexadecimalUnsignedLong(long)
     public okio.Buffer writeIntLe(int)
     public synthetic bridge okio.BufferedSink writeIntLe(int)
-    public okio.Buffer writeLong(long)
     public synthetic bridge okio.BufferedSink writeLong(long)
     public okio.Buffer writeLongLe(long)
     public synthetic bridge okio.BufferedSink writeLongLe(long)
     public okio.Buffer writeShortLe(int)
     public synthetic bridge okio.BufferedSink writeShortLe(int)
-    public okio.Buffer writeString(java.lang.String,int,int,java.nio.charset.Charset)
     public okio.Buffer writeString(java.lang.String,java.nio.charset.Charset)
     public synthetic bridge okio.BufferedSink writeString(java.lang.String,int,int,java.nio.charset.Charset)
     public synthetic bridge okio.BufferedSink writeString(java.lang.String,java.nio.charset.Charset)
@@ -27316,18 +27856,12 @@ okio.Buffer:
     public synthetic bridge okio.BufferedSink writeUtf8(java.lang.String,int,int)
     public synthetic bridge okio.BufferedSink writeUtf8CodePoint(int)
 okio.BufferedSink:
-    public abstract okio.Buffer buffer()
-    public abstract okio.BufferedSink emit()
-    public abstract okio.BufferedSink emitCompleteSegments()
     public abstract okio.Buffer getBuffer()
     public abstract java.io.OutputStream outputStream()
-    public abstract okio.BufferedSink write(okio.ByteString)
     public abstract okio.BufferedSink write(okio.ByteString,int,int)
     public abstract okio.BufferedSink write(okio.Source,long)
-    public abstract okio.BufferedSink write(byte[],int,int)
     public abstract long writeAll(okio.Source)
     public abstract okio.BufferedSink writeDecimalLong(long)
-    public abstract okio.BufferedSink writeHexadecimalUnsignedLong(long)
     public abstract okio.BufferedSink writeIntLe(int)
     public abstract okio.BufferedSink writeLong(long)
     public abstract okio.BufferedSink writeLongLe(long)
@@ -27337,7 +27871,6 @@ okio.BufferedSink:
     public abstract okio.BufferedSink writeUtf8(java.lang.String,int,int)
     public abstract okio.BufferedSink writeUtf8CodePoint(int)
 okio.BufferedSource:
-    public abstract okio.Buffer buffer()
     public abstract long indexOf(byte)
     public abstract long indexOf(byte,long)
     public abstract long indexOf(byte,long,long)
@@ -27347,7 +27880,6 @@ okio.BufferedSource:
     public abstract long indexOfElement(okio.ByteString,long)
     public abstract java.io.InputStream inputStream()
     public abstract okio.BufferedSource peek()
-    public abstract boolean rangeEquals(long,okio.ByteString)
     public abstract boolean rangeEquals(long,okio.ByteString,int,int)
     public abstract int read(byte[])
     public abstract int read(byte[],int,int)
@@ -27355,21 +27887,14 @@ okio.BufferedSource:
     public abstract byte[] readByteArray()
     public abstract okio.ByteString readByteString()
     public abstract long readDecimalLong()
-    public abstract void readFully(okio.Buffer,long)
-    public abstract void readFully(byte[])
-    public abstract long readHexadecimalUnsignedLong()
     public abstract int readIntLe()
-    public abstract long readLong()
     public abstract long readLongLe()
     public abstract short readShortLe()
     public abstract java.lang.String readString(long,java.nio.charset.Charset)
-    public abstract java.lang.String readString(java.nio.charset.Charset)
     public abstract java.lang.String readUtf8()
     public abstract java.lang.String readUtf8(long)
     public abstract int readUtf8CodePoint()
     public abstract java.lang.String readUtf8Line()
-    public abstract java.lang.String readUtf8LineStrict()
-    public abstract java.lang.String readUtf8LineStrict(long)
     public abstract boolean request(long)
     public abstract int select(okio.Options)
 okio.ByteString$Companion:
@@ -27381,7 +27906,6 @@ okio.ByteString$Companion:
     public final okio.ByteString -deprecated_of(byte[],int,int)
     public final okio.ByteString -deprecated_read(java.io.InputStream,int)
     public final okio.ByteString decodeBase64(java.lang.String)
-    public final okio.ByteString decodeHex(java.lang.String)
     public final okio.ByteString encodeString(java.lang.String,java.nio.charset.Charset)
     public static synthetic okio.ByteString encodeString$default(okio.ByteString$Companion,java.lang.String,java.nio.charset.Charset,int,java.lang.Object)
     public final okio.ByteString of(java.nio.ByteBuffer)
@@ -27397,8 +27921,6 @@ okio.ByteString:
     public void copyInto(int,byte[],int,int)
     public static synthetic void copyInto$default(okio.ByteString,int,byte[],int,int,int,java.lang.Object)
     public static final okio.ByteString decodeBase64(java.lang.String)
-    public static final okio.ByteString decodeHex(java.lang.String)
-    public okio.ByteString digest$okio(java.lang.String)
     public static final okio.ByteString encodeString(java.lang.String,java.nio.charset.Charset)
     public final boolean endsWith(okio.ByteString)
     public final boolean endsWith(byte[])
@@ -27423,8 +27945,6 @@ okio.ByteString:
     public static final okio.ByteString of(byte[],int,int)
     public static final okio.ByteString read(java.io.InputStream,int)
     private final void readObject(java.io.ObjectInputStream)
-    public final okio.ByteString sha1()
-    public final okio.ByteString sha256()
     public final okio.ByteString sha512()
     public final boolean startsWith(byte[])
     public java.lang.String string(java.nio.charset.Charset)
@@ -27447,18 +27967,21 @@ okio.FileSystem$Companion
 okio.FileSystem
 okio.ForwardingFileSystem$listRecursively$1
 okio.ForwardingFileSystem
-okio.ForwardingSink
-okio.ForwardingSource
-okio.ForwardingTimeout
+okio.ForwardingSink:
+    public final okio.Sink -deprecated_delegate()
+    public final okio.Sink delegate()
+okio.ForwardingSource:
+    public final okio.Source -deprecated_delegate()
+    public long read(okio.Buffer,long)
+okio.ForwardingTimeout:
+    public final synthetic void setDelegate(okio.Timeout)
 okio.GzipSink
-okio.GzipSource
 okio.HashingSink$Companion
 okio.HashingSink
 okio.HashingSource$Companion
 okio.HashingSource
-okio.InflaterSource
-okio.InputStreamSource:
-    public okio.Timeout timeout()
+okio.InflaterSource:
+    public void <init>(okio.Source,java.util.zip.Inflater)
 okio.JvmFileHandle
 okio.JvmSystemFileSystem
 okio.NioFileSystemFileHandle
@@ -27481,7 +28004,6 @@ okio.Okio:
     public static final varargs okio.Sink sink(java.nio.file.Path,java.nio.file.OpenOption[])
     public static synthetic okio.Sink sink$default(java.io.File,boolean,int,java.lang.Object)
     public static final okio.Source source(java.io.File)
-    public static final okio.Source source(java.io.InputStream)
     public static final varargs okio.Source source(java.nio.file.Path,java.nio.file.OpenOption[])
     public static final java.lang.Object use(java.io.Closeable,kotlin.jvm.functions.Function1)
 okio.Okio__JvmOkioKt:
@@ -27500,15 +28022,12 @@ okio.Okio__JvmOkioKt:
     public static final varargs okio.Sink sink(java.nio.file.Path,java.nio.file.OpenOption[])
     public static synthetic okio.Sink sink$default(java.io.File,boolean,int,java.lang.Object)
     public static final okio.Source source(java.io.File)
-    public static final okio.Source source(java.io.InputStream)
     public static final varargs okio.Source source(java.nio.file.Path,java.nio.file.OpenOption[])
 okio.Okio__OkioKt:
     public static final okio.Sink blackhole()
     public static final java.lang.Object use(java.io.Closeable,kotlin.jvm.functions.Function1)
 okio.Options$Companion
 okio.Options
-okio.OutputStreamSink:
-    public okio.Timeout timeout()
 okio.Path$Companion
 okio.Path
 okio.PeekSource
@@ -27517,19 +28036,13 @@ okio.Pipe$source$1
 okio.Pipe
 okio.RealBufferedSink$outputStream$1
 okio.RealBufferedSink:
-    public okio.Buffer buffer()
-    public okio.BufferedSink emit()
     public okio.Buffer getBuffer()
     public static synthetic void getBuffer$annotations()
     public java.io.OutputStream outputStream()
-    public okio.Timeout timeout()
-    public okio.BufferedSink write(okio.ByteString)
     public okio.BufferedSink write(okio.ByteString,int,int)
     public okio.BufferedSink write(okio.Source,long)
-    public okio.BufferedSink write(byte[],int,int)
     public long writeAll(okio.Source)
     public okio.BufferedSink writeDecimalLong(long)
-    public okio.BufferedSink writeHexadecimalUnsignedLong(long)
     public okio.BufferedSink writeIntLe(int)
     public okio.BufferedSink writeLong(long)
     public okio.BufferedSink writeLongLe(long)
@@ -27540,46 +28053,30 @@ okio.RealBufferedSink:
     public okio.BufferedSink writeUtf8CodePoint(int)
 okio.RealBufferedSource$inputStream$1
 okio.RealBufferedSource:
-    public okio.Buffer buffer()
     public static synthetic void getBuffer$annotations()
-    public long indexOf(byte)
     public long indexOf(byte,long)
-    public long indexOf(byte,long,long)
     public long indexOf(okio.ByteString)
     public long indexOf(okio.ByteString,long)
     public long indexOfElement(okio.ByteString)
     public long indexOfElement(okio.ByteString,long)
     public java.io.InputStream inputStream()
     public okio.BufferedSource peek()
-    public boolean rangeEquals(long,okio.ByteString)
-    public boolean rangeEquals(long,okio.ByteString,int,int)
     public int read(byte[])
     public int read(byte[],int,int)
     public long readAll(okio.Sink)
     public byte[] readByteArray()
     public okio.ByteString readByteString()
     public long readDecimalLong()
-    public void readFully(okio.Buffer,long)
-    public void readFully(byte[])
-    public long readHexadecimalUnsignedLong()
-    public int readIntLe()
-    public long readLong()
     public long readLongLe()
-    public short readShortLe()
     public java.lang.String readString(long,java.nio.charset.Charset)
-    public java.lang.String readString(java.nio.charset.Charset)
     public java.lang.String readUtf8()
     public java.lang.String readUtf8(long)
     public int readUtf8CodePoint()
     public java.lang.String readUtf8Line()
-    public java.lang.String readUtf8LineStrict()
-    public java.lang.String readUtf8LineStrict(long)
     public int select(okio.Options)
-    public okio.Timeout timeout()
 okio.Segment:
     public static final int SHARE_MINIMUM
     public static final int SIZE
-    public final okio.Segment unsharedCopy()
 okio.SegmentPool:
     public final int getByteCount()
     public final int getMAX_SIZE()
@@ -27587,7 +28084,6 @@ okio.SegmentedByteString:
     public java.nio.ByteBuffer asByteBuffer()
     public java.lang.String base64Url()
     public void copyInto(int,byte[],int,int)
-    public okio.ByteString digest$okio(java.lang.String)
     public okio.ByteString hmac$okio(java.lang.String,okio.ByteString)
     public int indexOf(byte[],int)
     public int lastIndexOf(byte[],int)
@@ -27596,26 +28092,15 @@ okio.SegmentedByteString:
     public okio.ByteString toAsciiUppercase()
     public void write(java.io.OutputStream)
     private final java.lang.Object writeReplace()
-okio.Sink:
-    public abstract okio.Timeout timeout()
-okio.Source:
-    public abstract okio.Timeout timeout()
 okio.Throttler$sink$1
 okio.Throttler$source$1
 okio.Throttler
-okio.Timeout$Companion$NONE$1:
-    public okio.Timeout deadlineNanoTime(long)
-    public okio.Timeout timeout(long,java.util.concurrent.TimeUnit)
 okio.Timeout$Companion:
     public final long minTimeout(long,long)
 okio.Timeout:
     public final void awaitSignal(java.util.concurrent.locks.Condition)
-    public okio.Timeout clearDeadline()
-    public okio.Timeout clearTimeout()
     public final okio.Timeout deadline(long,java.util.concurrent.TimeUnit)
-    public okio.Timeout deadlineNanoTime(long)
     public final java.lang.Object intersectWith(okio.Timeout,kotlin.jvm.functions.Function0)
-    public okio.Timeout timeout(long,java.util.concurrent.TimeUnit)
     public final void waitUntilNotified(java.lang.Object)
 okio.Utf8
 okio.ZipFileSystem$Companion
@@ -27645,7 +28130,6 @@ okio.internal.-Buffer:
     public static final int commonRead(okio.Buffer,byte[],int,int)
     public static final long commonRead(okio.Buffer,okio.Buffer,long)
     public static final long commonReadAll(okio.Buffer,okio.Sink)
-    public static final okio.Buffer$UnsafeCursor commonReadAndWriteUnsafe(okio.Buffer,okio.Buffer$UnsafeCursor)
     public static final byte commonReadByte(okio.Buffer)
     public static final byte[] commonReadByteArray(okio.Buffer)
     public static final byte[] commonReadByteArray(okio.Buffer,long)
@@ -27691,7 +28175,6 @@ okio.internal.-Buffer:
     public static final int selectPrefix(okio.Buffer,okio.Options,boolean)
     public static synthetic int selectPrefix$default(okio.Buffer,okio.Options,boolean,int,java.lang.Object)
 okio.internal.-ByteString:
-    public static final synthetic int access$decodeHexDigit(char)
     public static final java.lang.String commonBase64(okio.ByteString)
     public static final java.lang.String commonBase64Url(okio.ByteString)
     public static final int commonCompareTo(okio.ByteString,okio.ByteString)
@@ -27722,7 +28205,6 @@ okio.internal.-ByteString:
     public static final okio.ByteString commonToByteString(byte[],int,int)
     public static final java.lang.String commonToString(okio.ByteString)
     public static final java.lang.String commonUtf8(okio.ByteString)
-    private static final int decodeHexDigit(char)
     public static synthetic void getHEX_DIGIT_CHARS$annotations()
 okio.internal.-FileSystem$collectRecursively$1
 okio.internal.-FileSystem$commonDeleteRecursively$sequence$1
@@ -28174,6 +28656,83 @@ org.jetbrains.annotations.UnknownNullability
 org.jetbrains.annotations.Unmodifiable
 org.jetbrains.annotations.UnmodifiableView
 org.jetbrains.annotations.VisibleForTesting
+org.json.CDL
+org.json.Cookie
+org.json.CookieList
+org.json.HTTP
+org.json.HTTPTokener
+org.json.JSONArray:
+    public void <init>(java.lang.Object,boolean)
+    public void <init>(java.util.Collection,boolean)
+    public boolean getBoolean(int)
+    public org.json.JSONArray getJSONArray(int)
+    public boolean optBoolean(int)
+    public boolean optBoolean(int,boolean)
+    public double optDouble(int)
+    public double optDouble(int,double)
+    public org.json.JSONArray optJSONArray(int)
+    public org.json.JSONObject optJSONObject(int)
+    public java.lang.String optString(int)
+    public java.lang.String optString(int,java.lang.String)
+    public org.json.JSONArray put(double)
+    public org.json.JSONArray put(int)
+    public org.json.JSONArray put(int,double)
+    public org.json.JSONArray put(int,int)
+    public org.json.JSONArray put(int,long)
+    public org.json.JSONArray put(int,java.util.Collection)
+    public org.json.JSONArray put(int,java.util.Map)
+    public org.json.JSONArray put(int,boolean)
+    public org.json.JSONArray put(long)
+    public org.json.JSONArray put(java.util.Collection)
+    public org.json.JSONArray put(java.util.Map)
+    public org.json.JSONArray put(boolean)
+    public org.json.JSONObject toJSONObject(org.json.JSONArray)
+    public java.lang.String toString(int)
+    java.lang.String toString(int,int)
+    public java.io.Writer write(java.io.Writer)
+org.json.JSONML
+org.json.JSONObject:
+    public void <init>(java.lang.Object)
+    public void <init>(java.lang.Object,boolean)
+    public void <init>(java.lang.Object,java.lang.String[])
+    public void <init>(java.util.Map,boolean)
+    public void <init>(org.json.JSONObject,java.lang.String[])
+    public org.json.JSONObject accumulate(java.lang.String,java.lang.Object)
+    public org.json.JSONObject append(java.lang.String,java.lang.Object)
+    public static java.lang.String doubleToString(double)
+    public static java.lang.String[] getNames(java.lang.Object)
+    public static java.lang.String[] getNames(org.json.JSONObject)
+    private boolean isStandardProperty(java.lang.Class)
+    public int length()
+    public org.json.JSONArray names()
+    public double optDouble(java.lang.String)
+    public int optInt(java.lang.String)
+    public org.json.JSONArray optJSONArray(java.lang.String)
+    public org.json.JSONObject optJSONObject(java.lang.String)
+    private void populateInternalMap(java.lang.Object,boolean)
+    public org.json.JSONObject put(java.lang.String,double)
+    public org.json.JSONObject put(java.lang.String,java.util.Collection)
+    public org.json.JSONObject put(java.lang.String,java.util.Map)
+    public org.json.JSONObject putOpt(java.lang.String,java.lang.Object)
+    public java.util.Iterator sortedKeys()
+    public org.json.JSONArray toJSONArray(org.json.JSONArray)
+    public java.lang.String toString(int)
+    java.lang.String toString(int,int)
+    static java.lang.String valueToString(java.lang.Object,int,int)
+    public java.io.Writer write(java.io.Writer)
+org.json.JSONStringer
+org.json.JSONTokener:
+    public static int dehexchar(char)
+    public boolean more()
+    public char next(char)
+    public java.lang.String nextTo(char)
+    public java.lang.String nextTo(java.lang.String)
+    public char skipTo(char)
+org.json.JSONWriter
+org.json.Test$1Obj
+org.json.Test
+org.json.XML
+org.json.XMLTokener
 _COROUTINE.ArtificialStackFrames
 _COROUTINE.CoroutineDebuggingKt
 _COROUTINE._BOUNDARY
@@ -28485,7 +29044,7 @@ com.google.firebase.appcheck.internal.DefaultAppCheckToken:
     long getExpiresInMillis()
     long getReceivedAtTimestamp()
     java.lang.String serializeTokenToString()
-com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck$$InternalSyntheticLambda$5$264280da6e17c11a5f0432c6e0a75853f2473c349cb220f78d68c75a47c36700$0
+com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck$$InternalSyntheticLambda$6$264280da6e17c11a5f0432c6e0a75853f2473c349cb220f78d68c75a47c36700$0
 com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck$$InternalSyntheticLambda$6$ded0800bdff5e3d5dccda97cf913e95e4bb47ca65f21834d036535285c74350b$0
 com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck$$InternalSyntheticLambda$7$05dc586fed3a44d92e8d01af5759f744a5e4e4cc7c917e80aaf71af7b8bcf573$0
 com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck:
@@ -28502,233 +29061,9 @@ com.google.firebase.appcheck.internal.StorageHelper:
     public void saveAppCheckToken(com.google.firebase.appcheck.AppCheckToken)
 com.google.firebase.appcheck.internal.TokenRefreshManager:
     public void maybeScheduleTokenRefresh(com.google.firebase.appcheck.AppCheckToken)
-com.google.firebase.database.collection.ArraySortedMap:
-    public java.lang.Object getMaxKey()
-com.google.firebase.database.collection.ImmutableSortedMap:
-    public abstract java.lang.Object getMaxKey()
-com.google.firebase.database.collection.ImmutableSortedSet:
-    public java.lang.Object getMaxEntry()
-    public java.lang.Object getMinEntry()
-    public com.google.firebase.database.collection.ImmutableSortedSet unionWith(com.google.firebase.database.collection.ImmutableSortedSet)
-com.google.firebase.database.collection.LLRBEmptyNode:
-    public com.google.firebase.database.collection.LLRBNode getMax()
-com.google.firebase.database.collection.LLRBNode:
-    public abstract com.google.firebase.database.collection.LLRBNode getMax()
-com.google.firebase.database.collection.LLRBValueNode:
-    public com.google.firebase.database.collection.LLRBNode getMax()
-com.google.firebase.database.collection.RBTreeSortedMap:
-    public java.lang.Object getMaxKey()
 com.google.firebase.emulators.EmulatedServiceSettings:
     public java.lang.String getHost()
     public int getPort()
-com.google.firebase.firestore.ListenSource
-com.google.firebase.firestore.core.ArrayContainsAnyFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.ArrayContainsFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.Bound:
-    private int compareToDocument(java.util.List,com.google.firebase.firestore.model.Document)
-    public boolean sortsAfterDocument(java.util.List,com.google.firebase.firestore.model.Document)
-    public boolean sortsBeforeDocument(java.util.List,com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.CompositeFilter:
-    public boolean isDisjunction()
-    public boolean matches(com.google.firebase.firestore.model.Document)
-    public com.google.firebase.firestore.core.CompositeFilter withAddedFilters(java.util.List)
-com.google.firebase.firestore.core.DocumentViewChange:
-    public com.google.firebase.firestore.model.Document getDocument()
-    public com.google.firebase.firestore.core.DocumentViewChange$Type getType()
-com.google.firebase.firestore.core.EventManager$ListenOptions
-com.google.firebase.firestore.core.FieldFilter$1
-com.google.firebase.firestore.core.FieldFilter:
-    public java.util.List getFilters()
-    public boolean matches(com.google.firebase.firestore.model.Document)
-    protected boolean matchesComparison(int)
-com.google.firebase.firestore.core.Filter:
-    public abstract java.util.List getFilters()
-    public abstract boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.InFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.KeyFieldFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.KeyFieldInFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.KeyFieldNotInFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.LimboDocumentChange$Type
-com.google.firebase.firestore.core.LimboDocumentChange
-com.google.firebase.firestore.core.NotInFilter:
-    public boolean matches(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.Query:
-    public com.google.firebase.firestore.core.Query asCollectionQueryAtPath(com.google.firebase.firestore.model.ResourcePath)
-    public java.util.List getExplicitOrderBy()
-    public com.google.firebase.firestore.core.Query$LimitType getLimitType()
-    public boolean hasLimit()
-    public boolean isCollectionGroupQuery()
-    public boolean isDocumentQuery()
-    public com.google.firebase.firestore.core.Query limitToFirst(long)
-    public boolean matches(com.google.firebase.firestore.model.Document)
-    public boolean matchesAllDocuments()
-    private boolean matchesBounds(com.google.firebase.firestore.model.Document)
-    private boolean matchesFilters(com.google.firebase.firestore.model.Document)
-    private boolean matchesOrderBy(com.google.firebase.firestore.model.Document)
-    private boolean matchesPathAndCollectionGroup(com.google.firebase.firestore.model.Document)
-com.google.firebase.firestore.core.QueryListener:
-    private final com.google.firebase.firestore.core.EventManager$ListenOptions options
-    private boolean shouldRaiseEvent(com.google.firebase.firestore.core.ViewSnapshot)
-com.google.firebase.firestore.core.QueryView:
-    private final com.google.firebase.firestore.core.Query query
-    private final int targetId
-    private final com.google.firebase.firestore.core.View view
-    public com.google.firebase.firestore.core.Query getQuery()
-    public int getTargetId()
-com.google.firebase.firestore.core.SyncEngine$1
-com.google.firebase.firestore.core.SyncEngine:
-    private static final java.lang.String TAG
-    private void trackLimboChange(com.google.firebase.firestore.core.LimboDocumentChange)
-    private void updateTrackedLimboDocuments(java.util.List,int)
-com.google.firebase.firestore.core.Target$1
-com.google.firebase.firestore.core.Target:
-    public java.util.List getArrayValues(com.google.firebase.firestore.model.FieldIndex)
-    private android.util.Pair getAscendingBound(com.google.firebase.firestore.model.FieldIndex$Segment,com.google.firebase.firestore.core.Bound)
-    private android.util.Pair getDescendingBound(com.google.firebase.firestore.model.FieldIndex$Segment,com.google.firebase.firestore.core.Bound)
-    private java.util.List getFieldFiltersForPath(com.google.firebase.firestore.model.FieldPath)
-    public com.google.firebase.firestore.core.OrderBy$Direction getKeyOrder()
-    public com.google.firebase.firestore.core.Bound getLowerBound(com.google.firebase.firestore.model.FieldIndex)
-    public java.util.Collection getNotInValues(com.google.firebase.firestore.model.FieldIndex)
-    public int getSegmentCount()
-    public com.google.firebase.firestore.core.Bound getUpperBound(com.google.firebase.firestore.model.FieldIndex)
-com.google.firebase.firestore.core.View$DocumentChanges
-com.google.firebase.firestore.core.View:
-    public com.google.firebase.firestore.core.ViewChange applyChanges(com.google.firebase.firestore.core.View$DocumentChanges,com.google.firebase.firestore.remote.TargetChange,boolean)
-    public com.google.firebase.firestore.core.ViewChange applyOnlineStateChange(com.google.firebase.firestore.core.OnlineState)
-    public com.google.firebase.firestore.core.View$DocumentChanges computeDocChanges(com.google.firebase.database.collection.ImmutableSortedMap)
-    public com.google.firebase.firestore.core.View$DocumentChanges computeDocChanges(com.google.firebase.database.collection.ImmutableSortedMap,com.google.firebase.firestore.core.View$DocumentChanges)
-    com.google.firebase.database.collection.ImmutableSortedSet getSyncedDocuments()
-com.google.firebase.firestore.core.ViewChange
-com.google.firebase.firestore.core.ViewSnapshot:
-    public com.google.firebase.firestore.model.DocumentSet getOldDocuments()
-    public boolean hasPendingWrites()
-com.google.firebase.firestore.index.IndexByteEncoder:
-    public void seed(byte[])
-com.google.firebase.firestore.index.OrderedCodeWriter:
-    public void seed(byte[])
-com.google.firebase.firestore.local.DocumentOverlayCache:
-    public abstract com.google.firebase.firestore.model.mutation.Overlay getOverlay(com.google.firebase.firestore.model.DocumentKey)
-    public abstract java.util.Map getOverlays(com.google.firebase.firestore.model.ResourcePath,int)
-com.google.firebase.firestore.local.IndexManager$IndexType
-com.google.firebase.firestore.local.IndexManager:
-    public abstract void createTargetIndexes(com.google.firebase.firestore.core.Target)
-    public abstract java.util.List getDocumentsMatchingTarget(com.google.firebase.firestore.core.Target)
-    public abstract com.google.firebase.firestore.local.IndexManager$IndexType getIndexType(com.google.firebase.firestore.core.Target)
-    public abstract com.google.firebase.firestore.model.FieldIndex$IndexOffset getMinOffset(com.google.firebase.firestore.core.Target)
-com.google.firebase.firestore.local.LocalDocumentsView:
-    com.google.firebase.firestore.model.Document getDocument(com.google.firebase.firestore.model.DocumentKey)
-    private com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingCollectionGroupQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,com.google.firebase.firestore.local.QueryContext)
-    private com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingCollectionQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,com.google.firebase.firestore.local.QueryContext)
-    private com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingDocumentQuery(com.google.firebase.firestore.model.ResourcePath)
-    com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset)
-    com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,com.google.firebase.firestore.local.QueryContext)
-com.google.firebase.firestore.local.LocalSerializer:
-    public com.google.firestore.admin.v1.Index encodeFieldIndexSegments(java.util.List)
-com.google.firebase.firestore.local.LocalStore:
-    public com.google.firebase.firestore.local.QueryResult executeQuery(com.google.firebase.firestore.core.Query,boolean)
-    com.google.firebase.firestore.local.TargetData getTargetData(com.google.firebase.firestore.core.Target)
-com.google.firebase.firestore.local.LocalViewChanges$1
-com.google.firebase.firestore.local.LocalViewChanges:
-    public void <init>(int,boolean,com.google.firebase.database.collection.ImmutableSortedSet,com.google.firebase.database.collection.ImmutableSortedSet)
-    public static com.google.firebase.firestore.local.LocalViewChanges fromViewSnapshot(int,com.google.firebase.firestore.core.ViewSnapshot)
-com.google.firebase.firestore.local.MemoryDocumentOverlayCache:
-    public com.google.firebase.firestore.model.mutation.Overlay getOverlay(com.google.firebase.firestore.model.DocumentKey)
-    public java.util.Map getOverlays(com.google.firebase.firestore.model.ResourcePath,int)
-com.google.firebase.firestore.local.MemoryIndexManager:
-    public void createTargetIndexes(com.google.firebase.firestore.core.Target)
-    public java.util.List getDocumentsMatchingTarget(com.google.firebase.firestore.core.Target)
-    public com.google.firebase.firestore.local.IndexManager$IndexType getIndexType(com.google.firebase.firestore.core.Target)
-    public com.google.firebase.firestore.model.FieldIndex$IndexOffset getMinOffset(com.google.firebase.firestore.core.Target)
-com.google.firebase.firestore.local.MemoryRemoteDocumentCache:
-    public java.util.Map getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,java.util.Set,com.google.firebase.firestore.local.QueryContext)
-com.google.firebase.firestore.local.MemoryTargetCache:
-    public com.google.firebase.firestore.local.TargetData getTargetData(com.google.firebase.firestore.core.Target)
-com.google.firebase.firestore.local.QueryContext:
-    private int documentReadCount
-    public void <init>()
-    public int getDocumentReadCount()
-com.google.firebase.firestore.local.QueryEngine:
-    private com.google.firebase.database.collection.ImmutableSortedMap appendRemainingResults(java.lang.Iterable,com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset)
-    private com.google.firebase.database.collection.ImmutableSortedSet applyQuery(com.google.firebase.firestore.core.Query,com.google.firebase.database.collection.ImmutableSortedMap)
-    private void createCacheIndexes(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.local.QueryContext,int)
-    private com.google.firebase.database.collection.ImmutableSortedMap executeFullCollectionScan(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.local.QueryContext)
-    public com.google.firebase.database.collection.ImmutableSortedMap getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.SnapshotVersion,com.google.firebase.database.collection.ImmutableSortedSet)
-    private boolean needsRefill(com.google.firebase.firestore.core.Query,int,com.google.firebase.database.collection.ImmutableSortedSet,com.google.firebase.firestore.model.SnapshotVersion)
-    private com.google.firebase.database.collection.ImmutableSortedMap performQueryUsingIndex(com.google.firebase.firestore.core.Query)
-    private com.google.firebase.database.collection.ImmutableSortedMap performQueryUsingRemoteKeys(com.google.firebase.firestore.core.Query,com.google.firebase.database.collection.ImmutableSortedSet,com.google.firebase.firestore.model.SnapshotVersion)
-com.google.firebase.firestore.local.QueryResult
-com.google.firebase.firestore.local.RemoteDocumentCache:
-    public abstract java.util.Map getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,java.util.Set,com.google.firebase.firestore.local.QueryContext)
-com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$4$3446fe378fe58dab2d75ebcfb00052574c0ec72734330cfbbd96bca585c30617$0
-com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$4$915de82ef2394678f778d0c44e83caf40c68a22bb7ce29210e96db32f13b21fa$0
-com.google.firebase.firestore.local.SQLiteDocumentOverlayCache:
-    public static synthetic void $r8$lambda$hKwONITuiRtpyfIIBFHT6yeiEqI(com.google.firebase.firestore.local.SQLiteDocumentOverlayCache,com.google.firebase.firestore.util.BackgroundQueue,java.util.Map,android.database.Cursor)
-    public static synthetic com.google.firebase.firestore.model.mutation.Overlay $r8$lambda$lRDgjweRmpSNrzolJ-A40AuYyRo(com.google.firebase.firestore.local.SQLiteDocumentOverlayCache,android.database.Cursor)
-    public com.google.firebase.firestore.model.mutation.Overlay getOverlay(com.google.firebase.firestore.model.DocumentKey)
-    public java.util.Map getOverlays(com.google.firebase.firestore.model.ResourcePath,int)
-    private synthetic com.google.firebase.firestore.model.mutation.Overlay lambda$getOverlay$0(android.database.Cursor)
-    private synthetic void lambda$getOverlays$2(com.google.firebase.firestore.util.BackgroundQueue,java.util.Map,android.database.Cursor)
-com.google.firebase.firestore.local.SQLiteIndexManager$$InternalSyntheticLambda$4$8f10e37c87caa0bfe8a32ccd0cb606ace7765ad00991f493886a4971bc03004a$0
-com.google.firebase.firestore.local.SQLiteIndexManager:
-    public static synthetic void $r8$lambda$Yy7PlQHFVvSSgvg6Z1tYJ9YGI0E(java.util.List,android.database.Cursor)
-    public void addFieldIndex(com.google.firebase.firestore.model.FieldIndex)
-    public void createTargetIndexes(com.google.firebase.firestore.core.Target)
-    private java.lang.Object[] encodeBound(com.google.firebase.firestore.model.FieldIndex,com.google.firebase.firestore.core.Target,com.google.firebase.firestore.core.Bound)
-    private byte[] encodeSegments(com.google.firebase.firestore.model.FieldIndex)
-    private java.lang.Object[] encodeValues(com.google.firebase.firestore.model.FieldIndex,com.google.firebase.firestore.core.Target,java.util.Collection)
-    private java.util.List expandIndexValues(java.util.List,com.google.firebase.firestore.model.FieldIndex$Segment,com.google.firestore.v1.Value)
-    private java.lang.Object[] fillBounds(int,int,java.util.List,java.lang.Object[],java.lang.Object[],java.lang.Object[])
-    private java.lang.Object[] generateQueryAndBindings(com.google.firebase.firestore.core.Target,int,java.util.List,java.lang.Object[],java.lang.String,java.lang.Object[],java.lang.String,java.lang.Object[])
-    public java.util.List getDocumentsMatchingTarget(com.google.firebase.firestore.core.Target)
-    private java.lang.Object[] getEncodedBytes(java.util.List)
-    private com.google.firebase.firestore.model.FieldIndex getFieldIndex(com.google.firebase.firestore.core.Target)
-    public com.google.firebase.firestore.local.IndexManager$IndexType getIndexType(com.google.firebase.firestore.core.Target)
-    public com.google.firebase.firestore.model.FieldIndex$IndexOffset getMinOffset(com.google.firebase.firestore.core.Target)
-    private java.util.List getSubTargets(com.google.firebase.firestore.core.Target)
-    private boolean isInFilter(com.google.firebase.firestore.core.Target,com.google.firebase.firestore.model.FieldPath)
-    private static synthetic void lambda$getDocumentsMatchingTarget$7(java.util.List,android.database.Cursor)
-com.google.firebase.firestore.local.SQLiteRemoteDocumentCache$$InternalSyntheticLambda$4$9cb4254bb8d0ed620cab88385d40cceb447970e4e842bd62cf164f7916975cc4$0
-com.google.firebase.firestore.local.SQLiteRemoteDocumentCache:
-    public static synthetic java.lang.Boolean $r8$lambda$BYN3GWXS42QHGMGsgiAZDrIZ20w(com.google.firebase.firestore.core.Query,java.util.Set,com.google.firebase.firestore.model.MutableDocument)
-    public java.util.Map getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,java.util.Set,com.google.firebase.firestore.local.QueryContext)
-    private static synthetic java.lang.Boolean lambda$getDocumentsMatchingQuery$3(com.google.firebase.firestore.core.Query,java.util.Set,com.google.firebase.firestore.model.MutableDocument)
-com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$4$408378636accc9e4179a2693369aee164bbb047981da0afdc1a782074a9622c9$0
-com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$4$cf69cbfc75a579b9ca3b6ce3651e44d08c6e0a5f225fa69316a10ff0682dbba2$0
-com.google.firebase.firestore.local.SQLiteTargetCache$1
-com.google.firebase.firestore.local.SQLiteTargetCache$DocumentKeysHolder
-com.google.firebase.firestore.local.SQLiteTargetCache$TargetDataHolder
-com.google.firebase.firestore.local.SQLiteTargetCache:
-    public static synthetic void $r8$lambda$72a_l0dhG39N3yVyxhJXHVNBDzQ(com.google.firebase.firestore.local.SQLiteTargetCache$DocumentKeysHolder,android.database.Cursor)
-    public static synthetic void $r8$lambda$MsIDFUuRDUbAfYxMohE44jJOc0c(com.google.firebase.firestore.local.SQLiteTargetCache,com.google.firebase.firestore.core.Target,com.google.firebase.firestore.local.SQLiteTargetCache$TargetDataHolder,android.database.Cursor)
-    public com.google.firebase.database.collection.ImmutableSortedSet getMatchingKeysForTargetId(int)
-    public com.google.firebase.firestore.local.TargetData getTargetData(com.google.firebase.firestore.core.Target)
-    private static synthetic void lambda$getMatchingKeysForTargetId$4(com.google.firebase.firestore.local.SQLiteTargetCache$DocumentKeysHolder,android.database.Cursor)
-    private synthetic void lambda$getTargetData$3(com.google.firebase.firestore.core.Target,com.google.firebase.firestore.local.SQLiteTargetCache$TargetDataHolder,android.database.Cursor)
-com.google.firebase.firestore.local.TargetCache:
-    public abstract com.google.firebase.database.collection.ImmutableSortedSet getMatchingKeysForTargetId(int)
-    public abstract com.google.firebase.firestore.local.TargetData getTargetData(com.google.firebase.firestore.core.Target)
-com.google.firebase.firestore.model.Document:
-    public abstract boolean hasPendingWrites()
-com.google.firebase.firestore.model.DocumentKey:
-    public boolean hasCollectionId(java.lang.String)
-com.google.firebase.firestore.model.DocumentSet:
-    public boolean isEmpty()
-com.google.firebase.firestore.model.FieldIndex$IndexOffset:
-    public static com.google.firebase.firestore.model.FieldIndex$IndexOffset createSuccessor(com.google.firebase.firestore.model.SnapshotVersion,int)
-com.google.firebase.firestore.model.TargetIndexMatcher$$InternalSyntheticLambda$4$08942c9dcc4a5c9b9d2d3d8b34b359c0fd7f755abd6317f34e25a9102d238222$0
-com.google.firebase.firestore.model.TargetIndexMatcher
-com.google.firebase.firestore.model.Values:
-    public static com.google.firestore.v1.Value getLowerBound(com.google.firestore.v1.Value)
-    public static com.google.firestore.v1.Value getUpperBound(com.google.firestore.v1.Value)
-    public static int lowerBoundCompare(com.google.firestore.v1.Value,boolean,com.google.firestore.v1.Value,boolean)
-    public static int upperBoundCompare(com.google.firestore.v1.Value,boolean,com.google.firestore.v1.Value,boolean)
-com.google.firebase.firestore.util.LogicUtils
 com.google.firebase.heartbeatinfo.HeartBeatInfoStorage:
     private static com.google.firebase.heartbeatinfo.HeartBeatInfoStorage instance
 com.google.firebase.internal.api.FirebaseNoSignedInUserException
@@ -28751,32 +29086,6 @@ com.google.firebase.storage.StorageTask:
     private com.google.android.gms.tasks.Task successTaskImpl(java.util.concurrent.Executor,com.google.android.gms.tasks.SuccessContinuation)
 com.google.firebase.storage.network.NetworkRequest:
     static final synthetic boolean $assertionsDisabled
-com.google.firestore.admin.v1.Index$Builder:
-    public com.google.firestore.admin.v1.Index$Builder addFields(com.google.firestore.admin.v1.Index$IndexField$Builder)
-    public com.google.firestore.admin.v1.Index$Builder setQueryScope(com.google.firestore.admin.v1.Index$QueryScope)
-com.google.firestore.admin.v1.Index$IndexField$ArrayConfig$1
-com.google.firestore.admin.v1.Index$IndexField$ArrayConfig
-com.google.firestore.admin.v1.Index$IndexField$Builder:
-    public com.google.firestore.admin.v1.Index$IndexField$Builder setArrayConfig(com.google.firestore.admin.v1.Index$IndexField$ArrayConfig)
-    public com.google.firestore.admin.v1.Index$IndexField$Builder setFieldPath(java.lang.String)
-    public com.google.firestore.admin.v1.Index$IndexField$Builder setOrder(com.google.firestore.admin.v1.Index$IndexField$Order)
-com.google.firestore.admin.v1.Index$IndexField:
-    static synthetic void access$200(com.google.firestore.admin.v1.Index$IndexField,java.lang.String)
-    static synthetic void access$600(com.google.firestore.admin.v1.Index$IndexField,com.google.firestore.admin.v1.Index$IndexField$Order)
-    static synthetic void access$900(com.google.firestore.admin.v1.Index$IndexField,com.google.firestore.admin.v1.Index$IndexField$ArrayConfig)
-    public static com.google.firestore.admin.v1.Index$IndexField$Builder newBuilder()
-    private void setArrayConfig(com.google.firestore.admin.v1.Index$IndexField$ArrayConfig)
-    private void setFieldPath(java.lang.String)
-    private void setOrder(com.google.firestore.admin.v1.Index$IndexField$Order)
-com.google.firestore.admin.v1.Index$QueryScope$1
-com.google.firestore.admin.v1.Index$QueryScope
-com.google.firestore.admin.v1.Index:
-    static synthetic void access$1700(com.google.firestore.admin.v1.Index,com.google.firestore.admin.v1.Index$QueryScope)
-    static synthetic void access$2000(com.google.firestore.admin.v1.Index,com.google.firestore.admin.v1.Index$IndexField)
-    private void addFields(com.google.firestore.admin.v1.Index$IndexField)
-    private void ensureFieldsIsMutable()
-    public static com.google.firestore.admin.v1.Index$Builder newBuilder()
-    private void setQueryScope(com.google.firestore.admin.v1.Index$QueryScope)
 com.google.protobuf.CodedInputStream$StreamDecoder$RefillCallback
 com.google.protobuf.CodedInputStream$StreamDecoder:
     private com.google.protobuf.CodedInputStream$StreamDecoder$RefillCallback refillCallback
@@ -28870,6 +29179,11 @@ io.grpc.okhttp.OkHttpClientTransport:
     com.google.common.util.concurrent.SettableFuture connectedFuture
 io.grpc.stub.AbstractAsyncStub:
     static final synthetic boolean $assertionsDisabled
+io.socket.engineio.parser.Base64$Encoder:
+    static final synthetic boolean $assertionsDisabled
+io.socket.engineio.parser.Base64:
+    static final synthetic boolean $assertionsDisabled
+    private void <init>()
 kotlin.Result:
     public static final boolean isSuccess-impl(java.lang.Object)
 kotlin.collections.CollectionsKt:
@@ -28900,7 +29214,6 @@ kotlin.random.Random$Default:
 kotlin.random.Random:
     public abstract int nextBits(int)
 kotlin.random.RandomKt
-kotlin.text.CharsKt
 kotlin.text.CharsKt__CharJVMKt:
     public static final boolean isWhitespace(char)
 kotlin.text.StringsKt:
@@ -28986,3 +29299,51 @@ kotlinx.coroutines.internal.ScopeCoroutine:
     public final java.lang.StackTraceElement getStackTraceElement()
 kotlinx.coroutines.internal.StackTraceRecoveryKt
 kotlinx.coroutines.internal.WeakMapCtorCache
+okhttp3.Cache
+okhttp3.ConnectionPool:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.Dispatcher:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.OkHttpClient$Builder:
+    okhttp3.Cache cache
+    okhttp3.internal.cache.InternalCache internalCache
+okhttp3.OkHttpClient:
+    final okhttp3.Cache cache
+    final okhttp3.internal.cache.InternalCache internalCache
+okhttp3.RealCall$AsyncCall:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.internal.cache.CacheInterceptor$1
+okhttp3.internal.cache.CacheInterceptor:
+    final okhttp3.internal.cache.InternalCache cache
+    private okhttp3.Response cacheWritingResponse(okhttp3.internal.cache.CacheRequest,okhttp3.Response)
+okhttp3.internal.cache.CacheRequest
+okhttp3.internal.cache.InternalCache:
+    public abstract okhttp3.Response get(okhttp3.Request)
+    public abstract okhttp3.internal.cache.CacheRequest put(okhttp3.Response)
+    public abstract void remove(okhttp3.Request)
+    public abstract void trackConditionalCacheHit()
+    public abstract void trackResponse(okhttp3.internal.cache.CacheStrategy)
+    public abstract void update(okhttp3.Response,okhttp3.Response)
+okhttp3.internal.connection.StreamAllocation:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.internal.http.HttpMethod:
+    public static boolean invalidatesCache(java.lang.String)
+okhttp3.internal.http.UnrepeatableRequestBody
+okhttp3.internal.http2.Header$Listener:
+    public abstract void onHeaders(okhttp3.Headers)
+okhttp3.internal.http2.Http2Connection:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.internal.http2.Http2Stream$FramingSink:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.internal.http2.Http2Stream$FramingSource:
+    static final synthetic boolean $assertionsDisabled
+okhttp3.internal.http2.Http2Stream:
+    static final synthetic boolean $assertionsDisabled
+    private okhttp3.internal.http2.Header$Listener headersListener
+okhttp3.internal.ws.RealWebSocket:
+    static final synthetic boolean $assertionsDisabled
+okio.Buffer:
+    public okio.Buffer emitCompleteSegments()
+    public synthetic bridge okio.BufferedSink emitCompleteSegments()
+okio.BufferedSink:
+    public abstract okio.BufferedSink emitCompleteSegments()

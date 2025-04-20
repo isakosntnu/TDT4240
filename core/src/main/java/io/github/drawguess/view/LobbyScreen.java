@@ -7,14 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.factory.PlayerFactory;
 import io.github.drawguess.manager.GameManager;
+import io.github.drawguess.manager.SocketManager;
 import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LobbyScreen implements Screen {
 
@@ -25,10 +28,9 @@ public class LobbyScreen implements Screen {
     private Image backgroundImage;
 
     private Table playerTable;
-    private List<Label> playerLabels;
+    private Set<String> playerNamesShown;
 
     private TextButton startGameButton;
-
     private GameSession session;
 
     public LobbyScreen(DrawGuessMain game) {
@@ -37,105 +39,100 @@ public class LobbyScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         this.session = GameManager.getInstance().getSession();
-        this.playerLabels = new ArrayList<>();
+        this.playerNamesShown = new HashSet<>();
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         float screenHeight = Gdx.graphics.getHeight();
 
-        // Bakgrunn
+        // (1) Bakgrunn
         backgroundTexture = new Texture("board.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Layout table
+        // (2) Root layout
         Table rootTable = new Table();
         rootTable.setFillParent(true);
         rootTable.top().padTop(screenHeight * 0.15f);
         stage.addActor(rootTable);
 
-        // Game PIN (fra GameSession)
+        // (3) Game PIN
         Label pinLabel = new Label("GAME PIN: " + session.getGameId(), skin);
-        pinLabel.setFontScale(screenHeight * 0.002f); // Skalerbar tekst
+        pinLabel.setFontScale(screenHeight * 0.002f);
         rootTable.add(pinLabel).padBottom(40).row();
 
-        // Tittel
+        // (4) Tittel
         Label title = new Label("Waiting on players...", skin);
         title.setFontScale(screenHeight * 0.0015f);
         rootTable.add(title).padBottom(50).row();
 
-        // Tabell for spillere
+        // (5) Spiller-tabell
         playerTable = new Table();
         rootTable.add(playerTable);
 
-        // Legg til eksisterende spillere fra GameSession
         for (Player player : session.getPlayers()) {
             addPlayer(player.getName());
         }
 
-        // Start Game-knapp
+        // (6) Start-knapp
         startGameButton = new TextButton("Start Game", skin);
         startGameButton.getLabel().setFontScale(screenHeight * 0.0015f);
-
         rootTable.row().padTop(60);
         rootTable.add(startGameButton).expandY().bottom().padBottom(30);
 
-        // Klikk-handling
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Game started!");
-        
-                // Evt. start logikk i GameController her
-                // gameController.startGame();
-        
-                game.setScreen(new DrawingScreen(game)); // Bytt til tegneskjerm
+                game.setScreen(new DrawingScreen(game));
             }
         });
-        
     }
 
-    public void addPlayer(String name) {
+    private void addPlayer(String name) {
+        if (playerNamesShown.contains(name)) return;
+
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Label playerLabel = new Label(name, skin);
-
         float screenHeight = Gdx.graphics.getHeight();
-        playerLabel.setFontScale(screenHeight * 0.0015f); // Dynamisk tekst
+        playerLabel.setFontScale(screenHeight * 0.0015f);
 
-        playerLabels.add(playerLabel);
+        playerNamesShown.add(name);
         playerTable.add(playerLabel).padBottom(8).row();
     }
 
-    
-
     @Override
-    public void show() {}
+    public void show() {
+        SocketManager.getInstance().setLobbyUpdateListener(playerNames -> {
+            for (String name : playerNames) {
+                if (!playerNamesShown.contains(name)) {
+                    addPlayer(name);
+                    Player joined = PlayerFactory.createPlayer(name);
+                    session.addPlayer(joined);
+                }
+            }
+        });
+    }
 
-    @Override
-    public void render(float delta) {
+    @Override public void render(float delta) {
         stage.act(delta);
         stage.draw();
     }
 
-    @Override
-    public void resize(int width, int height) {
+    @Override public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override
-    public void pause() {}
+    @Override public void pause() {}
 
-    @Override
-    public void resume() {}
+    @Override public void resume() {}
 
-    @Override
-    public void hide() {
+    @Override public void hide() {
         dispose();
     }
 
-    @Override
-    public void dispose() {
+    @Override public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
     }

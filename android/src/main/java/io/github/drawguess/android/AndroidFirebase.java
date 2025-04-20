@@ -11,7 +11,7 @@ import com.google.firebase.storage.UploadTask;
 
 import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
-import io.github.drawguess.server.FirebaseInterface;
+import io.github.drawguess.services.FirebaseInterface;
 import io.github.drawguess.manager.GameManager;
 
 

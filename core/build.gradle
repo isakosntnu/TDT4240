@@ -2,9 +2,10 @@
 eclipse.project.name = appName + '-core'
 
 dependencies {
-  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    // LibGDX core
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
-  if(enableGraalNative == 'true') {
-    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
-  }
+    // Socket.IO klient for Android/Java
+    implementation 'io.socket:socket.io-client:2.1.1'
+
 }

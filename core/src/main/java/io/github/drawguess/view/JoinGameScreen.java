@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import io.github.drawguess.DrawGuessMain;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.controller.JoinGameController;
 
 public class JoinGameScreen implements Screen {
     private final DrawGuessMain game;
@@ -20,6 +21,8 @@ public class JoinGameScreen implements Screen {
     private Image backButtonImage;
 
     private TextField gamePinField;
+    private TextField nameField;
+    private TextButton joinButton;
 
     public JoinGameScreen(final DrawGuessMain game) {
         this.game = game;
@@ -28,13 +31,13 @@ public class JoinGameScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        // (1) Bakgrunn
+        // Bakgrunn
         backgroundTexture = new Texture("canvas.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // (2) Tilbake-knapp
+        // Tilbake-knapp
         backButtonTexture = new Texture("backbtn.png");
         backButtonImage = new Image(backButtonTexture);
         backButtonImage.setSize(100, 50);
@@ -48,16 +51,51 @@ public class JoinGameScreen implements Screen {
         });
         stage.addActor(backButtonImage);
 
-        // (3) Tekstfelt
+        // Navnefelt
+        nameField = new TextField("", skin);
+        nameField.setMessageText("Enter your name");
+        nameField.setSize(250, 80);
+        nameField.setPosition(
+            (Gdx.graphics.getWidth() - nameField.getWidth()) / 2f,
+            Gdx.graphics.getHeight() / 2f + 40
+        );
+        stage.addActor(nameField);
+
+        // PIN-felt
         gamePinField = new TextField("", skin);
         gamePinField.setMessageText("Enter Game PIN");
         gamePinField.setSize(250, 80);
         gamePinField.setPosition(
             (Gdx.graphics.getWidth() - gamePinField.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - gamePinField.getHeight()) / 2f - 20
+            Gdx.graphics.getHeight() / 2f - 20
         );
         stage.addActor(gamePinField);
+
+        // Join-knapp
+        joinButton = new TextButton("Join Game", skin);
+        joinButton.setSize(250, 80);
+        joinButton.setPosition(
+            (Gdx.graphics.getWidth() - joinButton.getWidth()) / 2f,
+            Gdx.graphics.getHeight() / 2f - 100
+        );
+        joinButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String name = nameField.getText().trim();
+                String pin = gamePinField.getText().trim();
+
+                if (!name.isEmpty() && !pin.isEmpty()) {
+                    JoinGameController controller = new JoinGameController(game);
+                    controller.tryJoinGame(pin, name);
+                } else {
+                    Gdx.app.log("JoinGameScreen", "Name or PIN is empty");
+                }
+            }
+        });
+        stage.addActor(joinButton);
     }
+
+    @Override public void show() {}
 
     @Override
     public void render(float delta) {
@@ -71,10 +109,13 @@ public class JoinGameScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override public void show() {}
-    @Override public void hide() { dispose(); }
     @Override public void pause() {}
     @Override public void resume() {}
+
+    @Override
+    public void hide() {
+        dispose();
+    }
 
     @Override
     public void dispose() {

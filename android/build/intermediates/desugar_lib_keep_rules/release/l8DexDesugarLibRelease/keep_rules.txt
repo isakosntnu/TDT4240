@@ -50,6 +50,9 @@
   public static boolean $default$replace(java.util.Map,java.lang.Object,java.lang.Object,java.lang.Object);
   public static void $default$replaceAll(java.util.Map,java.util.function.BiFunction);
 }
+-keep class j$.util.Map$-EL {
+  public static java.lang.Object getOrDefault(java.util.Map,java.lang.Object,java.lang.Object);
+}
 -keep class j$.util.Objects {
   public static boolean equals(java.lang.Object,java.lang.Object);
   public static int hash(java.lang.Object[]);
@@ -67,6 +70,7 @@
   public java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object);
   public java.lang.Object remove(java.lang.Object);
   public boolean remove(java.lang.Object,java.lang.Object);
+  public java.util.Collection values();
 }
 -keep class j$.util.concurrent.ThreadLocalRandom {
   public static j$.util.concurrent.ThreadLocalRandom current();

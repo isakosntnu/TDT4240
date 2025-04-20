@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.manager.SocketManager;
 
 public class MenuScreen implements Screen {
     private final DrawGuessMain game;
@@ -34,6 +35,7 @@ public class MenuScreen implements Screen {
 
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
+        
 
         // (1) Bakgrunn
         backgroundTexture = new Texture("bgmenu.png");

@@ -13,7 +13,7 @@ public class GameSession {
         FINISHED
     }
 
-    private final String gameId;
+    private String gameId; // 🔧 Fjernet final
     private final Player hostPlayer;
     private final List<Player> players;
     private Status status;
@@ -27,8 +27,6 @@ public class GameSession {
         this.status = Status.WAITING_FOR_PLAYERS;
     }
 
-    
-
     public void setWordForPlayer(String playerId, String word) {
         playerWords.put(playerId, word);
     }
@@ -37,7 +35,6 @@ public class GameSession {
         return playerWords.getOrDefault(playerId, "");
     }
 
-
     private String generateGameId() {
         return String.valueOf((int)(Math.random() * 900000) + 100000);
     }
@@ -45,6 +42,10 @@ public class GameSession {
     // ---------- Getters ----------
     public String getGameId() {
         return gameId;
+    }
+
+    public void setGameId(String gameId) {  // 🔧 Ny setter
+        this.gameId = gameId;
     }
 
     public Player getHostPlayer() {

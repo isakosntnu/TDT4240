@@ -523,6 +523,20 @@
 -assumenosideeffects class androidx.startup.StartupLogger { public static <methods>; }
 
 # End of content from /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/fb1fa65308d003ac60874319a3bc77e4/transformed/startup-runtime-1.1.1/proguard.txt
+# The proguard configuration file for the following section is /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/dbe0148f4f9f78adb36233e83e8facef/transformed/rules/lib/META-INF/proguard/okhttp3.pro
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+# End of content from /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/dbe0148f4f9f78adb36233e83e8facef/transformed/rules/lib/META-INF/proguard/okhttp3.pro
 # The proguard configuration file for the following section is /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c098e31edc2325093418b591a62dd155/transformed/rules/lib/META-INF/proguard/okio.pro
 # Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
 -dontwarn org.codehaus.mojo.animal_sniffer.*
