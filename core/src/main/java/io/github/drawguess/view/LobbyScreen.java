@@ -31,13 +31,24 @@ public class LobbyScreen implements Screen {
 
     private GameSession session;
 
+    // 🔁 Referanse til aktiv instans
+    private static LobbyScreen instance;
+
     public LobbyScreen(DrawGuessMain game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        // 🔗 Sett static instans
+        instance = this;
+
         this.session = GameManager.getInstance().getSession();
         this.playerLabels = new ArrayList<>();
+
+        game.getFirebase().emitUserJoined(
+                session.getGameId(),
+                session.getHostPlayer().getName()
+        );
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
@@ -57,7 +68,7 @@ public class LobbyScreen implements Screen {
 
         // Game PIN (fra GameSession)
         Label pinLabel = new Label("GAME PIN: " + session.getGameId(), skin);
-        pinLabel.setFontScale(screenHeight * 0.002f); // Skalerbar tekst
+        pinLabel.setFontScale(screenHeight * 0.002f);
         rootTable.add(pinLabel).padBottom(40).row();
 
         // Tittel
@@ -69,31 +80,24 @@ public class LobbyScreen implements Screen {
         playerTable = new Table();
         rootTable.add(playerTable);
 
-        // Legg til eksisterende spillere fra GameSession
         for (Player player : session.getPlayers()) {
             addPlayer(player.getName());
         }
 
-        // Start Game-knapp
+        // Start-knapp
         startGameButton = new TextButton("Start Game", skin);
         startGameButton.getLabel().setFontScale(screenHeight * 0.0015f);
 
         rootTable.row().padTop(60);
         rootTable.add(startGameButton).expandY().bottom().padBottom(30);
 
-        // Klikk-handling
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Game started!");
-        
-                // Evt. start logikk i GameController her
-                // gameController.startGame();
-        
-                game.setScreen(new DrawingScreen(game)); // Bytt til tegneskjerm
+                game.setScreen(new DrawingScreen(game));
             }
         });
-        
     }
 
     public void addPlayer(String name) {
@@ -101,13 +105,20 @@ public class LobbyScreen implements Screen {
         Label playerLabel = new Label(name, skin);
 
         float screenHeight = Gdx.graphics.getHeight();
-        playerLabel.setFontScale(screenHeight * 0.0015f); // Dynamisk tekst
+        playerLabel.setFontScale(screenHeight * 0.0015f);
 
         playerLabels.add(playerLabel);
         playerTable.add(playerLabel).padBottom(8).row();
     }
 
-    
+    // 👥 Kalles fra AndroidLauncher når en ny spiller joiner
+    public static void onPlayerJoined(String playerName) {
+        if (instance != null) {
+            Gdx.app.postRunnable(() -> {
+                instance.addPlayer(playerName);
+            });
+        }
+    }
 
     @Override
     public void show() {}
@@ -123,19 +134,10 @@ public class LobbyScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
-    public void dispose() {
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() { dispose(); }
+    @Override public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
     }

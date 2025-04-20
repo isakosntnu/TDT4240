@@ -18,6 +18,9 @@ public interface FirebaseInterface {
                            String playerId,
                            String drawingUrl);
 
+    // 🔥 Legg til dette for Socket.IO
+    void emitUserJoined(String gameId, String username);
+
     // Callback-typer
     interface SuccessCallback<T> {
         void onSuccess(T result);

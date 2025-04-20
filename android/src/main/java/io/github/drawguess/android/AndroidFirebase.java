@@ -15,6 +15,9 @@ import io.github.drawguess.server.FirebaseInterface;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.json.JSONObject;
+import io.github.drawguess.android.manager.SocketManager;
+
 
 public class AndroidFirebase implements FirebaseInterface {
 
@@ -115,4 +118,21 @@ public class AndroidFirebase implements FirebaseInterface {
             .addOnFailureListener(e ->
                 Log.w("Firebase", "Failed to mark player as finished", e));
     }
+
+    @Override
+    public void emitUserJoined(String gameId, String username) {
+        try {
+            Log.d("SOCKET", "➡️ Skal sende joinGame for " + username + " i spill " + gameId);
+            JSONObject data = new JSONObject();
+            data.put("gameId", gameId);
+            data.put("username", username);
+
+            SocketManager.getSocket().emit("joinGame", data);
+            Log.d("SOCKET", "✅ Emit joinGame: " + username + " → " + gameId);
+        } catch (Exception e) {
+            Log.e("SOCKET", "❌ Feil ved joinGame-emission", e);
+        }
+    }
+
+
 }

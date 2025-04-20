@@ -18,9 +18,26 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log("✅ Bruker tilkoblet:", socket.id);
 
-    socket.on("joinGame", ({ gameId, username }) => {
-        socket.join(gameId);
-        io.to(gameId).emit("userJoined", { username });
+    socket.on("joinGame", (data) => {
+        try {
+            console.log("🧪 Mottatt data fra klient:", data);
+
+            // Hvis data er JSONObject fra Android, må vi kanskje parse det
+            const gameId = data.gameId || (data.get && data.get("gameId"));
+            const username = data.username || (data.get && data.get("username"));
+
+            if (!gameId || !username) {
+                console.error("🚫 Ugyldig joinGame-data:", data);
+                return;
+            }
+
+            console.log(`📥 ${username} joinet game ${gameId}`);
+            socket.join(gameId);
+            io.to(gameId).emit("userJoined", { username });
+
+        } catch (err) {
+            console.error("❌ Feil i joinGame-handling:", err);
+        }
     });
 
     socket.on("draw", ({ gameId, drawingData }) => {
