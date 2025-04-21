@@ -42,6 +42,11 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("startGame", ({ gameId }) => {
+        console.log(`🚀 Starter spillet i rommet: ${gameId}`);
+        io.to(gameId).emit("gameStarted"); // Send til ALLE i rommet
+    });
+
     socket.on("draw", ({ gameId, drawingData }) => {
         socket.to(gameId).emit("draw", drawingData);
     });
