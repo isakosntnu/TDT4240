@@ -268,23 +268,29 @@ public class AndroidFirebase implements FirebaseInterface {
     public void getPlayersWithStatus(String gameId,
                                      SuccessCallback<Map<String, Boolean>> onSuccess,
                                      FailureCallback onFailure) {
-        db.collection("games")
-            .document(gameId)
+        db.collection("games").document(gameId)
             .collection("players")
             .get()
             .addOnSuccessListener(querySnapshot -> {
-                Map<String, Boolean> result = new HashMap<>();
+                Map<String, Boolean> playerStatuses = new HashMap<>();
                 for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                     String name = doc.getString("name");
                     Boolean finished = doc.getBoolean("finished");
-                    if (name != null && finished != null) {
-                        result.put(name, finished);
+    
+                    if (name != null) {
+                        boolean isFinished = finished != null && finished;
+                        Log.d("Firebase", "🔍 " + name + ": finished = " + isFinished);
+                        playerStatuses.put(name, isFinished);
                     }
                 }
-                onSuccess.onSuccess(result);
+    
+                Log.d("Firebase", "Totalt spillere med status: " + playerStatuses.size());
+                onSuccess.onSuccess(playerStatuses);
             })
             .addOnFailureListener(onFailure::onFailure);
     }
+    
+
     
 
     @Override
