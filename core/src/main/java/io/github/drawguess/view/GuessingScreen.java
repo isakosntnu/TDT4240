@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -22,6 +22,8 @@ public class GuessingScreen implements Screen {
 
     private final DrawGuessMain game;
     private final Stage stage;
+    private final String drawingOwnerId;
+    private final String currentPlayerId;
 
     private Texture backgroundTexture;
     private Texture drawingTexture;
@@ -36,20 +38,20 @@ public class GuessingScreen implements Screen {
     private int totalPlayers = 8;
     private int playersAnswered = 5;
 
-    public GuessingScreen(DrawGuessMain game) {
+    public GuessingScreen(DrawGuessMain game, String drawingOwnerId) {
         this.game = game;
+        this.drawingOwnerId = drawingOwnerId;
+        this.currentPlayerId = GameManager.getInstance().getPlayerId();
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        // Bakgrunn
         backgroundTexture = new Texture("guessbg.png");
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Placeholder som blir erstattet når bildet lastes
         drawingTexture = new Texture("placeholder.png");
         drawingImage = new Image(drawingTexture);
         drawingImage.setScaling(Scaling.fit);
@@ -60,29 +62,24 @@ public class GuessingScreen implements Screen {
         );
         stage.addActor(drawingImage);
 
-        // Tabell nederst for input og labels
         Table sheetTable = new Table();
         sheetTable.setFillParent(true);
         sheetTable.bottom().padBottom(50);
         stage.addActor(sheetTable);
 
-        // Spørsmålstekst
         questionLabel = new Label("What is this?", skin);
         questionLabel.setFontScale(1.4f);
         sheetTable.add(questionLabel).padBottom(20).row();
 
-        // Spillerteller
         playerCounter = new Label(playersAnswered + " of " + totalPlayers + " has answered", skin);
         sheetTable.add(playerCounter).padBottom(20).row();
 
-        // Gjetting
         guessInput = new TextField("", skin);
         guessInput.setMessageText("Write down your guess here...");
         guessInput.setMaxLength(40);
         guessInput.getStyle().font.getData().setScale(1.2f);
         sheetTable.add(guessInput).width(400).height(80).padBottom(20).row();
 
-        // Send knapp
         submitButton = new TextButton("Guess", skin);
         submitButton.addListener(new ClickListener() {
             @Override
@@ -97,19 +94,32 @@ public class GuessingScreen implements Screen {
         });
         sheetTable.add(submitButton).width(150).height(50);
 
-        // Hent og vis bildet fra Firebase
+        if (drawingOwnerId.equals(currentPlayerId)) {
+            guessInput.setDisabled(true);
+            guessInput.setMessageText("You can't guess your own drawing!");
+            submitButton.setDisabled(true);
+        }
+
         fetchDrawingFromFirebase();
     }
 
     private void fetchDrawingFromFirebase() {
         String gameId = GameManager.getInstance().getSession().getGameId();
-        String drawingPlayerId = GameManager.getInstance().getSession().getHostPlayer().getId(); // eller annen spiller
 
         game.getFirebase().getPlayerDrawingUrl(
                 gameId,
-                drawingPlayerId,
-                url -> Gdx.app.postRunnable(() -> loadDrawingFromUrl(url)),
-                error -> Gdx.app.error("GuessingScreen", "Failed to get drawing URL", error)
+                drawingOwnerId,
+                url -> Gdx.app.postRunnable(() -> {
+                    if (url != null && !url.isEmpty()) {
+                        loadDrawingFromUrl(url);
+                    } else {
+                        questionLabel.setText("Drawing not available yet.");
+                    }
+                }),
+                error -> Gdx.app.postRunnable(() -> {
+                    Gdx.app.error("GuessingScreen", "Error fetching drawing URL", error);
+                    questionLabel.setText("Error loading drawing.");
+                })
         );
     }
 
@@ -117,7 +127,6 @@ public class GuessingScreen implements Screen {
         new Thread(() -> {
             try {
                 InputStream input = new URL(imageUrl).openStream();
-
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 byte[] data = new byte[1024];
                 int nRead;
@@ -128,7 +137,6 @@ public class GuessingScreen implements Screen {
                 byte[] bytes = buffer.toByteArray();
 
                 Pixmap pixmap = new Pixmap(bytes, 0, bytes.length);
-
                 Texture texture = new Texture(pixmap);
                 pixmap.dispose();
 
@@ -145,7 +153,7 @@ public class GuessingScreen implements Screen {
     }
 
     private void submitGuess(String guess) {
-        System.out.println("Gjettet: " + guess);
+        Gdx.app.log("GuessingScreen", "Guess submitted: " + guess);
         game.getFirebase().sendGuess(guess);
     }
 

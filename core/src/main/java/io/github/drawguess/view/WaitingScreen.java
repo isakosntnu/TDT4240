@@ -131,28 +131,11 @@ public class WaitingScreen implements Screen {
         nextRoundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                messageLabel.setText("Loading drawing...");
+                messageLabel.setText("Starting guessing phase...");
                 nextRoundButton.setDisabled(true);
-
+        
                 String gameId = session.getGameId();
-                String drawingPlayerId = session.getHostPlayer().getId();
-
-                game.getFirebase().getPlayerDrawingUrl(
-                    gameId,
-                    drawingPlayerId,
-                    url -> Gdx.app.postRunnable(() -> {
-                        if (url != null && !url.isEmpty()) {
-                            game.setScreen(new DrawingViewerScreen(game, url));
-                        } else {
-                            messageLabel.setText("Drawing not uploaded yet.");
-                            nextRoundButton.setDisabled(false);
-                        }
-                    }),
-                    error -> Gdx.app.postRunnable(() -> {
-                        messageLabel.setText("Error fetching drawing.");
-                        nextRoundButton.setDisabled(false);
-                    })
-                );
+                game.getSocket().emitStartGuessingPhase(gameId);
             }
         });
 
