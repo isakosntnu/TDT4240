@@ -8,285 +8,286 @@
 8        android:minSdkVersion="21"
 9        android:targetSdkVersion="34" />
 10
-11    <uses-feature
-11-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:4:3-75
-12        android:glEsVersion="0x00020000"
-12-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:4:17-49
-13        android:required="true" />
-13-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:4:50-73
-14
-15    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
-16    <!-- <uses-sdk android:minSdkVersion="21" /> -->
-17    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-17-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
-17-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:22-76
-18    <uses-permission android:name="android.permission.INTERNET" />
-18-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:11:5-67
-18-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:11:22-64
-19    <uses-permission android:name="android.permission.WAKE_LOCK" />
-19-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:24:5-68
-19-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:24:22-65
-20    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
-20-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:25:5-79
-20-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:25:22-76
-21    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
-21-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:26:5-88
-21-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:26:22-85
-22    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
-22-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:27:5-82
-22-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:27:22-79
-23    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
-23-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:26:5-110
-23-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:26:22-107
-24
-25    <permission
-25-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
-26        android:name="io.github.drawguess.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-26-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
-27        android:protectionLevel="signature" />
-27-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
-28
-29    <uses-permission android:name="io.github.drawguess.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-29-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
-29-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
-30
-31    <application
-31-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:5:3-25:17
-32        android:allowBackup="true"
-32-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:6:7-33
-33        android:appCategory="game"
-33-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:10:7-33
-34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-34-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
-35        android:extractNativeLibs="true"
-36        android:fullBackupContent="true"
-36-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:7:7-39
-37        android:icon="@drawable/ic_launcher"
-37-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:8:7-43
-38        android:isGame="true"
-38-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:9:7-28
-39        android:label="@string/app_name"
-39-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:11:7-39
-40        android:theme="@style/GdxTheme" >
-40-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:13:7-38
-41        <activity
-41-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:14:5-24:16
-42            android:name="io.github.drawguess.android.AndroidLauncher"
-42-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:15:9-67
-43            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
-43-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:18:9-103
-44            android:exported="true"
-44-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:19:9-32
-45            android:label="@string/app_name"
-45-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:16:9-41
-46            android:screenOrientation="portrait" >
-46-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:17:9-45
-47            <intent-filter>
-47-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:20:9-23:23
-48                <action android:name="android.intent.action.MAIN" />
-48-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:21:9-60
-48-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:21:17-58
-49
-50                <category android:name="android.intent.category.LAUNCHER" />
-50-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:22:9-68
-50-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/AndroidManifest.xml:22:19-66
-51            </intent-filter>
-52        </activity>
-53
-54        <service
-54-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
-55            android:name="com.google.firebase.components.ComponentDiscoveryService"
-55-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:15:13-84
-56            android:directBootAware="true"
-56-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:32:13-43
-57            android:exported="false" >
-57-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:16:13-37
-58            <meta-data
-58-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:17:13-19:85
-59                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
-59-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:18:17-122
-60                android:value="com.google.firebase.components.ComponentRegistrar" />
-60-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:19:17-82
-61            <meta-data
-61-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:20:13-22:85
-62                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-62-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:21:17-111
-63                android:value="com.google.firebase.components.ComponentRegistrar" />
-63-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:22:17-82
-64            <meta-data
-64-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:30:13-32:85
-65                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
-65-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:31:17-118
-66                android:value="com.google.firebase.components.ComponentRegistrar" />
-66-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:32:17-82
-67            <meta-data
-67-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:33:13-35:85
-68                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
-68-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:34:17-107
-69                android:value="com.google.firebase.components.ComponentRegistrar" />
-69-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:35:17-82
-70            <meta-data
-70-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:25:13-27:85
-71                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
-71-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:26:17-120
-72                android:value="com.google.firebase.components.ComponentRegistrar" />
-72-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:27:17-82
-73            <meta-data
-73-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:28:13-30:85
-74                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
-74-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:29:17-117
-75                android:value="com.google.firebase.components.ComponentRegistrar" />
-75-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:30:17-82
-76            <meta-data
-76-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:33:13-35:85
-77                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
-77-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:34:17-139
-78                android:value="com.google.firebase.components.ComponentRegistrar" />
-78-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:35:17-82
-79            <meta-data
-79-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:15:13-17:85
-80                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
-80-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:16:17-130
-81                android:value="com.google.firebase.components.ComponentRegistrar" />
-81-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:17:17-82
-82            <meta-data
-82-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:18:13-20:85
-83                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
-83-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:19:17-127
-84                android:value="com.google.firebase.components.ComponentRegistrar" />
-84-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:20:17-82
-85            <meta-data
-85-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
-86                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
-86-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
-87                android:value="com.google.firebase.components.ComponentRegistrar" />
-87-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
-88            <meta-data
-88-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
-89                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
-89-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:36:17-109
-90                android:value="com.google.firebase.components.ComponentRegistrar" />
-90-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:37:17-82
-91        </service>
-92
-93        <provider
-93-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
-94            android:name="com.google.firebase.provider.FirebaseInitProvider"
-94-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:24:13-77
-95            android:authorities="io.github.drawguess.firebaseinitprovider"
-95-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:25:13-72
-96            android:directBootAware="true"
-96-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:26:13-43
-97            android:exported="false"
-97-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:27:13-37
-98            android:initOrder="100" />
-98-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:28:13-36
-99
-100        <receiver
-100-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:29:9-33:20
-101            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
-101-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:30:13-85
-102            android:enabled="true"
-102-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:31:13-35
-103            android:exported="false" >
-103-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:32:13-37
-104        </receiver>
-105
-106        <service
-106-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:35:9-38:40
-107            android:name="com.google.android.gms.measurement.AppMeasurementService"
-107-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:36:13-84
-108            android:enabled="true"
-108-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:37:13-35
-109            android:exported="false" />
-109-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:38:13-37
-110        <service
-110-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:39:9-43:72
-111            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
-111-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:40:13-87
-112            android:enabled="true"
-112-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:41:13-35
-113            android:exported="false"
-113-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:42:13-37
-114            android:permission="android.permission.BIND_JOB_SERVICE" />
-114-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:43:13-69
-115
-116        <activity
-116-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
-117            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-117-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
-118            android:exported="false"
-118-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
-119            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-119-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
-120
-121        <uses-library
-121-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:23:9-25:40
-122            android:name="android.ext.adservices"
-122-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:24:13-50
-123            android:required="false" />
-123-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:25:13-37
-124
-125        <meta-data
-125-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:21:9-23:69
-126            android:name="com.google.android.gms.version"
-126-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:22:13-58
-127            android:value="@integer/google_play_services_version" />
-127-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:23:13-66
-128
-129        <provider
-129-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:24:9-32:20
-130            android:name="androidx.startup.InitializationProvider"
-130-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:25:13-67
-131            android:authorities="io.github.drawguess.androidx-startup"
-131-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:26:13-68
-132            android:exported="false" >
-132-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:27:13-37
-133            <meta-data
-133-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
-134                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-134-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
-135                android:value="androidx.startup" />
-135-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
-136        </provider>
-137
-138        <receiver
-138-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
-139            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-139-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
-140            android:directBootAware="false"
-140-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
-141            android:enabled="true"
-141-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
-142            android:exported="true"
-142-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
-143            android:permission="android.permission.DUMP" >
-143-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
-144            <intent-filter>
-144-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
-145                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-145-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
-145-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
-146            </intent-filter>
-147            <intent-filter>
-147-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
-148                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-148-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
-148-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
-149            </intent-filter>
-150            <intent-filter>
-150-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
-151                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-151-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
-151-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
-152            </intent-filter>
-153            <intent-filter>
-153-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
-154                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-154-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
-154-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
-155            </intent-filter>
-156        </receiver>
-157    </application>
-158
-159</manifest>
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:5:3-64
+11-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:5:20-62
+12
+13    <uses-feature
+13-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:6:3-75
+14        android:glEsVersion="0x00020000"
+14-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:6:17-49
+15        android:required="true" />
+15-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:6:50-73
+16
+17    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+18    <!-- <uses-sdk android:minSdkVersion="21" /> -->
+19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+19-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
+19-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:22-76
+20    <uses-permission android:name="android.permission.WAKE_LOCK" />
+20-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:24:5-68
+20-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:24:22-65
+21    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+21-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:25:5-79
+21-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:25:22-76
+22    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+22-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:26:5-88
+22-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:26:22-85
+23    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+23-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:27:5-82
+23-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:27:22-79
+24    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+24-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:26:5-110
+24-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:26:22-107
+25
+26    <permission
+26-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+27        android:name="io.github.drawguess.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+27-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+28        android:protectionLevel="signature" />
+28-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+29
+30    <uses-permission android:name="io.github.drawguess.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+30-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+30-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+31
+32    <application
+32-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:8:3-28:17
+33        android:allowBackup="true"
+33-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:9:7-33
+34        android:appCategory="game"
+34-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:13:7-33
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+36        android:extractNativeLibs="true"
+37        android:fullBackupContent="true"
+37-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:10:7-39
+38        android:icon="@drawable/ic_launcher"
+38-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:11:7-43
+39        android:isGame="true"
+39-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:12:7-28
+40        android:label="@string/app_name"
+40-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:14:7-39
+41        android:theme="@style/GdxTheme" >
+41-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:16:7-38
+42        <activity
+42-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:17:5-27:16
+43            android:name="io.github.drawguess.android.AndroidLauncher"
+43-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:18:9-67
+44            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+44-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:21:9-103
+45            android:exported="true"
+45-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:22:9-32
+46            android:label="@string/app_name"
+46-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:19:9-41
+47            android:screenOrientation="portrait" >
+47-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:20:9-45
+48            <intent-filter>
+48-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:23:9-26:23
+49                <action android:name="android.intent.action.MAIN" />
+49-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:24:9-60
+49-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:24:17-58
+50
+51                <category android:name="android.intent.category.LAUNCHER" />
+51-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:25:9-68
+51-->/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:25:19-66
+52            </intent-filter>
+53        </activity>
+54
+55        <service
+55-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
+56            android:name="com.google.firebase.components.ComponentDiscoveryService"
+56-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:15:13-84
+57            android:directBootAware="true"
+57-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+58            android:exported="false" >
+58-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:16:13-37
+59            <meta-data
+59-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:17:13-19:85
+60                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+60-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:18:17-122
+61                android:value="com.google.firebase.components.ComponentRegistrar" />
+61-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:19:17-82
+62            <meta-data
+62-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:20:13-22:85
+63                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+63-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:21:17-111
+64                android:value="com.google.firebase.components.ComponentRegistrar" />
+64-->[com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:22:17-82
+65            <meta-data
+65-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:30:13-32:85
+66                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
+66-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:31:17-118
+67                android:value="com.google.firebase.components.ComponentRegistrar" />
+67-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:32:17-82
+68            <meta-data
+68-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:33:13-35:85
+69                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+69-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:34:17-107
+70                android:value="com.google.firebase.components.ComponentRegistrar" />
+70-->[com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:35:17-82
+71            <meta-data
+71-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:25:13-27:85
+72                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+72-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:26:17-120
+73                android:value="com.google.firebase.components.ComponentRegistrar" />
+73-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:27:17-82
+74            <meta-data
+74-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:28:13-30:85
+75                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
+75-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:29:17-117
+76                android:value="com.google.firebase.components.ComponentRegistrar" />
+76-->[com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:30:17-82
+77            <meta-data
+77-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:33:13-35:85
+78                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+78-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:34:17-139
+79                android:value="com.google.firebase.components.ComponentRegistrar" />
+79-->[com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:35:17-82
+80            <meta-data
+80-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:15:13-17:85
+81                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+81-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:16:17-130
+82                android:value="com.google.firebase.components.ComponentRegistrar" />
+82-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:17:17-82
+83            <meta-data
+83-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:18:13-20:85
+84                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+84-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:19:17-127
+85                android:value="com.google.firebase.components.ComponentRegistrar" />
+85-->[com.google.firebase:firebase-installations:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c6ad1a1964163f92ccf66b32c9c1534f/transformed/firebase-installations-18.0.0/AndroidManifest.xml:20:17-82
+86            <meta-data
+86-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+87                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+87-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+88                android:value="com.google.firebase.components.ComponentRegistrar" />
+88-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7c522091ab98396394021b6eeec4239a/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+89            <meta-data
+89-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+90                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+90-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+91                android:value="com.google.firebase.components.ComponentRegistrar" />
+91-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+92        </service>
+93
+94        <provider
+94-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+95            android:name="com.google.firebase.provider.FirebaseInitProvider"
+95-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+96            android:authorities="io.github.drawguess.firebaseinitprovider"
+96-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+97            android:directBootAware="true"
+97-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+98            android:exported="false"
+98-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+99            android:initOrder="100" />
+99-->[com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+100
+101        <receiver
+101-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:29:9-33:20
+102            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+102-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:30:13-85
+103            android:enabled="true"
+103-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:31:13-35
+104            android:exported="false" >
+104-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:32:13-37
+105        </receiver>
+106
+107        <service
+107-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:35:9-38:40
+108            android:name="com.google.android.gms.measurement.AppMeasurementService"
+108-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:36:13-84
+109            android:enabled="true"
+109-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:37:13-35
+110            android:exported="false" />
+110-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:38:13-37
+111        <service
+111-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:39:9-43:72
+112            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+112-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:40:13-87
+113            android:enabled="true"
+113-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:41:13-35
+114            android:exported="false"
+114-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:42:13-37
+115            android:permission="android.permission.BIND_JOB_SERVICE" />
+115-->[com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:43:13-69
+116
+117        <activity
+117-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+118            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+118-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+119            android:exported="false"
+119-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+120            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+120-->[com.google.android.gms:play-services-base:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e72c7136ad3742303683cd4b7a4a2930/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+121
+122        <uses-library
+122-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:23:9-25:40
+123            android:name="android.ext.adservices"
+123-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:24:13-50
+124            android:required="false" />
+124-->[androidx.privacysandbox.ads:ads-adservices:1.1.0-beta11] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c050b6cc8fc957116740fb124a6986d7/transformed/ads-adservices-1.1.0-beta11/AndroidManifest.xml:25:13-37
+125
+126        <meta-data
+126-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:21:9-23:69
+127            android:name="com.google.android.gms.version"
+127-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:22:13-58
+128            android:value="@integer/google_play_services_version" />
+128-->[com.google.android.gms:play-services-basement:18.5.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/e761686e2fb0c81a5f52c023ba819e4d/transformed/play-services-basement-18.5.0/AndroidManifest.xml:23:13-66
+129
+130        <provider
+130-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:24:9-32:20
+131            android:name="androidx.startup.InitializationProvider"
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:25:13-67
+132            android:authorities="io.github.drawguess.androidx-startup"
+132-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:26:13-68
+133            android:exported="false" >
+133-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:27:13-37
+134            <meta-data
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+135                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+135-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+136                android:value="androidx.startup" />
+136-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+137        </provider>
+138
+139        <receiver
+139-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+140            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+140-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+141            android:directBootAware="false"
+141-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+142            android:enabled="true"
+142-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+143            android:exported="true"
+143-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+144            android:permission="android.permission.DUMP" >
+144-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+145            <intent-filter>
+145-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+146                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+146-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+146-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+147            </intent-filter>
+148            <intent-filter>
+148-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+149                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+149-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+149-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+150            </intent-filter>
+151            <intent-filter>
+151-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+152                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+152-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+152-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+153            </intent-filter>
+154            <intent-filter>
+154-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+155                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+155-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+155-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d736d14f63ddc343c44ce3ea8f4a6f5c/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+156            </intent-filter>
+157        </receiver>
+158    </application>
+159
+160</manifest>

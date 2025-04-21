@@ -17,7 +17,7 @@
       proguardRules="proguard.txt"/>
   <library
       name=":@@:core"
-      jars="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/core/build/libs/core-1.0.0.jar"
+      jars="/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/core/build/libs/core-1.0.0.jar"
       resolved="::"/>
   <library
       name="com.google.firebase:firebase-analytics:22.4.0@aar"

@@ -3145,7 +3145,41 @@
             "outputFile": "io.github.drawguess.android-release-21:/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/values/styles.xml",
+                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/build/generated/res/processReleaseGoogleServices/values/values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,137,241,350,470,577",
+                        "endColumns": "81,103,108,119,106,75",
+                        "endOffsets": "132,236,345,465,572,648"
+                    },
+                    "to": {
+                        "startLines": "124,125,126,127,128,129",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "9038,9120,9224,9333,9453,9560",
+                        "endColumns": "81,103,108,119,106,75",
+                        "endOffsets": "9115,9219,9328,9448,9555,9631"
+                    }
+                },
+                {
+                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/values/strings.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "2",
+                        "startOffsets": "53",
+                        "endColumns": "44",
+                        "endOffsets": "95"
+                    },
+                    "to": {
+                        "startLines": "98",
+                        "startColumns": "4",
+                        "startOffsets": "6147",
+                        "endColumns": "46",
+                        "endOffsets": "6189"
+                    }
+                },
+                {
+                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/values/styles.xml",
                     "from": {
                         "startLines": "1",
                         "startColumns": "4",
@@ -3164,37 +3198,20 @@
                     }
                 },
                 {
-                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/values/strings.xml",
+                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/res/values/color.xml",
                     "from": {
                         "startLines": "2",
-                        "startColumns": "2",
-                        "startOffsets": "53",
-                        "endColumns": "44",
-                        "endOffsets": "95"
-                    },
-                    "to": {
-                        "startLines": "98",
                         "startColumns": "4",
-                        "startOffsets": "6147",
-                        "endColumns": "46",
-                        "endOffsets": "6189"
-                    }
-                },
-                {
-                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/build/generated/res/processReleaseGoogleServices/values/values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "55,137,241,350,470,577",
-                        "endColumns": "81,103,108,119,106,75",
-                        "endOffsets": "132,236,345,465,572,648"
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
                     },
                     "to": {
-                        "startLines": "124,125,126,127,128,129",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "9038,9120,9224,9333,9453,9560",
-                        "endColumns": "81,103,108,119,106,75",
-                        "endOffsets": "9115,9219,9328,9448,9555,9631"
+                        "startLines": "15",
+                        "startColumns": "4",
+                        "startOffsets": "1127",
+                        "endColumns": "55",
+                        "endOffsets": "1178"
                     }
                 },
                 {
@@ -3231,23 +3248,6 @@
                         "endLines": "7,8,9,10,11,12,13,14,106,107,108,109,110,111,112,113,115,116,117,118,119,120,121,122,123,273,292",
                         "endColumns": "89,79,89,89,79,80,79,79,104,180,124,106,179,122,115,102,187,104,180,124,174,147,62,61,78,20,20",
                         "endOffsets": "541,621,711,801,881,962,1042,1122,6805,6986,7111,7218,7398,7521,7637,7740,8095,8200,8381,8506,8681,8829,8892,8954,9033,15144,15561"
-                    }
-                },
-                {
-                    "source": "/Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240 copy/android/res/values/color.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "55",
-                        "endOffsets": "106"
-                    },
-                    "to": {
-                        "startLines": "15",
-                        "startColumns": "4",
-                        "startOffsets": "1127",
-                        "endColumns": "55",
-                        "endOffsets": "1178"
                     }
                 },
                 {

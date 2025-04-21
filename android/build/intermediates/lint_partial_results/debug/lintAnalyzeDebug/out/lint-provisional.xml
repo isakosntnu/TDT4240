@@ -14,12 +14,12 @@
             value="fullSensor"/>
         <location
             file="${:android*debug*MAIN*sourceProvider*0*manifest*0}"
-            line="17"
+            line="20"
             column="9"
-            startOffset="671"
-            endLine="17"
+            startOffset="741"
+            endLine="20"
             endColumn="45"
-            endOffset="707"/>
+            endOffset="777"/>
         <map>
             <condition library="false"/>
         </map>

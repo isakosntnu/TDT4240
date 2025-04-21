@@ -11,12 +11,12 @@
             attribute="label"/>
         <location
             file="${:android*debug*MAIN*sourceProvider*0*manifest*0}"
-            line="16"
+            line="19"
             column="9"
-            startOffset="630"
-            endLine="16"
+            startOffset="700"
+            endLine="19"
             endColumn="41"
-            endOffset="662"/>
+            endOffset="732"/>
     </incident>
 
     <incident
@@ -25,12 +25,12 @@
         message="Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed.">
         <location
             file="${:android*debug*MAIN*sourceProvider*0*manifest*0}"
-            line="17"
+            line="20"
             column="9"
-            startOffset="671"
-            endLine="17"
+            startOffset="741"
+            endLine="20"
             endColumn="45"
-            endOffset="707"/>
+            endOffset="777"/>
     </incident>
 
     <incident

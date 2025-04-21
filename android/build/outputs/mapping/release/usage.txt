@@ -13280,9 +13280,12 @@ com.google.firebase.firestore.Blob:
     public byte[] toBytes()
 com.google.firebase.firestore.BuildConfig
 com.google.firebase.firestore.CollectionReference:
+    public com.google.android.gms.tasks.Task add(java.lang.Object)
+    public com.google.firebase.firestore.DocumentReference document()
     public java.lang.String getId()
     public com.google.firebase.firestore.DocumentReference getParent()
     public java.lang.String getPath()
+    private static synthetic com.google.firebase.firestore.DocumentReference lambda$add$0(com.google.firebase.firestore.DocumentReference,com.google.android.gms.tasks.Task)
 com.google.firebase.firestore.DocumentChange$1
 com.google.firebase.firestore.DocumentChange$Type
 com.google.firebase.firestore.DocumentChange
@@ -13299,6 +13302,7 @@ com.google.firebase.firestore.DocumentReference:
     public com.google.android.gms.tasks.Task delete()
     public com.google.android.gms.tasks.Task get()
     public com.google.android.gms.tasks.Task get(com.google.firebase.firestore.Source)
+    public java.lang.String getId()
     com.google.firebase.firestore.model.DocumentKey getKey()
     public com.google.firebase.firestore.CollectionReference getParent()
     private com.google.android.gms.tasks.Task getViaSnapshotListener(com.google.firebase.firestore.Source)
@@ -14513,6 +14517,7 @@ com.google.firebase.firestore.util.Util:
     private static final java.lang.String AUTO_ID_ALPHABET
     private static final int AUTO_ID_LENGTH
     public void <init>()
+    public static java.lang.String autoId()
     public static varargs java.util.List collectUpdateArguments(int,java.lang.Object,java.lang.Object,java.lang.Object[])
     public static java.lang.Exception convertThrowableToException(java.lang.Throwable)
     public static void diffCollections(java.util.Collection,java.util.Collection,java.util.Comparator,com.google.firebase.firestore.util.Consumer,com.google.firebase.firestore.util.Consumer)
@@ -19292,6 +19297,8 @@ io.github.drawguess.R$style
 io.github.drawguess.R
 io.github.drawguess.android.AndroidFirebase:
     public void joinGame(java.lang.String,java.lang.String)
+    private static synthetic void lambda$joinGame$4(java.lang.String,java.lang.Void)
+    private static synthetic void lambda$joinGame$5(java.lang.Exception)
     public void sendGuess(java.lang.String)
 io.github.drawguess.controller.DrawingController:
     public void dispose()
@@ -19300,6 +19307,9 @@ io.github.drawguess.controller.DrawingController:
 io.github.drawguess.factory.PlayerFactory:
     public void <init>()
     public static io.github.drawguess.model.Player createPlayer(java.lang.String)
+io.github.drawguess.factory.ToolButtonFactory:
+    private static final float SELECTED_OFFSET
+    public void <init>()
 io.github.drawguess.manager.GameManager:
     public void setPlayerId(java.lang.String)
 io.github.drawguess.model.GameSession:
@@ -19311,6 +19321,9 @@ io.github.drawguess.model.Player:
     public boolean isHost()
     public void setHost(boolean)
     public void setScore(int)
+io.github.drawguess.model.WordBank:
+    public void addWord(java.lang.String)
+    public java.util.List getAllWords()
 io.github.drawguess.model.ecs.components.ToolComponent:
     public void <init>(io.github.drawguess.model.ecs.components.ToolComponent$ToolType)
 io.github.drawguess.model.ecs.entities.ToolFactory:
@@ -19321,13 +19334,8 @@ io.github.drawguess.model.ecs.systems.DrawingSystem:
 io.github.drawguess.server.FirebaseInterface:
     public abstract void joinGame(java.lang.String,java.lang.String)
     public abstract void sendGuess(java.lang.String)
-io.github.drawguess.view.GuessingScreen$1
-io.github.drawguess.view.GuessingScreen
 io.github.drawguess.view.LeaderboardScreen$1
 io.github.drawguess.view.LeaderboardScreen
-io.github.drawguess.view.ToolButtonFactory:
-    private static final float SELECTED_OFFSET
-    public void <init>()
 io.github.drawguess.view.WaitingScreen:
     public void updatePlayerStatus(java.lang.String,boolean)
 io.grpc.Attributes$Builder:
@@ -28657,8 +28665,8 @@ com.google.firebase.firestore.local.QueryEngine:
 com.google.firebase.firestore.local.QueryResult
 com.google.firebase.firestore.local.RemoteDocumentCache:
     public abstract java.util.Map getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,java.util.Set,com.google.firebase.firestore.local.QueryContext)
-com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$5$3446fe378fe58dab2d75ebcfb00052574c0ec72734330cfbbd96bca585c30617$0
-com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$5$915de82ef2394678f778d0c44e83caf40c68a22bb7ce29210e96db32f13b21fa$0
+com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$4$3446fe378fe58dab2d75ebcfb00052574c0ec72734330cfbbd96bca585c30617$0
+com.google.firebase.firestore.local.SQLiteDocumentOverlayCache$$InternalSyntheticLambda$4$915de82ef2394678f778d0c44e83caf40c68a22bb7ce29210e96db32f13b21fa$0
 com.google.firebase.firestore.local.SQLiteDocumentOverlayCache:
     public static synthetic void $r8$lambda$hKwONITuiRtpyfIIBFHT6yeiEqI(com.google.firebase.firestore.local.SQLiteDocumentOverlayCache,com.google.firebase.firestore.util.BackgroundQueue,java.util.Map,android.database.Cursor)
     public static synthetic com.google.firebase.firestore.model.mutation.Overlay $r8$lambda$lRDgjweRmpSNrzolJ-A40AuYyRo(com.google.firebase.firestore.local.SQLiteDocumentOverlayCache,android.database.Cursor)
@@ -28666,7 +28674,7 @@ com.google.firebase.firestore.local.SQLiteDocumentOverlayCache:
     public java.util.Map getOverlays(com.google.firebase.firestore.model.ResourcePath,int)
     private synthetic com.google.firebase.firestore.model.mutation.Overlay lambda$getOverlay$0(android.database.Cursor)
     private synthetic void lambda$getOverlays$2(com.google.firebase.firestore.util.BackgroundQueue,java.util.Map,android.database.Cursor)
-com.google.firebase.firestore.local.SQLiteIndexManager$$InternalSyntheticLambda$5$8f10e37c87caa0bfe8a32ccd0cb606ace7765ad00991f493886a4971bc03004a$0
+com.google.firebase.firestore.local.SQLiteIndexManager$$InternalSyntheticLambda$4$8f10e37c87caa0bfe8a32ccd0cb606ace7765ad00991f493886a4971bc03004a$0
 com.google.firebase.firestore.local.SQLiteIndexManager:
     public static synthetic void $r8$lambda$Yy7PlQHFVvSSgvg6Z1tYJ9YGI0E(java.util.List,android.database.Cursor)
     public void addFieldIndex(com.google.firebase.firestore.model.FieldIndex)
@@ -28685,13 +28693,13 @@ com.google.firebase.firestore.local.SQLiteIndexManager:
     private java.util.List getSubTargets(com.google.firebase.firestore.core.Target)
     private boolean isInFilter(com.google.firebase.firestore.core.Target,com.google.firebase.firestore.model.FieldPath)
     private static synthetic void lambda$getDocumentsMatchingTarget$7(java.util.List,android.database.Cursor)
-com.google.firebase.firestore.local.SQLiteRemoteDocumentCache$$InternalSyntheticLambda$5$9cb4254bb8d0ed620cab88385d40cceb447970e4e842bd62cf164f7916975cc4$0
+com.google.firebase.firestore.local.SQLiteRemoteDocumentCache$$InternalSyntheticLambda$4$9cb4254bb8d0ed620cab88385d40cceb447970e4e842bd62cf164f7916975cc4$0
 com.google.firebase.firestore.local.SQLiteRemoteDocumentCache:
     public static synthetic java.lang.Boolean $r8$lambda$BYN3GWXS42QHGMGsgiAZDrIZ20w(com.google.firebase.firestore.core.Query,java.util.Set,com.google.firebase.firestore.model.MutableDocument)
     public java.util.Map getDocumentsMatchingQuery(com.google.firebase.firestore.core.Query,com.google.firebase.firestore.model.FieldIndex$IndexOffset,java.util.Set,com.google.firebase.firestore.local.QueryContext)
     private static synthetic java.lang.Boolean lambda$getDocumentsMatchingQuery$3(com.google.firebase.firestore.core.Query,java.util.Set,com.google.firebase.firestore.model.MutableDocument)
-com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$5$408378636accc9e4179a2693369aee164bbb047981da0afdc1a782074a9622c9$0
-com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$5$cf69cbfc75a579b9ca3b6ce3651e44d08c6e0a5f225fa69316a10ff0682dbba2$0
+com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$4$408378636accc9e4179a2693369aee164bbb047981da0afdc1a782074a9622c9$0
+com.google.firebase.firestore.local.SQLiteTargetCache$$InternalSyntheticLambda$4$cf69cbfc75a579b9ca3b6ce3651e44d08c6e0a5f225fa69316a10ff0682dbba2$0
 com.google.firebase.firestore.local.SQLiteTargetCache$1
 com.google.firebase.firestore.local.SQLiteTargetCache$DocumentKeysHolder
 com.google.firebase.firestore.local.SQLiteTargetCache$TargetDataHolder
@@ -28713,7 +28721,7 @@ com.google.firebase.firestore.model.DocumentSet:
     public boolean isEmpty()
 com.google.firebase.firestore.model.FieldIndex$IndexOffset:
     public static com.google.firebase.firestore.model.FieldIndex$IndexOffset createSuccessor(com.google.firebase.firestore.model.SnapshotVersion,int)
-com.google.firebase.firestore.model.TargetIndexMatcher$$InternalSyntheticLambda$5$08942c9dcc4a5c9b9d2d3d8b34b359c0fd7f755abd6317f34e25a9102d238222$0
+com.google.firebase.firestore.model.TargetIndexMatcher$$InternalSyntheticLambda$4$08942c9dcc4a5c9b9d2d3d8b34b359c0fd7f755abd6317f34e25a9102d238222$0
 com.google.firebase.firestore.model.TargetIndexMatcher
 com.google.firebase.firestore.model.Values:
     public static com.google.firestore.v1.Value getLowerBound(com.google.firestore.v1.Value)

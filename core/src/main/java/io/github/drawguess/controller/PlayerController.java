@@ -27,7 +27,7 @@ public class PlayerController {
             return;
         }
 
-        // 1️⃣ Lag PNG-bilde i minne
+        // Tegn til PNG-data
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         PixmapIO.PNG writer = new PixmapIO.PNG();
@@ -41,23 +41,29 @@ public class PlayerController {
             return;
         } finally {
             writer.dispose();
-            try { dos.close(); } catch (Exception ignored) {}
+            try {
+                dos.close();
+            } catch (Exception ignored) {}
         }
 
         byte[] pngData = baos.toByteArray();
         Gdx.app.log("PlayerController", "Encoded PNG, size: " + pngData.length + " bytes");
 
-        // 2️⃣ Last opp til Firebase
         String playerId = GameManager.getInstance().getPlayerId();
         String gameId = session.getGameId();
 
+        // Hent ordet spilleren skulle tegne
+        final String word = session.getWordForPlayer(playerId);
+        final String finalWord = (word == null || word.isEmpty()) ? "unknown" : word;
+
+        // Last opp bildet
         game.getFirebase().uploadDrawing(
                 gameId,
                 playerId,
                 pngData,
                 url -> {
                     Gdx.app.log("PlayerController", "Upload succeeded: " + url);
-                    game.getFirebase().setPlayerFinished(gameId, playerId, url);
+                    game.getFirebase().setPlayerFinished(gameId, playerId, url, finalWord);
                     Player me = session.getPlayerById(playerId);
                     if (me != null) me.setFinishedDrawing(true);
                 },

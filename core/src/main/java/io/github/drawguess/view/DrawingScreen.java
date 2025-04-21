@@ -13,10 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.controller.DrawingController;
+import io.github.drawguess.controller.GameController;
 import io.github.drawguess.controller.PlayerController;
 import io.github.drawguess.controller.SizeController;
-
-
+import io.github.drawguess.factory.ToolButtonFactory;
+import io.github.drawguess.manager.GameManager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -55,6 +56,9 @@ public class DrawingScreen implements Screen {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
         float iconSize = screenHeight * 0.08f;
+
+        // Game controller init
+        GameController gameController = GameManager.getInstance().getGameController();
 
         // UI skin for buttons
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -186,9 +190,11 @@ public class DrawingScreen implements Screen {
             );
             index++;
         }
-
+    
         ToolButtonFactory.selectInitialColor(controller.getSelectedColor());
         controller.selectPen(controller.getSelectedColor(), currentSize);
+
+        // Finish button
 
         TextButton finishButton = new TextButton("FINISH DRAWING", skin);
         float finishWidth = screenWidth * 0.28f;
@@ -196,13 +202,12 @@ public class DrawingScreen implements Screen {
         finishButton.setSize(finishWidth, finishHeight);
         finishButton.setPosition(20, screenHeight - finishHeight - 20);
 
-        // Dynamisk fontskalering basert på knappestørrelse
         BitmapFont font = finishButton.getLabel().getStyle().font;
         GlyphLayout layout = new GlyphLayout(font, finishButton.getText());
 
         float scaleX = (finishWidth * 0.9f) / layout.width;
         float scaleY = (finishHeight * 0.8f) / layout.height;
-        float finalScale = Math.min(scaleX, scaleY); // Ikke større enn høyde/bredde
+        float finalScale = Math.min(scaleX, scaleY); 
 
         finishButton.getLabel().setFontScale(finalScale);
 
@@ -220,6 +225,38 @@ public class DrawingScreen implements Screen {
         });
         
         stage.addActor(finishButton);
+
+
+        // Word to draw
+        String wordToDraw = gameController.getRandomWord();
+        GameManager.getInstance().getSession().setWordForPlayer(GameManager.getInstance().getPlayerId(), wordToDraw);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
+
+        // "Draw:" label
+        Label drawLabel = new Label("Draw:", labelStyle);
+        float drawFontScale = screenHeight * 0.0016f;
+        drawLabel.setFontScale(drawFontScale);
+
+        // Word label
+        Label wordLabel = new Label(wordToDraw, labelStyle);
+        wordLabel.setFontScale(drawFontScale);
+
+        // Mål opp bredde og beregn midtstilt posisjon
+        GlyphLayout layoutDraw = new GlyphLayout(drawLabel.getStyle().font, drawLabel.getText());
+        GlyphLayout layoutWord = new GlyphLayout(wordLabel.getStyle().font, wordLabel.getText());
+
+        float textWidth = Math.max(layoutDraw.width, layoutWord.width) * drawFontScale;
+        float wordCenter = (finishButton.getX() + editToolButton.getX() + editToolButton.getWidth()) / 2f;
+        float wordCenterX = wordCenter - (textWidth / 2f);
+
+        // Plasser "Draw:" litt høyere
+        drawLabel.setPosition(wordCenterX, screenHeight * 0.97f);
+        // Plasser ordet rett under
+        wordLabel.setPosition(wordCenterX, screenHeight * 0.945f);
+
+        stage.addActor(drawLabel);
+        stage.addActor(wordLabel);
 
 
         // Input

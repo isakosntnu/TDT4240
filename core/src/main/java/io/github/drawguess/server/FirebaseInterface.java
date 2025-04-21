@@ -13,12 +13,15 @@ public interface FirebaseInterface {
                        byte[] pngData,
                        SuccessCallback<String> onSuccess,
                        FailureCallback onError);
+    
+    void getPlayerDrawingUrl(String gameId, 
+                            String playerId, 
+                            SuccessCallback<String> onSuccess, 
+                            FailureCallback onError);
 
-    void setPlayerFinished(String gameId,
-                           String playerId,
-                           String drawingUrl);
-
-    // Callback-typer
+    
+    
+    void setPlayerFinished(String gameId, String playerId, String drawingUrl, String word);
     interface SuccessCallback<T> {
         void onSuccess(T result);
     }
@@ -26,4 +29,8 @@ public interface FirebaseInterface {
     interface FailureCallback {
         void onFailure(Exception e);
     }
+
+    public void getPlayerWord(String gameId, String playerId,
+                              SuccessCallback<String> onSuccess,
+                              FailureCallback onError);
 }
