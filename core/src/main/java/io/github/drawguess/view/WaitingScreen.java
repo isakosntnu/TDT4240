@@ -5,17 +5,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-
-import java.util.HashMap;
-import java.util.Map;
-
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.model.GameSession;
-import io.github.drawguess.model.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WaitingScreen implements Screen {
 
@@ -29,11 +26,15 @@ public class WaitingScreen implements Screen {
     private Table playerTable;
     private Map<String, Label> statusLabels;
 
-    private TextButton nextRound;
     private Label messageLabel;
 
     private float updateTimer = 0f;
     private static final float UPDATE_INTERVAL = 1.0f;
+
+    // —— AUTO‑ADVANCE FIELDS ——
+    private boolean allFinished = false;
+    private int pauseTimeLeft;
+    private Timer.Task pauseTask;
 
     public WaitingScreen(DrawGuessMain game) {
         this.game = game;
@@ -66,40 +67,6 @@ public class WaitingScreen implements Screen {
         // Statusbeskjed
         messageLabel = new Label("", skin);
         rootTable.add(messageLabel).padBottom(20).row();
-
-        // Neste runde-knapp
-        nextRound = new TextButton("Next Round", skin);
-        nextRound.getLabel().setFontScale(screenHeight * 0.0015f);
-        rootTable.add(nextRound).expandY().bottom().padBottom(30);
-
-        nextRound.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                messageLabel.setText("Loading drawing...");
-                nextRound.setDisabled(true);
-
-                String gameId = session.getGameId();
-                String drawingPlayerId = session.getHostPlayer().getId(); // evt. annen spiller
-
-                game.getFirebase().getPlayerDrawingUrl(
-                    gameId,
-                    drawingPlayerId,
-                    url -> Gdx.app.postRunnable(() -> {
-                        if (url != null && !url.isEmpty()) {
-                            game.setScreen(new DrawingViewerScreen(game, url));
-                        } else {
-                            messageLabel.setText("Drawing not uploaded yet. Try again soon.");
-                            nextRound.setDisabled(false);
-                        }
-                    }),
-                    error -> Gdx.app.postRunnable(() -> {
-                        messageLabel.setText("Error fetching drawing. Try again.");
-                        nextRound.setDisabled(false);
-                    })
-                );
-            }
-        });
-
     }
 
     private void addPlayerRow(String playerName, boolean isFinished) {
@@ -117,7 +84,7 @@ public class WaitingScreen implements Screen {
         playerTable.add(statusLabel).right().row();
     }
 
-    public void updatePlayerStatus(String playerName, boolean isFinished) {
+    private void updatePlayerStatus(String playerName, boolean isFinished) {
         Label statusLabel = statusLabels.get(playerName);
         if (statusLabel != null) {
             statusLabel.setText(isFinished ? "Finished" : "Drawing");
@@ -127,39 +94,78 @@ public class WaitingScreen implements Screen {
     private void updatePlayerStatuses() {
         String gameId = session.getGameId();
         game.getFirebase().getPlayersWithStatus(
-            gameId,
-            playerStatuses -> Gdx.app.postRunnable(() -> {
-                for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
-                    String name = entry.getKey();
-                    boolean isFinished = entry.getValue();
-    
-
-                    if (!statusLabels.containsKey(name)) {
-                        addPlayerRow(name, isFinished);
-                    } else {
-                        updatePlayerStatus(name, isFinished);
+                gameId,
+                playerStatuses -> Gdx.app.postRunnable(() -> {
+                    // populate/update table
+                    for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                        String name = entry.getKey();
+                        boolean isFinished = entry.getValue();
+                        if (!statusLabels.containsKey(name)) {
+                            addPlayerRow(name, isFinished);
+                        } else {
+                            updatePlayerStatus(name, isFinished);
+                        }
                     }
-                }
-            }),
-            e -> Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e)
+
+                    // detect when everyone is finished
+                    if (!allFinished) {
+                        boolean nowAll = playerStatuses.values().stream().allMatch(f -> f);
+                        if (nowAll) {
+                            allFinished = true;
+                            startPauseCountdown();
+                        }
+                    }
+                }),
+                e -> Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e)
         );
     }
-    
-    
-    
+
+    private void startPauseCountdown() {
+        pauseTimeLeft = 5;
+        messageLabel.setText("Next round in " + pauseTimeLeft + "s");
+        pauseTask = new Timer.Task() {
+            @Override public void run() {
+                pauseTimeLeft--;
+                if (pauseTimeLeft > 0) {
+                    messageLabel.setText("Next round in " + pauseTimeLeft + "s");
+                } else {
+                    cancel();
+                    goToNextRound();
+                }
+            }
+        };
+        // runs once per second, 5 times
+        Timer.schedule(pauseTask, 1, 1, pauseTimeLeft);
+    }
+
+    private void goToNextRound() {
+        messageLabel.setText("Loading drawing...");
+        String gameId = session.getGameId();
+        String drawingPlayerId = session.getHostPlayer().getId();
+        game.getFirebase().getPlayerDrawingUrl(
+                gameId,
+                drawingPlayerId,
+                url -> Gdx.app.postRunnable(() -> {
+                    if (url != null && !url.isEmpty()) {
+                        game.setScreen(new DrawingViewerScreen(game, url));
+                    } else {
+                        messageLabel.setText("Drawing not uploaded yet.");
+                    }
+                }),
+                error -> Gdx.app.postRunnable(() -> messageLabel.setText("Error loading drawing."))
+        );
+    }
 
     @Override
     public void render(float delta) {
         updateTimer += delta;
         if (updateTimer >= UPDATE_INTERVAL) {
             updateTimer = 0f;
-            updatePlayerStatuses(); // 🔁
+            updatePlayerStatuses();
         }
-    
         stage.act(delta);
         stage.draw();
     }
-    
 
     @Override public void show() {}
     @Override public void resize(int width, int height) {

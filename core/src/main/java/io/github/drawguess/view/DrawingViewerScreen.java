@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
@@ -27,6 +28,12 @@ public class DrawingViewerScreen implements Screen {
     private TextField guessInput;
     private TextButton guessButton;
     private Label resultLabel;
+
+    // —— TIMER FIELDS ——
+    private Label timerLabel;
+    private int guessTimeLeft = 30;
+    private Timer.Task guessTimerTask;
+    private boolean hasGuessed = false;
 
     public DrawingViewerScreen(DrawGuessMain game, String imageUrl) {
         this.game = game;
@@ -50,6 +57,12 @@ public class DrawingViewerScreen implements Screen {
         float buttonHeight = sh * 0.065f;
         float fontScale = sh * 0.0018f;
 
+        // —— TIMER LABEL ——
+        timerLabel = new Label(String.valueOf(guessTimeLeft), skin);
+        timerLabel.setFontScale(fontScale * 1.2f);
+        timerLabel.setPosition(sw - 60, sh - 40);
+        stage.addActor(timerLabel);
+
         // Guess input
         guessInput = new TextField("", skin);
         guessInput.setMessageText("Write your guess...");
@@ -72,8 +85,8 @@ public class DrawingViewerScreen implements Screen {
         stage.addActor(resultLabel);
 
         guessButton.addListener(event -> {
-            if (event.toString().equals("touchDown")) {
-                checkGuess(guessInput.getText().trim());
+            if (event.toString().equals("touchDown") && !hasGuessed) {
+                submitGuessAndStopTimer(guessInput.getText().trim());
                 return true;
             }
             return false;
@@ -86,12 +99,43 @@ public class DrawingViewerScreen implements Screen {
         backButton.getLabel().setFontScale(fontScale);
         backButton.addListener(e -> {
             if (e.toString().equals("touchDown")) {
+                cancelTimer();
                 game.setScreen(new MenuScreen(game));
                 return true;
             }
             return false;
         });
         stage.addActor(backButton);
+
+        // —— START TIMER ——
+        guessTimerTask = new Timer.Task() {
+            @Override public void run() {
+                guessTimeLeft--;
+                timerLabel.setText(String.valueOf(guessTimeLeft));
+                if (guessTimeLeft <= 0) {
+                    cancel();
+                    if (!hasGuessed) {
+                        submitGuessAndStopTimer("");
+                    }
+                }
+            }
+        };
+        Timer.schedule(guessTimerTask, 1, 1, guessTimeLeft - 1);
+    }
+
+    private void submitGuessAndStopTimer(String guess) {
+        hasGuessed = true;
+        cancelTimer();
+        resultLabel.setText("Checking...");
+        checkGuess(guess);
+        guessButton.setDisabled(true);
+        guessInput.setDisabled(true);
+    }
+
+    private void cancelTimer() {
+        if (guessTimerTask != null) {
+            guessTimerTask.cancel();
+        }
     }
 
     private void loadImage(String url) {
@@ -102,28 +146,20 @@ public class DrawingViewerScreen implements Screen {
             int n;
             while ((n = in.read(buf)) != -1) out.write(buf, 0, n);
 
-            byte[] bytes = out.toByteArray();
-            Pixmap pixmap = new Pixmap(bytes, 0, bytes.length);
-
+            Pixmap pixmap = new Pixmap(out.toByteArray(), 0, out.size());
             Gdx.app.postRunnable(() -> {
-                float screenWidth = Gdx.graphics.getWidth();
-                float screenHeight = Gdx.graphics.getHeight();
-
                 Pixmap white = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
                 white.setColor(1, 1, 1, 1);
                 white.fill();
                 white.drawPixmap(pixmap, 0, 0);
 
                 finalTexture = new Texture(white);
-
                 imageDisplay.setDrawable(new TextureRegionDrawable(new TextureRegion(finalTexture)));
-                imageDisplay.setSize(screenWidth, screenHeight);
-                imageDisplay.setPosition(0, 0);
+                imageDisplay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
                 pixmap.dispose();
                 white.dispose();
             });
-
         } catch (Exception e) {
             Gdx.app.error("DrawingViewer", "Failed to load image", e);
         }
@@ -134,16 +170,16 @@ public class DrawingViewerScreen implements Screen {
         String playerId = GameManager.getInstance().getSession().getHostPlayer().getId();
 
         game.getFirebase().getPlayerWord(
-            gameId,
-            playerId,
-            correctWord -> {
-                boolean correct = correctWord.equalsIgnoreCase(guess.trim());
-                String message = correct
-                        ? "✅ Correct!"
-                        : "❌ Wrong! It was: " + correctWord;
-                Gdx.app.postRunnable(() -> resultLabel.setText(message));
-            },
-            error -> Gdx.app.postRunnable(() -> resultLabel.setText("Error checking word."))
+                gameId,
+                playerId,
+                correctWord -> {
+                    boolean correct = correctWord.equalsIgnoreCase(guess.trim());
+                    String message = correct
+                            ? "✅ Correct!"
+                            : "❌ Wrong! It was: " + correctWord;
+                    Gdx.app.postRunnable(() -> resultLabel.setText(message));
+                },
+                error -> Gdx.app.postRunnable(() -> resultLabel.setText("Error checking word."))
         );
     }
 
@@ -157,8 +193,9 @@ public class DrawingViewerScreen implements Screen {
     }
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void hide() {}
+    @Override public void hide() { dispose(); }
     @Override public void dispose() {
+        cancelTimer();
         stage.dispose();
         if (finalTexture != null) finalTexture.dispose();
     }

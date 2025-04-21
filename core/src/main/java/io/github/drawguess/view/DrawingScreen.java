@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.controller.DrawingController;
@@ -49,6 +50,11 @@ public class DrawingScreen implements Screen {
 
     private int currentSize = 1;
 
+    // —— TIMER FIELDS ——
+    private Label timerLabel;
+    private int drawTimeLeft = 30;
+    private Timer.Task drawTimerTask;
+
     public DrawingScreen(DrawGuessMain game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -84,6 +90,24 @@ public class DrawingScreen implements Screen {
         // UI skin
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        // —— SETUP TIMER LABEL & TASK ——
+        timerLabel = new Label(String.valueOf(drawTimeLeft), skin);
+        timerLabel.setFontScale(2f);
+        timerLabel.setPosition(20, screenHeight - 40);
+        stage.addActor(timerLabel);
+
+        drawTimerTask = new Timer.Task() {
+            @Override public void run() {
+                drawTimeLeft--;
+                timerLabel.setText(String.valueOf(drawTimeLeft));
+                if (drawTimeLeft <= 0) {
+                    cancel();
+                    finishDrawingAndAdvance();
+                }
+            }
+        };
+        Timer.schedule(drawTimerTask, 1, 1, drawTimeLeft - 1);
+
         // Edit panel
         editPanelTexture = new Texture("editpanel.png");
         editPanelBackground = new Image(editPanelTexture);
@@ -100,10 +124,10 @@ public class DrawingScreen implements Screen {
 
         // Pen size buttons
         Texture[] sizeTextures = {
-            new Texture("size1.png"),
-            new Texture("size2.png"),
-            new Texture("size3.png"),
-            new Texture("size4.png")
+                new Texture("size1.png"),
+                new Texture("size2.png"),
+                new Texture("size3.png"),
+                new Texture("size4.png")
         };
         int[] sizes = {1, 3, 6, 12};
 
@@ -131,15 +155,13 @@ public class DrawingScreen implements Screen {
 
         // Undo-knapp
         float barHeight = screenHeight * 0.1f;
-        float penY = -barHeight * 0.4f;
         float undoY = screenHeight * 0.02f;
         undoTexture = new Texture("undobtn.png");
         undoButton = new Image(undoTexture);
         undoButton.setSize(barHeight * 1.2f, barHeight * 0.8f);
         undoButton.setPosition(screenWidth * 0.02f, undoY);
         undoButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 controller.undo();
                 return true;
             }
@@ -150,7 +172,7 @@ public class DrawingScreen implements Screen {
         eraserTexture = new Texture("eraser.png");
         float eraserSize = barHeight * 0.6f;
         float eraserX = undoButton.getX() + undoButton.getWidth() + screenWidth * 0.02f;
-        ToolButtonFactory.addEraserButton(stage, controller, "eraser.png", eraserX, penY, eraserSize);
+        ToolButtonFactory.addEraserButton(stage, controller, "eraser.png", eraserX, -barHeight * 0.4f, eraserSize);
 
         // Fargeknapper
         Map<Color, String> colors = new LinkedHashMap<>();
@@ -171,7 +193,13 @@ public class DrawingScreen implements Screen {
         int index = 0;
         for (Map.Entry<Color, String> entry : colors.entrySet()) {
             float x = startX + index * buttonWidth;
-            ToolButtonFactory.addColorPenButton(stage, controller, entry.getKey(), entry.getValue(), x, penY, buttonWidth, buttonHeight, () -> currentSize);
+            ToolButtonFactory.addColorPenButton(
+                    stage, controller,
+                    entry.getKey(), entry.getValue(),
+                    x, -barHeight * 0.4f,
+                    buttonWidth, buttonHeight,
+                    () -> currentSize
+            );
             index++;
         }
 
@@ -184,26 +212,24 @@ public class DrawingScreen implements Screen {
         float finishHeight = screenHeight * 0.075f;
         finishButton.setSize(finishWidth, finishHeight);
         finishButton.setPosition(20, screenHeight - finishHeight - 20);
-        PlayerController pc = new PlayerController(game);
-
         finishButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-                pc.finishDrawing(canvas);
-                game.setScreen(new WaitingScreen(game));
+            @Override public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+                drawTimerTask.cancel();
+                finishDrawingAndAdvance();
                 return true;
             }
         });
         stage.addActor(finishButton);
 
-        // ✅ Word from Firebase
+        // Word from Firebase
         String gameId = GameManager.getInstance().getSession().getGameId();
         String playerId = GameManager.getInstance().getPlayerId();
 
         game.getFirebase().getRandomWord(gameId, new FirebaseCallback<String>() {
-            @Override
-            public void onSuccess(String wordToDraw) {
-                GameManager.getInstance().getSession().setWordForPlayer(playerId, wordToDraw);
+            @Override public void onSuccess(String wordToDraw) {
+                GameManager.getInstance()
+                        .getSession()
+                        .setWordForPlayer(playerId, wordToDraw);
 
                 Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
                 Label drawLabel = new Label("Draw:", labelStyle);
@@ -225,9 +251,7 @@ public class DrawingScreen implements Screen {
                 stage.addActor(drawLabel);
                 stage.addActor(wordLabel);
             }
-
-            @Override
-            public void onFailure(Exception exception) {
+            @Override public void onFailure(Exception exception) {
                 Gdx.app.error("Firebase", "❌ Kunne ikke hente ord: " + exception.getMessage());
             }
         });
@@ -239,16 +263,21 @@ public class DrawingScreen implements Screen {
         Gdx.input.setInputProcessor(multiplexer);
     }
 
-    @Override
-    public void render(float delta) {
+    private void finishDrawingAndAdvance() {
+        new PlayerController(game).finishDrawing(canvas);
+        game.setScreen(new WaitingScreen(game));
+    }
+
+    @Override public void render(float delta) {
         controller.updateCanvas();
         stage.act(delta);
         stage.draw();
         undoButton.setTouchable(controller.canUndo() ? Touchable.enabled : Touchable.disabled);
         undoButton.setColor(controller.canUndo() ? Color.WHITE : Color.LIGHT_GRAY);
     }
-
-    @Override public void resize(int width, int height) { stage.getViewport().update(width, height, true); }
+    @Override public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
     @Override public void show() {}
     @Override public void hide() { dispose(); }
     @Override public void pause() {}
