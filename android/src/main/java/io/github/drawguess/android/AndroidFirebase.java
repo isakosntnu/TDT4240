@@ -15,6 +15,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.database.*;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 
 import org.json.JSONObject;
 
@@ -261,6 +263,29 @@ public class AndroidFirebase implements FirebaseInterface {
             }
         });
     }
+
+    @Override
+    public void getPlayersWithStatus(String gameId,
+                                     SuccessCallback<Map<String, Boolean>> onSuccess,
+                                     FailureCallback onFailure) {
+        db.collection("games")
+            .document(gameId)
+            .collection("players")
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                Map<String, Boolean> result = new HashMap<>();
+                for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                    String name = doc.getString("name");
+                    Boolean finished = doc.getBoolean("finished");
+                    if (name != null && finished != null) {
+                        result.put(name, finished);
+                    }
+                }
+                onSuccess.onSuccess(result);
+            })
+            .addOnFailureListener(onFailure::onFailure);
+    }
+    
 
     @Override
     public void setPlayerWord(String gameId, String playerId, String word) {

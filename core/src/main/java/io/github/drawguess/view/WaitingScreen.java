@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,8 +104,6 @@ public class WaitingScreen implements Screen {
             }
         });
 
-        // Hent første status en gang
-        //refreshPlayerStatusesFromFirestore();
     }
 
     private void addPlayerRow(String playerName, boolean isFinished) {
@@ -129,37 +128,33 @@ public class WaitingScreen implements Screen {
         }
     }
 
-    // private void refreshPlayerStatusesFromFirestore() {
-    //     String gameId = session.getGameId();
-    //     game.getFirebase().getFirestore()
-    //         .collection("games").document(gameId)
-    //         .collection("players")
-    //         .get()
-    //         .addOnSuccessListener(querySnapshot -> {
-    //             for (var doc : querySnapshot.getDocuments()) {
-    //                 String playerName = doc.getString("name");
-    //                 Boolean isFinished = doc.getBoolean("finished");
-    //                 if (playerName != null && isFinished != null) {
-    //                     Gdx.app.postRunnable(() ->
-    //                         updatePlayerStatus(playerName, isFinished));
-    //                 }
-    //             }
-    //         })
-    //         .addOnFailureListener(e ->
-    //             Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e));
-    // }
+    private void updatePlayerStatuses() {
+        String gameId = session.getGameId();
+        game.getFirebase().getPlayersWithStatus(
+            gameId,
+            playerStatuses -> Gdx.app.postRunnable(() -> {
+                for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                    updatePlayerStatus(entry.getKey(), entry.getValue());
+                }
+            }),
+            e -> Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e)
+        );
+    }
+    
+    
 
     @Override
     public void render(float delta) {
         updateTimer += delta;
         if (updateTimer >= UPDATE_INTERVAL) {
             updateTimer = 0f;
-            //refreshPlayerStatusesFromFirestore(); // 🔁 Polling
+            updatePlayerStatuses(); // 🔁
         }
-
+    
         stage.act(delta);
         stage.draw();
     }
+    
 
     @Override public void show() {}
     @Override public void resize(int width, int height) {
