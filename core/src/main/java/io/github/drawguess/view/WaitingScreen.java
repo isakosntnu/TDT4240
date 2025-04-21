@@ -14,6 +14,7 @@ import java.util.Map;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.model.GameSession;
+import io.github.drawguess.server.SocketInterface;
 
 public class WaitingScreen implements Screen {
 
@@ -30,6 +31,7 @@ public class WaitingScreen implements Screen {
 
     private Label messageLabel;
     private TextButton nextRoundButton;
+    private final SocketInterface socketHandler;
 
     private float updateTimer = 0f;
     private static final float UPDATE_INTERVAL = 1.0f;
@@ -40,6 +42,7 @@ public class WaitingScreen implements Screen {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        this.socketHandler = game.getSocket(); // <--- kommer fra Android-implementasjonen
 
         this.session = GameManager.getInstance().getSession();
 
@@ -154,13 +157,23 @@ public class WaitingScreen implements Screen {
         stage.draw();
     }
 
-    @Override public void show() {}
+    @Override
+    public void show() {
+        socketHandler.registerLobbyListeners();
+    }
+
+    @Override
+    public void hide() {
+        socketHandler.unregisterLobbyListeners();
+        dispose();
+    }
+
     @Override public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void hide() { dispose(); }
+
     @Override public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
