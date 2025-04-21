@@ -42,6 +42,11 @@ public interface FirebaseInterface {
                            FailureCallback failureCallback);
 
     Object getFirestore();
+    void getRandomWord(String gameId, FirebaseCallback<String> callback);
+    void setPlayerWord(String gameId, String playerId, String word);
+
+
+
 
     interface SuccessCallback<T> {
         void onSuccess(T result);

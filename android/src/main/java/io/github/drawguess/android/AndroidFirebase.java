@@ -1,18 +1,15 @@
 package io.github.drawguess.android;
 
-import android.net.Uri;
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import io.github.drawguess.model.GameSession;
-import io.github.drawguess.server.FirebaseInterface;
-import io.github.drawguess.manager.GameManager;
-import io.github.drawguess.android.manager.SocketManager;
+import com.google.firebase.database.*; 
 
 import org.json.JSONObject;
 
@@ -20,11 +17,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+
+import io.github.drawguess.android.manager.SocketManager;
+import io.github.drawguess.manager.GameManager;
+import io.github.drawguess.model.GameSession;
+import io.github.drawguess.server.FirebaseInterface;
+import io.github.drawguess.model.WordBank;
+import io.github.drawguess.server.FirebaseCallback;
+
 
 public class AndroidFirebase implements FirebaseInterface {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final DatabaseReference realtimeDb = FirebaseDatabase.getInstance().getReference();
 
     @Override
     public void createGame(GameSession session) {
@@ -32,7 +40,7 @@ public class AndroidFirebase implements FirebaseInterface {
         String gameId = session.getGameId();
         String playerId = session.getHostPlayer().getId();
 
-        GameManager.getInstance().setPlayerId(playerId); // 🔧 Viktig for å identifisere spiller senere
+        GameManager.getInstance().setPlayerId(playerId);
 
         Map<String, Object> gameData = new HashMap<>();
         gameData.put("status", "waiting");
@@ -44,6 +52,7 @@ public class AndroidFirebase implements FirebaseInterface {
             .set(gameData)
             .addOnSuccessListener(aVoid -> {
                 Log.d("Firebase", "Game created: " + gameId);
+                uploadWordsToRealtime(gameId); // 👈 Her legger vi til unike ord
 
                 Map<String, Object> playerData = new HashMap<>();
                 playerData.put("name", hostName);
@@ -62,9 +71,25 @@ public class AndroidFirebase implements FirebaseInterface {
                 Log.w("Firebase", "Failed to create game", e));
     }
 
+    private void uploadWordsToRealtime(String gameId) {
+        Map<String, Object> wordsMap = new HashMap<>();
+        List<String> words = WordBank.getInstance().getAllWords();
+
+        for (String word : words) {
+            wordsMap.put(word, true);
+        }
+
+        realtimeDb.child("games").child(gameId).child("available_words")
+            .setValue(wordsMap)
+            .addOnSuccessListener(aVoid ->
+                Log.d("Firebase", "🟢 WordBank-ord lastet opp til Realtime DB"))
+            .addOnFailureListener(e ->
+                Log.e("Firebase", "❌ Feil ved opplasting av ord", e));
+    }
+
     @Override
     public void joinGame(String gameId, String playerName) {
-        String playerId = GameManager.getInstance().getPlayerId(); // bruker ID som ble satt tidligere
+        String playerId = GameManager.getInstance().getPlayerId();
 
         Map<String, Object> playerData = new HashMap<>();
         playerData.put("name", playerName);
@@ -74,14 +99,15 @@ public class AndroidFirebase implements FirebaseInterface {
         db.collection("games").document(gameId)
             .collection("players").document(playerId)
             .set(playerData)
-            .addOnSuccessListener(aVoid -> Log.d("Firebase", "Player joined with ID: " + playerId))
-            .addOnFailureListener(e -> Log.w("Firebase", "Failed to add player", e));
+            .addOnSuccessListener(aVoid ->
+                Log.d("Firebase", "Player joined with ID: " + playerId))
+            .addOnFailureListener(e ->
+                Log.w("Firebase", "Failed to add player", e));
     }
 
     @Override
     public void sendGuess(String guess) {
         Log.d("Firebase", "Guess sent: " + guess);
-        // TODO: implementer faktisk lagring av gjett
     }
 
     @Override
@@ -99,14 +125,8 @@ public class AndroidFirebase implements FirebaseInterface {
                 String downloadUrl = uri.toString();
                 Log.d("Firebase", "Drawing uploaded: " + downloadUrl);
                 onSuccess.onSuccess(downloadUrl);
-            }).addOnFailureListener(e -> {
-                Log.e("Firebase", "Failed to get download URL", e);
-                onError.onFailure(e);
-            })
-        ).addOnFailureListener(e -> {
-            Log.e("Firebase", "Upload failed", e);
-            onError.onFailure(e);
-        });
+            }).addOnFailureListener(onError::onFailure)
+        ).addOnFailureListener(onError::onFailure);
     }
 
     @Override
@@ -120,8 +140,7 @@ public class AndroidFirebase implements FirebaseInterface {
             .get()
             .addOnSuccessListener(snapshot -> {
                 if (snapshot.exists() && snapshot.contains("drawingUrl")) {
-                    String url = snapshot.getString("drawingUrl");
-                    onSuccess.onSuccess(url);
+                    onSuccess.onSuccess(snapshot.getString("drawingUrl"));
                 } else {
                     onError.onFailure(new Exception("No drawingUrl found"));
                 }
@@ -135,7 +154,7 @@ public class AndroidFirebase implements FirebaseInterface {
         update.put("finished", true);
         update.put("drawingUrl", drawingUrl);
         update.put("finishedAt", FieldValue.serverTimestamp());
-        update.put("word", word); // lagrer ordet for senere
+        update.put("word", word);
 
         db.collection("games").document(gameId)
             .collection("players").document(playerId)
@@ -166,13 +185,10 @@ public class AndroidFirebase implements FirebaseInterface {
     @Override
     public void emitUserJoined(String gameId, String username) {
         try {
-            Log.d("SOCKET", "➡️ Skal sende joinGame for " + username + " i spill " + gameId);
             JSONObject data = new JSONObject();
             data.put("gameId", gameId);
             data.put("username", username);
-
             SocketManager.getSocket().emit("joinGame", data);
-            Log.d("SOCKET", "✅ Emit joinGame: " + username + " → " + gameId);
         } catch (Exception e) {
             Log.e("SOCKET", "❌ Feil ved joinGame-emission", e);
         }
@@ -199,9 +215,55 @@ public class AndroidFirebase implements FirebaseInterface {
                 });
                 onSuccess.onSuccess(playerNames);
             })
-            .addOnFailureListener(e -> {
-                Log.e("Firebase", "Failed to get players in lobby", e);
-                onError.onFailure(e);
-            });
+            .addOnFailureListener(onError::onFailure);
     }
+
+    @Override
+    public void getRandomWord(String gameId, FirebaseCallback<String> callback) {
+        FirebaseDatabase.getInstance()
+            .getReference("games")
+            .child(gameId)
+            .child("available_words")
+            .get()
+            .addOnSuccessListener(snapshot -> {
+                List<String> words = new ArrayList<>();
+                for (DataSnapshot wordSnapshot : snapshot.getChildren()) {
+                    words.add(wordSnapshot.getKey());
+                }
+
+                if (!words.isEmpty()) {
+                    String randomWord = words.get(new Random().nextInt(words.size()));
+
+                    // Fjern ordet fra listen
+                    FirebaseDatabase.getInstance()
+                        .getReference("games")
+                        .child(gameId)
+                        .child("available_words")
+                        .child(randomWord)
+                        .removeValue();
+
+                    callback.onSuccess(randomWord);
+                } else {
+                    callback.onFailure(new Exception("Ingen ord igjen"));
+                }
+            })
+            .addOnFailureListener(callback::onFailure);
+    }
+
+    @Override
+    public void setPlayerWord(String gameId, String playerId, String word) {
+        Map<String, Object> update = new HashMap<>();
+        update.put("word", word);
+
+        db.collection("games").document(gameId)
+            .collection("players").document(playerId)
+            .update(update)
+            .addOnSuccessListener(aVoid ->
+                Log.d("Firebase", "📝 Ord satt for spiller: " + playerId))
+            .addOnFailureListener(e ->
+                Log.e("Firebase", "❌ Klarte ikke sette ord for spiller", e));
+    }
+
+
+
 }

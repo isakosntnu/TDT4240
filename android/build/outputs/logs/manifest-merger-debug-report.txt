@@ -6,6 +6,7 @@ INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/And
 INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:2:1-30:12
 MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c80b4761d8c2d6d3191bb9eceee15b0c/transformed/gdx-backend-android-1.13.1/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.firebase:firebase-analytics:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d07cb5fc384e75e944049fe67390c51a/transformed/firebase-analytics-22.4.0/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:15:1-38:12
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:2:1-26:12
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:15:1-34:12
@@ -15,7 +16,7 @@ MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaer
 MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:15:1-41:12
 MERGED from [com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:17:1-46:12
 MERGED from [com.google.android.gms:play-services-measurement-sdk:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9fe83a1465fa844d732e7b67c691d613/transformed/play-services-measurement-sdk-22.4.0/AndroidManifest.xml:17:1-25:12
-MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f34532c954796b05ada3d25a42b8def6/transformed/firebase-auth-interop-19.0.2/AndroidManifest.xml:2:1-10:12
+MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/35fdd74cc2b9924080a864a586185bbd/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/69b8d96efa9ec9163ebe22bd11c319be/transformed/play-services-measurement-impl-22.4.0/AndroidManifest.xml:17:1-32:12
 MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/2a3a92edf8c13f69cbdfe756e8d7afdf/transformed/play-services-ads-identifier-18.0.0/AndroidManifest.xml:17:1-27:12
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9db4f16ab805f268e1385a372b194e73/transformed/play-services-measurement-sdk-api-22.4.0/AndroidManifest.xml:17:1-30:12
@@ -43,7 +44,6 @@ MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/benjaminfaerestrand/.gra
 MERGED from [androidx.core:core-ktx:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/7fb7b98c998ad7a85f8d831907447e42/transformed/core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.customview:customview:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/0a44cc7b895f97f1b6ac20c899d6062a/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
-MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/b8558f359f6252bcb5ce2f0092ad53c1/transformed/firebase-components-18.0.0/AndroidManifest.xml:15:1-20:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/8e1de86c284a090da10a16c3ca3637a8/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/43c697d5d092cbab290ba2987ebdcaef/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
@@ -54,8 +54,9 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/
 MERGED from [androidx.print:print:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/058022910ab4d45c0ab2014089663524/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/fb1fa65308d003ac60874319a3bc77e4/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/3e3965406bfb12de5f838e0f913c7aab/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/a91fab00931f0c7846a272d006b12587/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:2:1-7:12
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:2:1-9:12
 	package
 		INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml
 	android:versionName
@@ -68,6 +69,8 @@ MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/benjaminf
 		ADDED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
 ADDED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:5:3-64
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:24:5-67
@@ -97,6 +100,8 @@ ADDED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/Androi
 INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml:8:3-28:17
 MERGED from [com.google.firebase:firebase-analytics:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d07cb5fc384e75e944049fe67390c51a/transformed/firebase-analytics-22.4.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-analytics:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d07cb5fc384e75e944049fe67390c51a/transformed/firebase-analytics-22.4.0/AndroidManifest.xml:7:5-20
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:25:5-36:19
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:25:5-36:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:26:5-37:19
@@ -115,8 +120,8 @@ MERGED from [com.google.android.gms:play-services-measurement:22.4.0] /Users/ben
 MERGED from [com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:28:5-44:19
 MERGED from [com.google.android.gms:play-services-measurement-sdk:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9fe83a1465fa844d732e7b67c691d613/transformed/play-services-measurement-sdk-22.4.0/AndroidManifest.xml:22:5-23:19
 MERGED from [com.google.android.gms:play-services-measurement-sdk:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9fe83a1465fa844d732e7b67c691d613/transformed/play-services-measurement-sdk-22.4.0/AndroidManifest.xml:22:5-23:19
-MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f34532c954796b05ada3d25a42b8def6/transformed/firebase-auth-interop-19.0.2/AndroidManifest.xml:7:5-8:19
-MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f34532c954796b05ada3d25a42b8def6/transformed/firebase-auth-interop-19.0.2/AndroidManifest.xml:7:5-8:19
+MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/35fdd74cc2b9924080a864a586185bbd/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
+MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/35fdd74cc2b9924080a864a586185bbd/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/69b8d96efa9ec9163ebe22bd11c319be/transformed/play-services-measurement-impl-22.4.0/AndroidManifest.xml:29:5-30:19
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/69b8d96efa9ec9163ebe22bd11c319be/transformed/play-services-measurement-impl-22.4.0/AndroidManifest.xml:29:5-30:19
 MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/2a3a92edf8c13f69cbdfe756e8d7afdf/transformed/play-services-ads-identifier-18.0.0/AndroidManifest.xml:25:5-20
@@ -195,6 +200,8 @@ MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.13.1] /Users/benjaminfa
 MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/c80b4761d8c2d6d3191bb9eceee15b0c/transformed/gdx-backend-android-1.13.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-analytics:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d07cb5fc384e75e944049fe67390c51a/transformed/firebase-analytics-22.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-analytics:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/d07cb5fc384e75e944049fe67390c51a/transformed/firebase-analytics-22.4.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:18:5-44
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:6:5-44
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:6:5-44
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:19:5-44
@@ -213,8 +220,8 @@ MERGED from [com.google.android.gms:play-services-measurement:22.4.0] /Users/ben
 MERGED from [com.google.android.gms:play-services-measurement:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/6066a383f542b3b54880b2f1d5894397/transformed/play-services-measurement-22.4.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-sdk:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9fe83a1465fa844d732e7b67c691d613/transformed/play-services-measurement-sdk-22.4.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-sdk:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/9fe83a1465fa844d732e7b67c691d613/transformed/play-services-measurement-sdk-22.4.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f34532c954796b05ada3d25a42b8def6/transformed/firebase-auth-interop-19.0.2/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f34532c954796b05ada3d25a42b8def6/transformed/firebase-auth-interop-19.0.2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/35fdd74cc2b9924080a864a586185bbd/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-auth-interop:20.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/35fdd74cc2b9924080a864a586185bbd/transformed/firebase-auth-interop-20.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/69b8d96efa9ec9163ebe22bd11c319be/transformed/play-services-measurement-impl-22.4.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/69b8d96efa9ec9163ebe22bd11c319be/transformed/play-services-measurement-impl-22.4.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-ads-identifier:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/2a3a92edf8c13f69cbdfe756e8d7afdf/transformed/play-services-ads-identifier-18.0.0/AndroidManifest.xml:20:5-44
@@ -269,8 +276,6 @@ MERGED from [androidx.customview:customview:1.0.0] /Users/benjaminfaerestrand/.g
 MERGED from [androidx.customview:customview:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/0a44cc7b895f97f1b6ac20c899d6062a/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.13.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/77b570a99c494e4db65553f0c85fac0f/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/b8558f359f6252bcb5ce2f0092ad53c1/transformed/firebase-components-18.0.0/AndroidManifest.xml:18:5-44
 MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/b8558f359f6252bcb5ce2f0092ad53c1/transformed/firebase-components-18.0.0/AndroidManifest.xml:18:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/8e1de86c284a090da10a16c3ca3637a8/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
@@ -291,16 +296,20 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/benjaminfaerestrand/
 MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/fb1fa65308d003ac60874319a3bc77e4/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/3e3965406bfb12de5f838e0f913c7aab/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/3e3965406bfb12de5f838e0f913c7aab/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:5:5-44
-MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/a91fab00931f0c7846a272d006b12587/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/a91fab00931f0c7846a272d006b12587/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4bf2eb6e0013cdb5a4142470673079d6/transformed/protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:5:5-44
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:5:5-44
 	android:targetSdkVersion
 		INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /Users/benjaminfaerestrand/Documents/DrawGuess/TDT4240/android/AndroidManifest.xml
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
+ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.gms:play-services-measurement-api:22.4.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5b2833e5fb1da4c6e0aa4ce6646b6e03/transformed/play-services-measurement-api-22.4.0/AndroidManifest.xml:23:5-79
@@ -316,9 +325,11 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:22.4.0] /U
 MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:7:5-79
 MERGED from [io.grpc:grpc-android:1.62.2] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/4e65169f85cfeef77a6d5dfb32376a8d/transformed/grpc-android-1.62.2/AndroidManifest.xml:7:5-79
 	android:name
-		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:10:22-76
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:22:22-76
 service#com.google.firebase.components.ComponentDiscoveryService
-ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
+ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:26:9-35:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:27:9-36:19
 MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/5fc3ce696baa254c0c2806a80262dd55/transformed/firebase-storage-21.0.1/AndroidManifest.xml:27:9-36:19
 MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/453c2d0ffaed8647be7fb1d20b5e55a6/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:22:9-31:19
@@ -332,13 +343,25 @@ MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/benjaminfaer
 MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:30:9-38:19
 MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:30:9-38:19
 	android:exported
-		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:16:13-37
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:28:13-37
 	tools:targetApi
 		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:34:13-32
 	android:directBootAware
 		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/62f814787b4021a55ee56881542211fe/transformed/firebase-common-21.0.0/AndroidManifest.xml:32:13-43
 	android:name
-		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:15:13-84
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:27:13-84
+meta-data#com.google.firebase.components:com.google.firebase.database.FirebaseDatabaseKtxRegistrar
+ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:29:13-31:85
+	android:value
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:31:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:30:17-120
+meta-data#com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar
+ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:32:13-34:85
+	android:value
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:34:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-database:21.0.0] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/eceedab5c9323b892a03f6415a02d65e/transformed/firebase-database-21.0.0/AndroidManifest.xml:33:17-109
 meta-data#com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar
 ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/benjaminfaerestrand/.gradle/caches/8.12/transforms/f1bacb78adf45459a19c4edba29e94e3/transformed/firebase-firestore-25.1.3/AndroidManifest.xml:17:13-19:85
 	android:value

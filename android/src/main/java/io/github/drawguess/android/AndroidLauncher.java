@@ -9,6 +9,8 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.android.manager.SocketManager;
 import io.github.drawguess.view.LobbyScreen;
+import io.github.drawguess.android.manager.AndroidSocketHandler;
+
 
 import org.json.JSONObject;
 import io.socket.client.Socket;
@@ -26,30 +28,12 @@ public class AndroidLauncher extends AndroidApplication {
         // 1. Init Socket.IO-tilkobling
         SocketManager.init();
 
-        // 2. Start LibGDX-spillet med Firebase-backend
-        initialize(new DrawGuessMain(new AndroidFirebase()), config);
+        // 2. Lagre spillinstans i GameManager
+        DrawGuessMain game = new DrawGuessMain(new AndroidFirebase(), new AndroidSocketHandler());
+        io.github.drawguess.manager.GameManager.setGameInstance(game); // Denne er kritisk
 
-        // 3. Hent Socket-instans
-        Socket socket = SocketManager.getSocket();
-
-        // 4. Sett opp lytter for "userJoined"-event fra Socket.IO
-        socket.on("userJoined", args -> {
-            if (args.length > 0 && args[0] instanceof JSONObject) {
-                JSONObject data = (JSONObject) args[0];
-                String newPlayer = data.optString("username", "Unknown");
-
-                Log.d("SOCKET", "🎉 New player joined: " + newPlayer);
-
-                // 5. Kjør på UI-tråd
-                Gdx.app.postRunnable(() -> {
-                    LobbyScreen.onPlayerJoined(newPlayer);
-                });
-
-            } else {
-                Log.w("SOCKET", "⚠️ userJoined-event mottatt uten gyldig data");
-            }
-        });
-
-        // (Valgfritt) Andre event listeners kan defineres her
+        // 3. Start LibGDX-spillet
+        initialize(game, config);
     }
+
 }

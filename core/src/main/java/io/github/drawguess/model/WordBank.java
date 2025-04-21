@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
 public class WordBank {
-
+    private static WordBank instance;
     private final List<String> words;
-    private final Random random;
 
-    public WordBank() {
+    private WordBank() {
         words = new ArrayList<>();
-        random = new Random();
-
         Collections.addAll(words,
             "apple", "airplane", "banana", "balloon", "bicycle",
             "boat", "book", "bread", "bridge", "bus",
@@ -38,17 +34,20 @@ public class WordBank {
         );
     }
 
-    public String pullRandomWord() {
-        if (words.isEmpty()) return "???";
-        return words.remove(random.nextInt(words.size()));
-    }
-    
-
-    public void addWord(String word) {
-        words.add(word);
+    public static WordBank getInstance() {
+        if (instance == null) {
+            instance = new WordBank();
+        }
+        return instance;
     }
 
     public List<String> getAllWords() {
-        return Collections.unmodifiableList(words);
+        return new ArrayList<>(words);
+    }
+
+    public String pullRandomWord() {
+        if (words.isEmpty()) return null;
+        int index = new Random().nextInt(words.size());
+        return words.remove(index);
     }
 }
