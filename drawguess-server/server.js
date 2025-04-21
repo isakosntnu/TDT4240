@@ -15,6 +15,8 @@ const io = new Server(server, {
     }
 });
 
+// --------------------------------------------------------------
+
 io.on("connection", (socket) => {
     console.log("✅ Bruker tilkoblet:", socket.id);
 
@@ -52,6 +54,8 @@ io.on("connection", (socket) => {
         console.log("❌ Bruker frakoblet:", socket.id);
     });
 });
+
+// --------------------------------------------------------------
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

@@ -13,11 +13,12 @@ import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
 import io.github.drawguess.server.FirebaseInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 import io.github.drawguess.android.manager.SocketManager;
-
 
 public class AndroidFirebase implements FirebaseInterface {
 
@@ -37,27 +38,28 @@ public class AndroidFirebase implements FirebaseInterface {
         gameData.put("createdAt", FieldValue.serverTimestamp());
 
         db.collection("games").document(gameId)
-            .set(gameData)
-            .addOnSuccessListener(aVoid -> {
-                Log.d("Firebase", "Game created: " + gameId);
+                .set(gameData)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firebase", "Game created: " + gameId);
 
-                Map<String, Object> playerData = new HashMap<>();
-                playerData.put("name", hostName);
-                playerData.put("joinedAt", FieldValue.serverTimestamp());
-                playerData.put("score", 0);
+                    Map<String, Object> playerData = new HashMap<>();
+                    playerData.put("name", hostName);
+                    playerData.put("joinedAt", FieldValue.serverTimestamp());
+                    playerData.put("score", 0);
 
-                db.collection("games").document(gameId)
-                    .collection("players").document(playerId)
-                    .set(playerData)
-                    .addOnSuccessListener(unused -> Log.d("Firebase", "Host added with ID: " + playerId))
-                    .addOnFailureListener(e -> Log.w("Firebase", "Failed to add host", e));
-            })
-            .addOnFailureListener(e -> Log.w("Firebase", "Failed to create game", e));
+                    db.collection("games").document(gameId)
+                            .collection("players").document(playerId)
+                            .set(playerData)
+                            .addOnSuccessListener(unused -> Log.d("Firebase", "Host added with ID: " + playerId))
+                            .addOnFailureListener(e -> Log.w("Firebase", "Failed to add host", e));
+                })
+                .addOnFailureListener(e -> Log.w("Firebase", "Failed to create game", e));
     }
 
     @Override
     public void joinGame(String gameId, String playerName) {
-        // Generate a unique ID for the player (should be handled earlier and stored in GameManager)
+        // Generate a unique ID for the player (should be handled earlier and stored in
+        // GameManager)
         String playerId = io.github.drawguess.manager.GameManager.getInstance().getPlayerId();
 
         Map<String, Object> playerData = new HashMap<>();
@@ -66,10 +68,10 @@ public class AndroidFirebase implements FirebaseInterface {
         playerData.put("score", 0);
 
         db.collection("games").document(gameId)
-            .collection("players").document(playerId)
-            .set(playerData)
-            .addOnSuccessListener(aVoid -> Log.d("Firebase", "Player joined with ID: " + playerId))
-            .addOnFailureListener(e -> Log.w("Firebase", "Failed to add player", e));
+                .collection("players").document(playerId)
+                .set(playerData)
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Player joined with ID: " + playerId))
+                .addOnFailureListener(e -> Log.w("Firebase", "Failed to add player", e));
     }
 
     @Override
@@ -80,24 +82,22 @@ public class AndroidFirebase implements FirebaseInterface {
 
     @Override
     public void uploadDrawing(String gameId, String playerId, byte[] pngData,
-                              SuccessCallback<String> onSuccess,
-                              FailureCallback onError) {
+            SuccessCallback<String> onSuccess,
+            FailureCallback onError) {
 
         String filePath = "drawings/" + gameId + "/" + playerId + ".png";
         StorageReference ref = storage.getReference().child(filePath);
 
         UploadTask uploadTask = ref.putBytes(pngData);
 
-        uploadTask.addOnSuccessListener(taskSnapshot ->
-            ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                String downloadUrl = uri.toString();
-                Log.d("Firebase", "Drawing uploaded: " + downloadUrl);
-                onSuccess.onSuccess(downloadUrl);
-            }).addOnFailureListener(e -> {
-                Log.e("Firebase", "Failed to get download URL", e);
-                onError.onFailure(e);
-            })
-        ).addOnFailureListener(e -> {
+        uploadTask.addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(uri -> {
+            String downloadUrl = uri.toString();
+            Log.d("Firebase", "Drawing uploaded: " + downloadUrl);
+            onSuccess.onSuccess(downloadUrl);
+        }).addOnFailureListener(e -> {
+            Log.e("Firebase", "Failed to get download URL", e);
+            onError.onFailure(e);
+        })).addOnFailureListener(e -> {
             Log.e("Firebase", "Upload failed", e);
             onError.onFailure(e);
         });
@@ -111,12 +111,10 @@ public class AndroidFirebase implements FirebaseInterface {
         update.put("finishedAt", FieldValue.serverTimestamp());
 
         db.collection("games").document(gameId)
-            .collection("players").document(playerId)
-            .update(update)
-            .addOnSuccessListener(aVoid ->
-                Log.d("Firebase", "Player marked as finished: " + playerId))
-            .addOnFailureListener(e ->
-                Log.w("Firebase", "Failed to mark player as finished", e));
+                .collection("players").document(playerId)
+                .update(update)
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Player marked as finished: " + playerId))
+                .addOnFailureListener(e -> Log.w("Firebase", "Failed to mark player as finished", e));
     }
 
     @Override
@@ -134,5 +132,30 @@ public class AndroidFirebase implements FirebaseInterface {
         }
     }
 
+    @Override
+    public FirebaseFirestore getFirestore() {
+        return db;
+    }
 
+    @Override
+    public void getPlayersInLobby(String gameId, SuccessCallback<List<String>> onSuccess, FailureCallback onError) {
+        db.collection("games")
+                .document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<String> playerNames = new ArrayList<>();
+                    querySnapshot.forEach(document -> {
+                        String playerName = document.getString("name");
+                        if (playerName != null) {
+                            playerNames.add(playerName);
+                        }
+                    });
+                    onSuccess.onSuccess(playerNames);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firebase", "Failed to get players in lobby", e);
+                    onError.onFailure(e);
+                });
+    }
 }

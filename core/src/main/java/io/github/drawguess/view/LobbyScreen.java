@@ -12,7 +12,11 @@ import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
+import io.github.drawguess.model.ecs.components.ColorComponent;
+import io.github.drawguess.server.FirebaseInterface;
+//import com.badlogic.gdx.scenes.scene2d.utils.ColorDrawable;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,10 @@ public class LobbyScreen implements Screen {
 
     private static LobbyScreen instance;
 
+    // 🔄 Timer for Firestore updates
+    private float updateTimer = 0;
+    private static final float UPDATE_INTERVAL = 0.1f; // 3 seconds
+
     public LobbyScreen(DrawGuessMain game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -42,8 +50,10 @@ public class LobbyScreen implements Screen {
 
         game.getFirebase().emitUserJoined(
                 session.getGameId(),
-                session.getHostPlayer().getName()
-        );
+                session.getHostPlayer().getName());
+
+        // 🔄 Initialize Firestore update
+        updateLobbyFromFirestore();
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float screenHeight = Gdx.graphics.getHeight();
@@ -67,6 +77,7 @@ public class LobbyScreen implements Screen {
         rootTable.add(title).padBottom(50).row();
 
         playerTable = new Table();
+        Texture transparentTexture = new Texture(Gdx.files.internal("transparent.png"));
         rootTable.add(playerTable);
 
         for (Player player : session.getPlayers()) {
@@ -101,14 +112,19 @@ public class LobbyScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Label playerLabel = new Label(name, skin);
 
+        //playerLabel.getStyle().background = new ColorDrawable(new Color(1, 0, 0, 0));
+
+        // Sett fontstørrelse for spillernavnene
         float screenHeight = Gdx.graphics.getHeight();
         playerLabel.setFontScale(screenHeight * 0.0015f);
 
+        // Legg til spillerens navn i listen og tabellen
         playerNames.add(name);
         playerTable.add(playerLabel).padBottom(8).row();
 
         Gdx.app.log("LobbyScreen", "👤 Ny spiller lagt til: " + name);
     }
+
 
     public static void onPlayerJoined(String playerName) {
         if (instance != null) {
@@ -118,18 +134,74 @@ public class LobbyScreen implements Screen {
         }
     }
 
-    @Override public void show() {}
-    @Override public void render(float delta) {
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void render(float delta) {
+        // 🔄 Update timer logic
+        updateTimer += delta;
+        if (updateTimer >= UPDATE_INTERVAL) {
+            updateTimer = 0;
+            updateLobbyFromFirestore();
+        }
+
         stage.act(delta);
         stage.draw();
     }
-    @Override public void resize(int width, int height) {
+
+    // 🔄 Method to update lobby from Firestore
+
+    // LobbyScreen.java
+    private void updateLobbyFromFirestore() {
+        String gameId = session.getGameId(); // Hent gameId fra sessionen
+        game.getFirebase().getPlayersInLobby(gameId, new FirebaseInterface.SuccessCallback<List<String>>() {
+            @Override
+            public void onSuccess(List<String> players) {
+                if (players != null) {
+                    // Tømmer eksisterende spillere før nye legges til
+                    //playerNames.clear();
+                    //playerTable.clearChildren();
+                    //playerTable.setBackground(Null);  // Sett transparent bakgrunn
+
+
+                    // Legg til spillerne i lobbyen
+                    for (String player : players) {
+                        addPlayer(player);
+                    }
+                }
+            }
+        }, new FirebaseInterface.FailureCallback() {
+            @Override
+            public void onFailure(Exception e) {
+                Gdx.app.log("LobbyScreen", "❌ Feil ved henting av spillere fra Firebase: " + e.getMessage());
+            }
+        });
+    }
+
+
+
+    @Override
+    public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() { dispose(); }
-    @Override public void dispose() {
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
     }

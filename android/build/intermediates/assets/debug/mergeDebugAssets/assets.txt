@@ -38,6 +38,7 @@ startgamebtn.png
 textfield.png
 textfield0.png
 textfield2.png
+transparent.png
 uiskin.atlas
 uiskin.json
 uiskin.png
