@@ -63,10 +63,6 @@ public class WaitingScreen implements Screen {
         rootTable.add(playerTable);
         rootTable.row().padTop(40);
 
-        for (Player player : session.getPlayers()) {
-            addPlayerRow(player.getName(), player.hasFinishedDrawing());
-        }
-
         // Statusbeskjed
         messageLabel = new Label("", skin);
         rootTable.add(messageLabel).padBottom(20).row();
@@ -134,12 +130,21 @@ public class WaitingScreen implements Screen {
             gameId,
             playerStatuses -> Gdx.app.postRunnable(() -> {
                 for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
-                    updatePlayerStatus(entry.getKey(), entry.getValue());
+                    String name = entry.getKey();
+                    boolean isFinished = entry.getValue();
+    
+
+                    if (!statusLabels.containsKey(name)) {
+                        addPlayerRow(name, isFinished);
+                    } else {
+                        updatePlayerStatus(name, isFinished);
+                    }
                 }
             }),
             e -> Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e)
         );
     }
+    
     
     
 
