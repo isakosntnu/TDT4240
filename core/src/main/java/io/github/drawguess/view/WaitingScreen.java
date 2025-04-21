@@ -31,6 +31,9 @@ public class WaitingScreen implements Screen {
     private TextButton nextRound;
     private Label messageLabel;
 
+    private float updateTimer = 0f;
+    private static final float UPDATE_INTERVAL = 1.0f;
+
     public WaitingScreen(DrawGuessMain game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -63,7 +66,7 @@ public class WaitingScreen implements Screen {
             addPlayerRow(player.getName(), player.hasFinishedDrawing());
         }
 
-        // Feilmelding / status label
+        // Statusbeskjed
         messageLabel = new Label("", skin);
         rootTable.add(messageLabel).padBottom(20).row();
 
@@ -99,6 +102,9 @@ public class WaitingScreen implements Screen {
                 );
             }
         });
+
+        // Hent første status en gang
+        refreshPlayerStatusesFromFirestore();
     }
 
     private void addPlayerRow(String playerName, boolean isFinished) {
@@ -123,23 +129,45 @@ public class WaitingScreen implements Screen {
         }
     }
 
-    @Override public void show() {}
+    private void refreshPlayerStatusesFromFirestore() {
+        String gameId = session.getGameId();
+        game.getFirebase().getFirestore()
+            .collection("games").document(gameId)
+            .collection("players")
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                for (var doc : querySnapshot.getDocuments()) {
+                    String playerName = doc.getString("name");
+                    Boolean isFinished = doc.getBoolean("finished");
+                    if (playerName != null && isFinished != null) {
+                        Gdx.app.postRunnable(() ->
+                            updatePlayerStatus(playerName, isFinished));
+                    }
+                }
+            })
+            .addOnFailureListener(e ->
+                Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e));
+    }
 
-    @Override public void render(float delta) {
+    @Override
+    public void render(float delta) {
+        updateTimer += delta;
+        if (updateTimer >= UPDATE_INTERVAL) {
+            updateTimer = 0f;
+            refreshPlayerStatusesFromFirestore(); // 🔁 Polling
+        }
+
         stage.act(delta);
         stage.draw();
     }
 
+    @Override public void show() {}
     @Override public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-
     @Override public void pause() {}
-
     @Override public void resume() {}
-
     @Override public void hide() { dispose(); }
-
     @Override public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();

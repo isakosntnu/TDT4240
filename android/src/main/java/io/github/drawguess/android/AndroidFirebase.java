@@ -59,10 +59,18 @@ public class AndroidFirebase implements FirebaseInterface {
                     Log.d("Firebase", "Game created: " + gameId);
                     WordUploader.uploadWords(gameId); // 👈 Her legger vi til unike ord
 
+<<<<<<< Updated upstream
                     Map<String, Object> playerData = new HashMap<>();
                     playerData.put("name", hostName);
                     playerData.put("joinedAt", FieldValue.serverTimestamp());
                     playerData.put("score", 0);
+=======
+                Map<String, Object> playerData = new HashMap<>();
+                playerData.put("name", hostName);
+                playerData.put("joinedAt", FieldValue.serverTimestamp());
+                playerData.put("score", 0);
+                playerData.put("finished", false);
+>>>>>>> Stashed changes
 
                     db.collection("games").document(gameId)
                             .collection("players").document(playerId)
@@ -95,6 +103,7 @@ public class AndroidFirebase implements FirebaseInterface {
         playerData.put("name", playerName);
         playerData.put("joinedAt", FieldValue.serverTimestamp());
         playerData.put("score", 0);
+        playerData.put("finished", false);
 
         db.collection("games").document(gameId)
                 .collection("players").document(playerId)
