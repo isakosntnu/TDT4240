@@ -50,3 +50,7 @@ npm-debug.log
 
 # Ignore local SDK settings
 local.properties
+.gradle/
+build/
+android/build/
+local.properties
