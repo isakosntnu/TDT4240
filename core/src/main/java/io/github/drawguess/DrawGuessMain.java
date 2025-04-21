@@ -28,4 +28,5 @@ public class DrawGuessMain extends Game {
         // Startskjerm eller meny
         setScreen(new io.github.drawguess.view.MenuScreen(this));
     }
+
 }
