@@ -5,8 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,6 @@ import java.util.Map;
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.model.GameSession;
-import io.github.drawguess.model.Player;
 
 public class WaitingScreen implements Screen {
 
@@ -25,14 +24,17 @@ public class WaitingScreen implements Screen {
     private Texture backgroundTexture;
     private Image backgroundImage;
 
+    private Table rootTable;
     private Table playerTable;
-    private Map<String, Label> statusLabels;
+    private Map<String, Label> statusLabels = new HashMap<>();
 
-    private TextButton nextRound;
     private Label messageLabel;
+    private TextButton nextRoundButton;
 
     private float updateTimer = 0f;
     private static final float UPDATE_INTERVAL = 1.0f;
+
+    private boolean buttonAdded = false;
 
     public WaitingScreen(DrawGuessMain game) {
         this.game = game;
@@ -40,71 +42,28 @@ public class WaitingScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         this.session = GameManager.getInstance().getSession();
-        this.statusLabels = new HashMap<>();
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float screenHeight = Gdx.graphics.getHeight();
 
-        // Bakgrunn
         backgroundTexture = new Texture("board.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Layout
-        Table rootTable = new Table();
+        rootTable = new Table();
         rootTable.setFillParent(true);
         rootTable.top().padTop(screenHeight * 0.12f);
         stage.addActor(rootTable);
 
-        // Spillerstatus-tabell
+        // Oppsett i konstruktør:
         playerTable = new Table();
-        rootTable.add(playerTable);
-        rootTable.row().padTop(40);
+        rootTable.add(playerTable).padBottom(20).row();
 
-        for (Player player : session.getPlayers()) {
-            addPlayerRow(player.getName(), player.hasFinishedDrawing());
-        }
-
-        // Statusbeskjed
-        messageLabel = new Label("", skin);
+        messageLabel = new Label("Waiting for players to finish...", skin);
+        messageLabel.setFontScale(screenHeight * 0.0014f);
         rootTable.add(messageLabel).padBottom(20).row();
 
-        // Neste runde-knapp
-        nextRound = new TextButton("Next Round", skin);
-        nextRound.getLabel().setFontScale(screenHeight * 0.0015f);
-        rootTable.add(nextRound).expandY().bottom().padBottom(30);
-
-        nextRound.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                messageLabel.setText("Loading drawing...");
-                nextRound.setDisabled(true);
-
-                String gameId = session.getGameId();
-                String drawingPlayerId = session.getHostPlayer().getId(); // evt. annen spiller
-
-                game.getFirebase().getPlayerDrawingUrl(
-                    gameId,
-                    drawingPlayerId,
-                    url -> Gdx.app.postRunnable(() -> {
-                        if (url != null && !url.isEmpty()) {
-                            game.setScreen(new DrawingViewerScreen(game, url));
-                        } else {
-                            messageLabel.setText("Drawing not uploaded yet. Try again soon.");
-                            nextRound.setDisabled(false);
-                        }
-                    }),
-                    error -> Gdx.app.postRunnable(() -> {
-                        messageLabel.setText("Error fetching drawing. Try again.");
-                        nextRound.setDisabled(false);
-                    })
-                );
-            }
-        });
-
-        // Hent første status en gang
-        //refreshPlayerStatusesFromFirestore();
     }
 
     private void addPlayerRow(String playerName, boolean isFinished) {
@@ -116,45 +75,79 @@ public class WaitingScreen implements Screen {
 
         Label statusLabel = new Label(isFinished ? "Finished" : "Drawing", skin);
         statusLabel.setFontScale(screenHeight * 0.0015f);
+
         statusLabels.put(playerName, statusLabel);
 
         playerTable.add(nameLabel).padRight(40).left();
         playerTable.add(statusLabel).right().row();
     }
 
-    public void updatePlayerStatus(String playerName, boolean isFinished) {
+    private void updatePlayerStatus(String playerName, boolean isFinished) {
         Label statusLabel = statusLabels.get(playerName);
         if (statusLabel != null) {
             statusLabel.setText(isFinished ? "Finished" : "Drawing");
         }
     }
 
-    // private void refreshPlayerStatusesFromFirestore() {
-    //     String gameId = session.getGameId();
-    //     game.getFirebase().getFirestore()
-    //         .collection("games").document(gameId)
-    //         .collection("players")
-    //         .get()
-    //         .addOnSuccessListener(querySnapshot -> {
-    //             for (var doc : querySnapshot.getDocuments()) {
-    //                 String playerName = doc.getString("name");
-    //                 Boolean isFinished = doc.getBoolean("finished");
-    //                 if (playerName != null && isFinished != null) {
-    //                     Gdx.app.postRunnable(() ->
-    //                         updatePlayerStatus(playerName, isFinished));
-    //                 }
-    //             }
-    //         })
-    //         .addOnFailureListener(e ->
-    //             Gdx.app.error("WaitingScreen", "❌ Klarte ikke hente spillerstatus", e));
-    // }
+    private void updatePlayerStatuses() {
+        String gameId = session.getGameId();
+
+        game.getFirebase().getPlayersWithStatus(
+            gameId,
+            playerStatuses -> Gdx.app.postRunnable(() -> {
+                boolean allFinished = true;
+
+                for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                    String name = entry.getKey();
+                    boolean isFinished = entry.getValue();
+
+                    if (!statusLabels.containsKey(name)) {
+                        addPlayerRow(name, isFinished);
+                    } else {
+                        updatePlayerStatus(name, isFinished);
+                    }
+
+                    if (!isFinished) {
+                        allFinished = false;
+                    }
+                }
+
+                if (allFinished && !buttonAdded) {
+                    showNextRoundButton();
+                    buttonAdded = true;
+                }
+            }),
+            e -> Gdx.app.error("WaitingScreen", "❌ Failed to fetch statuses", e)
+        );
+    }
+
+    private void showNextRoundButton() {
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        float screenHeight = Gdx.graphics.getHeight();
+
+        nextRoundButton = new TextButton("Next Round", skin);
+        nextRoundButton.getLabel().setFontScale(screenHeight * 0.0015f);
+
+        nextRoundButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                messageLabel.setText("Starting guessing phase...");
+                nextRoundButton.setDisabled(true);
+        
+                String gameId = session.getGameId();
+                game.getSocket().emitStartGuessingPhase(gameId);
+            }
+        });
+
+        rootTable.add(nextRoundButton).expandY().bottom().padBottom(30).row();
+    }
 
     @Override
     public void render(float delta) {
         updateTimer += delta;
         if (updateTimer >= UPDATE_INTERVAL) {
             updateTimer = 0f;
-            //refreshPlayerStatusesFromFirestore(); // 🔁 Polling
+            updatePlayerStatuses();
         }
 
         stage.act(delta);

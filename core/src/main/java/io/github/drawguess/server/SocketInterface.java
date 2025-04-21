@@ -6,5 +6,7 @@ public interface SocketInterface {
     void unregisterLobbyListeners();
     void emitJoinGame(String gameId, String username);
     void emitStartGame(String gameId);
+    void emitStartGuessingPhase(String gameId);
+
 
 }

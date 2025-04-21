@@ -15,6 +15,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.database.*;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 
 import org.json.JSONObject;
 
@@ -261,6 +263,35 @@ public class AndroidFirebase implements FirebaseInterface {
             }
         });
     }
+
+    @Override
+    public void getPlayersWithStatus(String gameId,
+                                     SuccessCallback<Map<String, Boolean>> onSuccess,
+                                     FailureCallback onFailure) {
+        db.collection("games").document(gameId)
+            .collection("players")
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                Map<String, Boolean> playerStatuses = new HashMap<>();
+                for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                    String name = doc.getString("name");
+                    Boolean finished = doc.getBoolean("finished");
+    
+                    if (name != null) {
+                        boolean isFinished = finished != null && finished;
+                        Log.d("Firebase", "🔍 " + name + ": finished = " + isFinished);
+                        playerStatuses.put(name, isFinished);
+                    }
+                }
+    
+                Log.d("Firebase", "Totalt spillere med status: " + playerStatuses.size());
+                onSuccess.onSuccess(playerStatuses);
+            })
+            .addOnFailureListener(onFailure::onFailure);
+    }
+    
+
+    
 
     @Override
     public void setPlayerWord(String gameId, String playerId, String word) {

@@ -3,6 +3,7 @@ package io.github.drawguess.server;
 
 
 import java.util.List;
+import java.util.Map;
 
 import io.github.drawguess.model.GameSession;
 
@@ -44,6 +45,8 @@ public interface FirebaseInterface {
     Object getFirestore();
     void getRandomWord(String gameId, FirebaseCallback<String> callback);
     void setPlayerWord(String gameId, String playerId, String word);
+
+    void getPlayersWithStatus(String gameId, SuccessCallback<Map<String, Boolean>> successCallback, FailureCallback failureCallback);
 
 
 
