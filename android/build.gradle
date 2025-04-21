@@ -71,10 +71,11 @@ dependencies {
   implementation 'com.google.firebase:firebase-analytics'
   // Firestore
   implementation 'com.google.firebase:firebase-firestore'
-  //Storage
+  // Storage
   implementation 'com.google.firebase:firebase-storage'
-
-
+  // Server
+  implementation 'io.socket:socket.io-client:2.0.1' // Socket.IO-klient for Android
+  implementation 'org.json:json:20210307' // (valgfri) JSONObject-support hvis du bruker det
 
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

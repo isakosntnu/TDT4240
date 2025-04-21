@@ -4,6 +4,13 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
+  // Legg til Socket.IO-klienten
+  implementation 'io.socket:socket.io-client:2.0.0'
+
+  // Legg til JSON-biblioteket for JSON-behandling
+  implementation 'org.json:json:20210307'
+
+  // Hvis du bruker GraalVM for native image builds, kan du beholde denne linjen
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }

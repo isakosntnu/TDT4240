@@ -19,6 +19,7 @@ public class GameSession {
     private Status status;
     private final Map<String, String> playerWords = new HashMap<>();
 
+    // 🎯 Brukes når HOST lager spillet
     public GameSession(Player hostPlayer) {
         this.gameId = generateGameId();
         this.hostPlayer = hostPlayer;
@@ -27,8 +28,15 @@ public class GameSession {
         this.status = Status.WAITING_FOR_PLAYERS;
     }
 
-    
+    // ✅ Brukes når en SPILLER joiner eksisterende spill
+    public GameSession(String gameId, Player hostPlayer, List<Player> players, Status status) {
+        this.gameId = gameId;
+        this.hostPlayer = hostPlayer;
+        this.players = players;
+        this.status = status;
+    }
 
+    // ---------- Word Tracking ----------
     public void setWordForPlayer(String playerId, String word) {
         playerWords.put(playerId, word);
     }
@@ -37,7 +45,7 @@ public class GameSession {
         return playerWords.getOrDefault(playerId, "");
     }
 
-
+    // Intern metode for å lage 6-sifret PIN
     private String generateGameId() {
         return String.valueOf((int)(Math.random() * 900000) + 100000);
     }

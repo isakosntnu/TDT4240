@@ -6,8 +6,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import io.github.drawguess.DrawGuessMain;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.manager.GameManager;
+import io.github.drawguess.model.GameSession;
+import io.github.drawguess.model.Player;
+
+import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class JoinGameScreen implements Screen {
     private final DrawGuessMain game;
@@ -20,6 +29,8 @@ public class JoinGameScreen implements Screen {
     private Image backButtonImage;
 
     private TextField gamePinField;
+    private TextField nameField;
+    private TextButton joinButton;
 
     public JoinGameScreen(final DrawGuessMain game) {
         this.game = game;
@@ -48,15 +59,52 @@ public class JoinGameScreen implements Screen {
         });
         stage.addActor(backButtonImage);
 
-        // (3) Tekstfelt
+        float screenCenterX = Gdx.graphics.getWidth() / 2f;
+
+        // (3) Game PIN
         gamePinField = new TextField("", skin);
         gamePinField.setMessageText("Enter Game PIN");
         gamePinField.setSize(250, 80);
-        gamePinField.setPosition(
-            (Gdx.graphics.getWidth() - gamePinField.getWidth()) / 2f,
-            (Gdx.graphics.getHeight() - gamePinField.getHeight()) / 2f - 20
-        );
+        gamePinField.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f + 40);
         stage.addActor(gamePinField);
+
+        // (4) Navn
+        nameField = new TextField("", skin);
+        nameField.setMessageText("Enter Your Name");
+        nameField.setSize(250, 80);
+        nameField.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f - 60);
+        stage.addActor(nameField);
+
+        // (5) Join Game-knapp
+        joinButton = new TextButton("Join Game", skin);
+        joinButton.setSize(250, 80);
+        joinButton.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f - 160);
+        stage.addActor(joinButton);
+
+        joinButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String gameId = gamePinField.getText().trim();
+                String playerName = nameField.getText().trim();
+
+                if (gameId.isEmpty() || playerName.isEmpty()) return;
+
+                String playerId = UUID.randomUUID().toString();
+
+                Player player = new Player(playerId, playerName, 0, false); // 👤 Ikke host, 0 poeng
+                List<Player> players = new ArrayList<>();
+                players.add(player);
+
+                GameSession session = new GameSession(gameId, player, players, GameSession.Status.WAITING_FOR_PLAYERS);
+
+
+                GameManager.getInstance().setSession(session);
+                GameManager.getInstance().setPlayerId(playerId);
+
+                game.getFirebase().joinGame(gameId, playerName);
+                game.setScreen(new LobbyScreen(game));
+            }
+        });
     }
 
     @Override

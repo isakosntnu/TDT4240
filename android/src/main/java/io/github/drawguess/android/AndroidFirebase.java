@@ -10,12 +10,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import io.github.drawguess.model.GameSession;
-import io.github.drawguess.model.Player;
 import io.github.drawguess.server.FirebaseInterface;
 import io.github.drawguess.manager.GameManager;
+import io.github.drawguess.android.manager.SocketManager;
 
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AndroidFirebase implements FirebaseInterface {
@@ -28,26 +31,25 @@ public class AndroidFirebase implements FirebaseInterface {
         String hostName = session.getHostPlayer().getName();
         String gameId = session.getGameId();
         String playerId = session.getHostPlayer().getId();
-    
-        // 🔧 Lagre playerId i GameManager, så det kan brukes senere (f.eks. til opplasting)
-        GameManager.getInstance().setPlayerId(playerId);
-    
+
+        GameManager.getInstance().setPlayerId(playerId); // 🔧 Viktig for å identifisere spiller senere
+
         Map<String, Object> gameData = new HashMap<>();
         gameData.put("status", "waiting");
         gameData.put("host", hostName);
         gameData.put("gamePin", gameId);
         gameData.put("createdAt", FieldValue.serverTimestamp());
-    
+
         db.collection("games").document(gameId)
             .set(gameData)
             .addOnSuccessListener(aVoid -> {
                 Log.d("Firebase", "Game created: " + gameId);
-    
+
                 Map<String, Object> playerData = new HashMap<>();
                 playerData.put("name", hostName);
                 playerData.put("joinedAt", FieldValue.serverTimestamp());
                 playerData.put("score", 0);
-    
+
                 db.collection("games").document(gameId)
                     .collection("players").document(playerId)
                     .set(playerData)
@@ -59,15 +61,11 @@ public class AndroidFirebase implements FirebaseInterface {
             .addOnFailureListener(e ->
                 Log.w("Firebase", "Failed to create game", e));
     }
-    
 
     @Override
     public void joinGame(String gameId, String playerName) {
-        // Generate a unique ID for the player (should be handled earlier and stored in GameManager)
-        String playerId = java.util.UUID.randomUUID().toString();
-    
-        GameManager.getInstance().setPlayerId(playerId);
-    
+        String playerId = GameManager.getInstance().getPlayerId(); // bruker ID som ble satt tidligere
+
         Map<String, Object> playerData = new HashMap<>();
         playerData.put("name", playerName);
         playerData.put("joinedAt", FieldValue.serverTimestamp());
@@ -83,7 +81,7 @@ public class AndroidFirebase implements FirebaseInterface {
     @Override
     public void sendGuess(String guess) {
         Log.d("Firebase", "Guess sent: " + guess);
-        // TODO: implement actual logic for guess saving
+        // TODO: implementer faktisk lagring av gjett
     }
 
     @Override
@@ -116,21 +114,20 @@ public class AndroidFirebase implements FirebaseInterface {
                                     SuccessCallback<String> onSuccess,
                                     FailureCallback onError) {
         db.collection("games")
-        .document(gameId)
-        .collection("players")
-        .document(playerId)
-        .get()
-        .addOnSuccessListener(snapshot -> {
-            if (snapshot.exists() && snapshot.contains("drawingUrl")) {
-                String url = snapshot.getString("drawingUrl");
-                onSuccess.onSuccess(url);
-            } else {
-                onError.onFailure(new Exception("No drawingUrl found"));
-            }
-        })
-        .addOnFailureListener(onError::onFailure);
+            .document(gameId)
+            .collection("players")
+            .document(playerId)
+            .get()
+            .addOnSuccessListener(snapshot -> {
+                if (snapshot.exists() && snapshot.contains("drawingUrl")) {
+                    String url = snapshot.getString("drawingUrl");
+                    onSuccess.onSuccess(url);
+                } else {
+                    onError.onFailure(new Exception("No drawingUrl found"));
+                }
+            })
+            .addOnFailureListener(onError::onFailure);
     }
-
 
     @Override
     public void setPlayerFinished(String gameId, String playerId, String drawingUrl, String word) {
@@ -138,8 +135,8 @@ public class AndroidFirebase implements FirebaseInterface {
         update.put("finished", true);
         update.put("drawingUrl", drawingUrl);
         update.put("finishedAt", FieldValue.serverTimestamp());
-        update.put("word", word);  // lagre ordet
-    
+        update.put("word", word); // lagrer ordet for senere
+
         db.collection("games").document(gameId)
             .collection("players").document(playerId)
             .update(update)
@@ -165,5 +162,46 @@ public class AndroidFirebase implements FirebaseInterface {
             })
             .addOnFailureListener(onError::onFailure);
     }
-    
+
+    @Override
+    public void emitUserJoined(String gameId, String username) {
+        try {
+            Log.d("SOCKET", "➡️ Skal sende joinGame for " + username + " i spill " + gameId);
+            JSONObject data = new JSONObject();
+            data.put("gameId", gameId);
+            data.put("username", username);
+
+            SocketManager.getSocket().emit("joinGame", data);
+            Log.d("SOCKET", "✅ Emit joinGame: " + username + " → " + gameId);
+        } catch (Exception e) {
+            Log.e("SOCKET", "❌ Feil ved joinGame-emission", e);
+        }
+    }
+
+    @Override
+    public FirebaseFirestore getFirestore() {
+        return db;
+    }
+
+    @Override
+    public void getPlayersInLobby(String gameId, SuccessCallback<List<String>> onSuccess, FailureCallback onError) {
+        db.collection("games")
+            .document(gameId)
+            .collection("players")
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                List<String> playerNames = new ArrayList<>();
+                querySnapshot.forEach(document -> {
+                    String playerName = document.getString("name");
+                    if (playerName != null) {
+                        playerNames.add(playerName);
+                    }
+                });
+                onSuccess.onSuccess(playerNames);
+            })
+            .addOnFailureListener(e -> {
+                Log.e("Firebase", "Failed to get players in lobby", e);
+                onError.onFailure(e);
+            });
+    }
 }
