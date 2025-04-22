@@ -48,7 +48,7 @@ public class DrawingScreen implements Screen {
 
     // —— TIMER FIELDS ——
     private Label timerLabel;
-    private int drawTimeLeft = 30;
+    private int drawTimeLeft = 60;
     private Timer.Task drawTimerTask;
 
     public DrawingScreen(DrawGuessMain game) {
