@@ -12,9 +12,6 @@ import io.github.drawguess.model.WordBank;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-/**
- * Håndterer tildeling av ord og opplasting av tegningen.
- */
 public class PlayerController {
 
     private final DrawGuessMain game;
@@ -43,7 +40,6 @@ public class PlayerController {
             return;
         }
 
-        // 1) Tegn til PNG‐byte[]
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         PixmapIO.PNG writer = new PixmapIO.PNG();
@@ -63,12 +59,10 @@ public class PlayerController {
         byte[] pngData = baos.toByteArray();
         Gdx.app.log("PlayerController", "Encoded PNG, size: " + pngData.length + " bytes");
 
-        // 2) Forbered metadata
         String playerId = GameManager.getInstance().getPlayerId();
         String gameId   = session.getGameId();
         String word     = session.getWordForPlayer(playerId);
 
-        // 3) Last opp bildet og marker som ferdig i Firebase, så kjør callback
         game.getFirebase().uploadDrawing(
                 gameId,
                 playerId,
