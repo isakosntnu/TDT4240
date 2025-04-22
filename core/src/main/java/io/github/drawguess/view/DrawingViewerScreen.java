@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.controller.PointsController;
 import io.github.drawguess.manager.GameManager;
 import java.util.List;
 
@@ -127,58 +128,60 @@ public class DrawingViewerScreen implements Screen {
         Timer.schedule(guessTimerTask, 1, 1, guessTimeLeft - 1);
     }
 
-    //Sends guess to firebase and stops timer. 
-    private void submitGuessAndStopTimer(String guess) {
-        hasGuessed = true;
-        if (guessTimerTask != null) guessTimerTask.cancel();
-        guessInput.setDisabled(true);
-        guessButton.setDisabled(true);
-        resultLabel.setText("Checking…");
+    // Sends guess to firebase and stops timer. 
+private void submitGuessAndStopTimer(String guess) {
+    hasGuessed = true;
+    if (guessTimerTask != null) guessTimerTask.cancel();
+    guessInput.setDisabled(true);
+    guessButton.setDisabled(true);
+    resultLabel.setText("Checking…");
 
-        String gameId   = GameManager.getInstance().getSession().getGameId();
-        String targetId = drawings.get(currentIndex).getKey();
+    String gameId   = GameManager.getInstance().getSession().getGameId();
+    String targetId = drawings.get(currentIndex).getKey();
 
-        game.getFirebase().getPlayerWord(
-                gameId, targetId,
-                correctWord -> {
-                    boolean correct = correctWord.equalsIgnoreCase(guess);
-                    int points = correct ? 10 + (guessTimeLeft * 2) : 0;
-                    String msg = correct
-                            ? "CORRECT! +" + points + "P"
-                            : "WRONG! WAS: " + correctWord.toUpperCase();
-                    
-                    Gdx.app.postRunnable(() -> {
-                        // Set result label text
-                        resultLabel.setText(msg);
-                        if (correct) {
-                            resultLabel.setColor(0, 0.8f, 0, 1); // Green
-                        } else {
-                            resultLabel.setColor(1, 0, 0, 1); // Red
-                        }
-                        
+    game.getFirebase().getPlayerWord(
+            gameId, targetId,
+            correctWord -> {
+                boolean correct = correctWord.equalsIgnoreCase(guess);
 
-                        float screenHeight = Gdx.graphics.getHeight();
-                        float resultFontScale = screenHeight * 0.0025f; 
-                        resultLabel.setFontScale(resultFontScale);
-                    });
+                // Using PointsController to give points
+                int points = PointsController.calculatePointsWithTiming(correct, guessTimeLeft);
 
-                    String me = GameManager.getInstance().getPlayerId();
-                    game.getFirebase().submitGuessResult(
-                            gameId, me, points,
-                            () -> {
-                                Timer.schedule(new Timer.Task(){
-                                    @Override public void run() {
-                                        currentIndex++;
-                                        Gdx.app.postRunnable(DrawingViewerScreen.this::loadCurrentDrawing);
-                                    }
-                                }, 5);
-                            },
-                            err -> Gdx.app.error("DrawingViewer", "Failed submitting points", err)
-                    );
-                },
-                err -> Gdx.app.postRunnable(() -> resultLabel.setText("Error checking word."))
-        );
-    }
+
+                String msg = correct
+                        ? "CORRECT! +" + points + "P"
+                        : "WRONG! WAS: " + correctWord.toUpperCase();
+                
+                Gdx.app.postRunnable(() -> {
+                    resultLabel.setText(msg);
+                    if (correct) {
+                        resultLabel.setColor(0, 0.8f, 0, 1); // Grønn hvis riktig
+                    } else {
+                        resultLabel.setColor(1, 0, 0, 1);    // Rød hvis feil
+                    }
+
+                    float screenHeight = Gdx.graphics.getHeight();
+                    float resultFontScale = screenHeight * 0.0025f;
+                    resultLabel.setFontScale(resultFontScale);
+                });
+
+                String me = GameManager.getInstance().getPlayerId();
+                game.getFirebase().submitGuessResult(
+                        gameId, me, points,
+                        () -> {
+                            Timer.schedule(new Timer.Task(){
+                                @Override public void run() {
+                                    currentIndex++;
+                                    Gdx.app.postRunnable(DrawingViewerScreen.this::loadCurrentDrawing);
+                                }
+                            }, 5);
+                        },
+                        err -> Gdx.app.error("DrawingViewer", "Failed submitting points", err)
+                );
+            },
+            err -> Gdx.app.postRunnable(() -> resultLabel.setText("Error checking word."))
+    );
+}
 
 
     private void finishGuessingRound() {

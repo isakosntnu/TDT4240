@@ -318,7 +318,6 @@ public class GuessingLobbyScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // Only update player statuses if not in countdown mode
         if (!allFinished) {
             updateTimer += delta;
             if (updateTimer >= UPDATE_INTERVAL) {
