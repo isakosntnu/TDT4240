@@ -81,7 +81,7 @@ public class GuessingLobbyScreen implements Screen {
         rootTable = new Table();
         rootTable.setFillParent(true);
         // Use relative top padding
-        rootTable.top().padTop(sh * 0.1f);
+        rootTable.top().padTop(sh * 0.2f);
         stage.addActor(rootTable);
 
         // --- Add Title --- 
