@@ -14,7 +14,7 @@ Once the project has been opened and Gradle has finished syncing, Android Studio
 1. Open Android Studio
 2. Click Build > Make Project in the top menu
 
-It also may be necessary to provide your own SDK path in the local.properties file
+It also may be necessary to provide your own SDK path in the local.properties file. 
 Android Studio will compile the code and check for any errors. No additional terminal commands are necessary, as all compilation is handled by the IDE.
    
 
