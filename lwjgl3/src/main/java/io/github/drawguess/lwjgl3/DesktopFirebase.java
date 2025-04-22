@@ -1,8 +1,10 @@
 package io.github.drawguess.lwjgl3;
 
 import java.util.List;
+import java.util.Map;
 
 import io.github.drawguess.model.GameSession;
+import io.github.drawguess.server.FirebaseCallback;
 import io.github.drawguess.server.FirebaseInterface;
 
 public class DesktopFirebase implements FirebaseInterface {
@@ -21,10 +23,6 @@ public class DesktopFirebase implements FirebaseInterface {
         System.out.println("[LWJGL3] sendGuess(" + guess + ") called — dummy");
     }
 
-    @Override
-    public void setPlayerFinished(String gameId, String playerId, String downloadUrl) {
-        System.out.println("setPlayerFinished() called [desktop mock]");
-    }
 
     @Override
     public void uploadDrawing(String gameId, String playerId, byte[] pngData, SuccessCallback<String> onSuccess,
@@ -64,5 +62,77 @@ public class DesktopFirebase implements FirebaseInterface {
             FailureCallback failureCallback) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersInLobby'");
+    }
+
+    @Override
+    public Object getFirestore() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFirestore'");
+    }
+
+    @Override
+    public void getRandomWord(String gameId, FirebaseCallback<String> callback) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRandomWord'");
+    }
+
+    @Override
+    public void setPlayerWord(String gameId, String playerId, String word) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPlayerWord'");
+    }
+
+    @Override
+    public void getPlayersWithStatus(String gameId, SuccessCallback<Map<String, Boolean>> successCallback,
+            FailureCallback failureCallback) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithStatus'");
+    }
+
+    @Override
+    public void getDrawingsForGuessing(String gameId, String myPlayerId, SuccessCallback<Map<String, String>> onSuccess,
+            FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDrawingsForGuessing'");
+    }
+
+    @Override
+    public void submitGuessResult(String gameId, String playerId, int points, Runnable onSuccess,
+            FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'submitGuessResult'");
+    }
+
+    @Override
+    public void setPlayerGuessDone(String gameId, String playerId, Runnable onSuccess, FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPlayerGuessDone'");
+    }
+
+    @Override
+    public void getPlayersGuessStatus(String gameId, SuccessCallback<Map<String, Boolean>> onSuccess,
+            FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersGuessStatus'");
+    }
+
+    @Override
+    public void getPlayersWithScores(String gameId, SuccessCallback<Map<String, Integer>> onSuccess,
+            FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithScores'");
+    }
+
+    @Override
+    public void getAllPlayerProfiles(String gameId, SuccessCallback<List<Map<String, Object>>> onSuccess,
+            FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllPlayerProfiles'");
+    }
+
+    @Override
+    public void deleteGameData(String gameId, Runnable onSuccess, FailureCallback onError) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteGameData'");
     }
 }

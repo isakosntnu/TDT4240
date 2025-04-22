@@ -69,6 +69,7 @@ public class AndroidFirebase implements FirebaseInterface {
                     playerData.put("joinedAt", FieldValue.serverTimestamp());
                     playerData.put("score", 0);
                     playerData.put("finished", false);
+                    playerData.put("guessFinished", false);
 
 
                     db.collection("games").document(gameId)
@@ -103,6 +104,7 @@ public class AndroidFirebase implements FirebaseInterface {
         playerData.put("joinedAt", FieldValue.serverTimestamp());
         playerData.put("score", 0);
         playerData.put("finished", false);
+        playerData.put("guessFinished", false);
 
         db.collection("games").document(gameId)
                 .collection("players").document(playerId)
@@ -347,13 +349,48 @@ public class AndroidFirebase implements FirebaseInterface {
                                    String playerId,
                                    Runnable onSuccess,
                                    FailureCallback onError) {
+        Log.d("AndroidFirebase", "Setting guessFinished=true for player " + playerId + " in game " + gameId);
+        
         DocumentReference ref = db.collection("games")
                 .document(gameId)
                 .collection("players")
                 .document(playerId);
-        ref.update("guessFinished", true)
-                .addOnSuccessListener(a -> onSuccess.run())
-                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+        
+        // First check if the document exists to avoid errors
+        ref.get().addOnSuccessListener(document -> {
+            if (document.exists()) {
+                // Document exists, update the field
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("guessFinished", true);
+                
+                ref.update(updates)
+                   .addOnSuccessListener(aVoid -> {
+                       Log.d("AndroidFirebase", "Successfully marked player " + playerId + " as done guessing");
+                       onSuccess.run();
+                   })
+                   .addOnFailureListener(e -> {
+                       Log.e("AndroidFirebase", "Failed to mark player as done guessing", e);
+                       onError.onFailure(new Exception("Failed to update guessFinished status: " + e.getMessage()));
+                   });
+            } else {
+                // Document doesn't exist, create it
+                Map<String, Object> playerData = new HashMap<>();
+                playerData.put("guessFinished", true);
+                
+                ref.set(playerData)
+                   .addOnSuccessListener(aVoid -> {
+                       Log.d("AndroidFirebase", "Created player document and marked as done guessing");
+                       onSuccess.run();
+                   })
+                   .addOnFailureListener(e -> {
+                       Log.e("AndroidFirebase", "Failed to create player document", e);
+                       onError.onFailure(new Exception("Failed to create player document: " + e.getMessage()));
+                   });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("AndroidFirebase", "Error checking if player document exists", e);
+            onError.onFailure(new Exception("Error checking if player document exists: " + e.getMessage()));
+        });
     }
 
     // 4) Hent alle med guessFinished
@@ -367,14 +404,127 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnSuccessListener(qs -> {
                     Map<String, Boolean> status = new HashMap<>();
                     for (DocumentSnapshot doc : qs.getDocuments()) {
+                        // Include all players, defaulting to false if guessFinished is not set
                         Boolean done = doc.getBoolean("guessFinished");
-                        if (done != null) {
-                            status.put(doc.getId(), done);
-                        }
+                        status.put(doc.getId(), done != null ? done : false);
                     }
                     onSuccess.onSuccess(status);
                 })
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 5) Hent alle spilleres poeng
+    @Override
+    public void getPlayersWithScores(String gameId,
+                                     SuccessCallback<Map<String,Integer>> onSuccess,
+                                     FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    Map<String, Integer> scores = new HashMap<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        Long scoreLong = doc.getLong("score");
+                        if (scoreLong != null) {
+                            scores.put(doc.getId(), scoreLong.intValue());
+                        } else {
+                            scores.put(doc.getId(), 0); // Default score
+                        }
+                    }
+                    onSuccess.onSuccess(scores);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 6) Hent alle spilleres profiler (navn og poeng)
+    @Override
+    public void getAllPlayerProfiles(String gameId,
+                                    SuccessCallback<List<Map<String,Object>>> onSuccess,
+                                    FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    List<Map<String,Object>> players = new ArrayList<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        Map<String,Object> player = new HashMap<>();
+                        
+                        // Add player ID
+                        player.put("id", doc.getId());
+                        
+                        // Add player name
+                        String name = doc.getString("name");
+                        player.put("name", name != null ? name : "Unknown");
+                        
+                        // Add player score
+                        Long scoreLong = doc.getLong("score");
+                        int score = scoreLong != null ? scoreLong.intValue() : 0;
+                        player.put("score", score);
+                        
+                        players.add(player);
+                    }
+                    onSuccess.onSuccess(players);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    @Override
+    public void deleteGameData(String gameId,
+                               Runnable onSuccess,
+                               FailureCallback onError) {
+        // 1. Delete Firestore game document
+        db.collection("games").document(gameId)
+            .delete()
+            .addOnSuccessListener(aVoid -> {
+                Log.d("Firebase", "Deleted Firestore game document: " + gameId);
+                
+                // 2. Delete drawings folder in Storage
+                String storagePath = "drawings/" + gameId;
+                StorageReference storageRef = storage.getReference().child(storagePath);
+
+                // List all items in the folder and delete them
+                storageRef.listAll()
+                    .addOnSuccessListener(listResult -> {
+                        List<StorageReference> items = listResult.getItems();
+                        if (items.isEmpty()) {
+                            Log.d("Firebase", "No drawings to delete in Storage for game: " + gameId);
+                            onSuccess.run(); // No drawings, proceed
+                            return;
+                        }
+
+                        final int totalItems = items.size();
+                        final int[] deletedCount = {0};
+                        final boolean[] errorOccurred = {false};
+
+                        for (StorageReference item : items) {
+                            item.delete().addOnSuccessListener(taskSnapshot -> {
+                                synchronized (deletedCount) {
+                                    deletedCount[0]++;
+                                    if (!errorOccurred[0] && deletedCount[0] == totalItems) {
+                                        Log.d("Firebase", "Deleted Storage drawings for game: " + gameId);
+                                        onSuccess.run();
+                                    }
+                                }
+                            }).addOnFailureListener(e -> {
+                                synchronized (errorOccurred) {
+                                    if (!errorOccurred[0]) {
+                                        errorOccurred[0] = true;
+                                        Log.e("Firebase", "Failed to delete item " + item.getPath(), e);
+                                        onError.onFailure(new Exception("Failed to delete a drawing: " + e.getMessage()));
+                                    }
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firebase", "Failed to list items in Storage for game: " + gameId, e);
+                        onError.onFailure(new Exception("Failed to list drawings: " + e.getMessage()));
+                    });
+            })
+            .addOnFailureListener(e -> {
+                Log.e("Firebase", "Failed to delete Firestore game document: " + gameId, e);
+                onError.onFailure(new Exception("Failed to delete game document: " + e.getMessage()));
+            });
     }
 
 }

@@ -75,6 +75,21 @@ public interface FirebaseInterface {
                                SuccessCallback<Map<String,Boolean>> onSuccess,
                                FailureCallback onError);
 
+    // Hent alle spilleres poeng
+    void getPlayersWithScores(String gameId,
+                             SuccessCallback<Map<String,Integer>> onSuccess,
+                             FailureCallback onError);
+
+    // Hent alle spilleres profiler (navn og poeng)
+    void getAllPlayerProfiles(String gameId,
+                             SuccessCallback<List<Map<String,Object>>> onSuccess,
+                             FailureCallback onError);
+
+    // Delete all game data (Firestore document and Storage folder)
+    void deleteGameData(String gameId,
+                        Runnable onSuccess,
+                        FailureCallback onError);
+
 
     interface SuccessCallback<T> {
         void onSuccess(T result);

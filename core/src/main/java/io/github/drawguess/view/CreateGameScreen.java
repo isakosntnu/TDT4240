@@ -32,25 +32,19 @@ public class CreateGameScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-
-        Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
-        labelStyle.font.getData().setScale(2f); // Skalerer opp teksten
-
-        TextField.TextFieldStyle tfStyle = skin.get(TextField.TextFieldStyle.class);
-        tfStyle.font.getData().setScale(2f);
-
-        TextButton.TextButtonStyle btnStyle = skin.get(TextButton.TextButtonStyle.class);
-        btnStyle.font.getData().setScale(2f);
-
-
         // Skjermdimensjoner
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
+
+        // Base font scale factor relative to screen height
+        float baseFontScale = screenHeight * 0.002f; 
 
         // Dynamiske størrelser
         float fieldWidth = screenWidth * 0.7f;
         float fieldHeight = screenHeight * 0.08f;
         float buttonHeight = screenHeight * 0.08f;
+        float horizontalPadding = screenWidth * 0.03f; // Relative horizontal padding
+        float verticalPadding = screenHeight * 0.03f; // Relative vertical padding
 
         // (1) Bakgrunn
         backgroundTexture = new Texture("canvas.png");
@@ -62,7 +56,7 @@ public class CreateGameScreen implements Screen {
         backButtonTexture = new Texture("backbtn.png");
         backButtonImage = new Image(backButtonTexture);
         backButtonImage.setSize(screenWidth * 0.15f, screenHeight * 0.07f);
-        backButtonImage.setPosition(30, screenHeight - backButtonImage.getHeight() - 30);
+        backButtonImage.setPosition(horizontalPadding, screenHeight - backButtonImage.getHeight() - verticalPadding);
         backButtonImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -80,6 +74,10 @@ public class CreateGameScreen implements Screen {
             (screenWidth - nameField.getWidth()) / 2f,
             screenHeight / 2f + nameField.getHeight()
         );
+        // Apply dynamic font scaling
+        nameField.getStyle().font.getData().setScale(baseFontScale);
+        // Center text vertically and horizontally
+        nameField.setAlignment(com.badlogic.gdx.utils.Align.center); 
         stage.addActor(nameField);
 
         // (4) Create Game-knapp
@@ -87,8 +85,12 @@ public class CreateGameScreen implements Screen {
         createGameButton.setSize(fieldWidth, buttonHeight);
         createGameButton.setPosition(
             (screenWidth - createGameButton.getWidth()) / 2f,
-            screenHeight / 2f - createGameButton.getHeight() - 20
+            screenHeight / 2f - createGameButton.getHeight() - (screenHeight * 0.02f)
         );
+        // Apply dynamic font scaling to button label
+        createGameButton.getLabel().setFontScale(baseFontScale);
+        // Center label within the button
+        createGameButton.getLabel().setAlignment(com.badlogic.gdx.utils.Align.center);
         createGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
