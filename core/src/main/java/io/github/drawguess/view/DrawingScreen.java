@@ -1,3 +1,4 @@
+// DrawingScreen.java
 package io.github.drawguess.view;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.drawguess.DrawGuessMain;
@@ -18,7 +20,6 @@ import io.github.drawguess.controller.PlayerController;
 import io.github.drawguess.controller.SizeController;
 import io.github.drawguess.factory.ToolButtonFactory;
 import io.github.drawguess.manager.GameManager;
-import io.github.drawguess.server.FirebaseCallback;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,20 +33,15 @@ public class DrawingScreen implements Screen {
     private final Pixmap canvas;
     private final Texture canvasTexture;
     private final Image canvasImage;
-
     private final Texture whiteboardTexture;
     private final Image whiteboardImage;
-
     private final Texture undoTexture;
     private final Image undoButton;
-
     private final Texture editToolTexture;
     private final Image editToolButton;
-
     private Texture editPanelTexture;
     private Image editPanelBackground;
     private Group editPanelGroup;
-
     private final Texture eraserTexture;
 
     private int currentSize = 1;
@@ -57,29 +53,23 @@ public class DrawingScreen implements Screen {
 
     public DrawingScreen(DrawGuessMain game) {
         this.game = game;
+        new PlayerController(game);
         this.stage = new Stage(new ScreenViewport());
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-        float iconSize = screenHeight * 0.08f;
+        float W = Gdx.graphics.getWidth();
+        float H = Gdx.graphics.getHeight();
+        float iconSize = H * 0.08f;
 
-        // Bakgrunnstavle
+        // 1) Bakgrunn
         whiteboardTexture = new Texture("whiteboard.png");
         whiteboardImage = new Image(whiteboardTexture);
-        whiteboardImage.setSize(screenWidth, screenHeight);
-        whiteboardImage.setPosition(0, 0);
+        whiteboardImage.setSize(W, H);
         stage.addActor(whiteboardImage);
 
-        // Canvas-grenser
-        float minX = screenWidth * 0.08f;
-        float maxX = screenWidth * 0.92f;
-        float minY = screenHeight * 0.12f;
-        float maxY = screenHeight * 0.80f;
-
-        // Canvas
-        canvas = new Pixmap((int) screenWidth, (int) screenHeight, Pixmap.Format.RGBA8888);
-        canvas.setColor(0, 0, 0, 0);
-        canvas.fill();
+        // 2) Canvas
+        float minX = W * 0.08f, maxX = W * 0.92f, minY = H * 0.12f, maxY = H * 0.80f;
+        canvas = new Pixmap((int)W, (int)H, Pixmap.Format.RGBA8888);
+        canvas.setColor(0,0,0,0); canvas.fill();
         canvasTexture = new Texture(canvas);
         canvasImage = new Image(canvasTexture);
         canvasImage.setFillParent(true);
@@ -87,13 +77,13 @@ public class DrawingScreen implements Screen {
 
         controller = new DrawingController(canvas, canvasTexture, minX, maxX, minY, maxY);
 
-        // UI skin
+        // 3) UI Skin
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        // —— SETUP TIMER LABEL & TASK ——
+        // 4) TIMER midt øverst
         timerLabel = new Label(String.valueOf(drawTimeLeft), skin);
         timerLabel.setFontScale(2f);
-        timerLabel.setPosition(20, screenHeight - 40);
+        timerLabel.setPosition(W/2f, H - 20, Align.top | Align.center);
         stage.addActor(timerLabel);
 
         drawTimerTask = new Timer.Task() {
@@ -108,181 +98,150 @@ public class DrawingScreen implements Screen {
         };
         Timer.schedule(drawTimerTask, 1, 1, drawTimeLeft - 1);
 
-        // Edit panel
+        // 5) Edit‑panel
         editPanelTexture = new Texture("editpanel.png");
         editPanelBackground = new Image(editPanelTexture);
-        editPanelBackground.setSize(screenWidth * 0.6f, screenHeight * 0.2f);
-
+        editPanelBackground.setSize(W * 0.6f, H * 0.2f);
         editPanelGroup = new Group();
         editPanelGroup.setSize(editPanelBackground.getWidth(), editPanelBackground.getHeight());
-        float centerX = (screenWidth - editPanelGroup.getWidth()) / 2f;
-        float centerY = (screenHeight - editPanelGroup.getHeight()) / 2f;
-        editPanelGroup.setPosition(centerX, centerY);
+        editPanelGroup.setPosition((W - editPanelGroup.getWidth())/2f,
+                (H - editPanelGroup.getHeight())/2f);
         editPanelGroup.setVisible(false);
         editPanelGroup.addActor(editPanelBackground);
         stage.addActor(editPanelGroup);
 
-        // Pen size buttons
-        Texture[] sizeTextures = {
-                new Texture("size1.png"),
-                new Texture("size2.png"),
-                new Texture("size3.png"),
-                new Texture("size4.png")
+        // 6) Størrelses‑knapper
+        Texture[] sizeTex = {
+                new Texture("size1.png"), new Texture("size2.png"),
+                new Texture("size3.png"), new Texture("size4.png")
         };
-        int[] sizes = {1, 3, 6, 12};
-
-        new SizeController(editPanelGroup, sizeTextures, sizes, size -> {
-            currentSize = size;
+        int[] sizes = {1,3,6,12};
+        new SizeController(editPanelGroup, sizeTex, sizes, s -> {
+            currentSize = s;
             controller.selectPen(controller.getSelectedColor(), currentSize);
         });
 
-        // Edit-tool
+        // 7) Edit‑tool knapp
         editToolTexture = new Texture("edittool.png");
         editToolButton = new Image(editToolTexture);
         editToolButton.setSize(iconSize, iconSize);
-        editToolButton.setPosition(screenWidth - iconSize - 20, screenHeight - iconSize - 20);
-        editToolButton.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                boolean visible = !editPanelGroup.isVisible();
-                editPanelGroup.setVisible(visible);
+        editToolButton.setPosition(W - iconSize - 20, H - iconSize - 20);
+        editToolButton.addListener(new InputListener(){
+            @Override public boolean touchDown(InputEvent e, float x, float y, int p, int b) {
+                boolean v = !editPanelGroup.isVisible();
+                editPanelGroup.setVisible(v);
                 editPanelGroup.toFront();
-                controller.setToolPanelOpen(visible);
+                controller.setToolPanelOpen(v);
                 return true;
             }
         });
         stage.addActor(editToolButton);
 
-        // Undo-knapp
-        float barHeight = screenHeight * 0.1f;
-        float undoY = screenHeight * 0.02f;
+        // 8) Undo-knapp
         undoTexture = new Texture("undobtn.png");
         undoButton = new Image(undoTexture);
-        undoButton.setSize(barHeight * 1.2f, barHeight * 0.8f);
-        undoButton.setPosition(screenWidth * 0.02f, undoY);
-        undoButton.addListener(new InputListener() {
-            @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                controller.undo();
-                return true;
+        float barH = H * 0.1f;
+        undoButton.setSize(barH*1.2f, barH*0.8f);
+        undoButton.setPosition(20, 20);
+        undoButton.addListener(new InputListener(){
+            @Override public boolean touchDown(InputEvent e, float x, float y, int p, int b) {
+                controller.undo(); return true;
             }
         });
         stage.addActor(undoButton);
 
-        // Eraser-knapp
+        // 9) Eraser + farger
         eraserTexture = new Texture("eraser.png");
-        float eraserSize = barHeight * 0.6f;
-        float eraserX = undoButton.getX() + undoButton.getWidth() + screenWidth * 0.02f;
-        ToolButtonFactory.addEraserButton(stage, controller, "eraser.png", eraserX, -barHeight * 0.4f, eraserSize);
+        ToolButtonFactory.addEraserButton(stage, controller, "eraser.png",
+                undoButton.getX()+undoButton.getWidth()+20, 20, barH*0.6f);
 
-        // Fargeknapper
-        Map<Color, String> colors = new LinkedHashMap<>();
-        colors.put(Color.BLACK, "black.png");
-        colors.put(Color.RED, "red.png");
-        colors.put(Color.BLUE, "blue.png");
-        colors.put(Color.GREEN, "green.png");
-        colors.put(Color.YELLOW, "yellow.png");
-        colors.put(Color.PURPLE, "purple.png");
-        colors.put(Color.ORANGE, "orange.png");
-        colors.put(Color.CYAN, "cyan.png");
+        Map<Color,String> cols = new LinkedHashMap<>();
+        cols.put(Color.BLACK,"black.png");   cols.put(Color.RED,"red.png");
+        cols.put(Color.BLUE,"blue.png");     cols.put(Color.GREEN,"green.png");
+        cols.put(Color.YELLOW,"yellow.png"); cols.put(Color.PURPLE,"purple.png");
+        cols.put(Color.ORANGE,"orange.png"); cols.put(Color.CYAN,"cyan.png");
 
-        float startX = eraserX + eraserSize + screenWidth * 0.02f;
-        float availableWidth = screenWidth - startX - screenWidth * 0.02f;
-        float buttonWidth = availableWidth / colors.size();
-        float buttonHeight = barHeight;
-
-        int index = 0;
-        for (Map.Entry<Color, String> entry : colors.entrySet()) {
-            float x = startX + index * buttonWidth;
-            ToolButtonFactory.addColorPenButton(
-                    stage, controller,
-                    entry.getKey(), entry.getValue(),
-                    x, -barHeight * 0.4f,
-                    buttonWidth, buttonHeight,
-                    () -> currentSize
-            );
-            index++;
+        float startX = undoButton.getX()+undoButton.getWidth()+20 + barH*0.6f + 20;
+        float avail = W - startX - 20;
+        float wBtn = avail / cols.size(), hBtn = barH;
+        int i = 0;
+        for (Map.Entry<Color,String> e : cols.entrySet()) {
+            float x = startX + i * wBtn;
+            ToolButtonFactory.addColorPenButton(stage, controller,
+                    e.getKey(), e.getValue(), x, 20, wBtn, hBtn, () -> currentSize);
+            i++;
         }
-
         ToolButtonFactory.selectInitialColor(controller.getSelectedColor());
         controller.selectPen(controller.getSelectedColor(), currentSize);
 
-        // Finish button
-        TextButton finishButton = new TextButton("FINISH DRAWING", skin);
-        float finishWidth = screenWidth * 0.28f;
-        float finishHeight = screenHeight * 0.075f;
-        finishButton.setSize(finishWidth, finishHeight);
-        finishButton.setPosition(20, screenHeight - finishHeight - 20);
-        finishButton.addListener(new InputListener() {
-            @Override public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+        // 10) Finish‑knapp
+        TextButton finish = new TextButton("FINISH DRAWING", skin);
+        finish.setSize(W*0.28f, H*0.075f);
+        finish.setPosition(20, H - H*0.075f - 20);
+        finish.addListener(new InputListener(){
+            @Override public boolean touchDown(InputEvent e, float x, float y, int p, int b) {
                 drawTimerTask.cancel();
                 finishDrawingAndAdvance();
                 return true;
             }
         });
-        stage.addActor(finishButton);
+        stage.addActor(finish);
 
-        // Word from Firebase
-        String gameId = GameManager.getInstance().getSession().getGameId();
+        // 11) Vis ord hentet fra GameSession
         String playerId = GameManager.getInstance().getPlayerId();
+        String word = GameManager.getInstance()
+                .getSession()
+                .getWordForPlayer(playerId);
+        Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
+        Label lbl1 = new Label("Draw:", style);
+        Label lbl2 = new Label(word, style);
 
-        game.getFirebase().getRandomWord(gameId, new FirebaseCallback<String>() {
-            @Override public void onSuccess(String wordToDraw) {
-                GameManager.getInstance()
-                        .getSession()
-                        .setWordForPlayer(playerId, wordToDraw);
+        float scale = H * 0.0016f;
+        lbl1.setFontScale(scale);
+        lbl2.setFontScale(scale);
 
-                Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-                Label drawLabel = new Label("Draw:", labelStyle);
-                Label wordLabel = new Label(wordToDraw, labelStyle);
+        GlyphLayout g1 = new GlyphLayout(lbl1.getStyle().font, lbl1.getText());
+        GlyphLayout g2 = new GlyphLayout(lbl2.getStyle().font, lbl2.getText());
+        float textW = Math.max(g1.width, g2.width) * scale;
 
-                float drawFontScale = screenHeight * 0.0016f;
-                drawLabel.setFontScale(drawFontScale);
-                wordLabel.setFontScale(drawFontScale);
+        lbl1.setPosition(W/2f - textW/2f, H - 60, Align.left);
+        lbl2.setPosition(W/2f - textW/2f, H - 80, Align.left);
 
-                GlyphLayout layoutDraw = new GlyphLayout(drawLabel.getStyle().font, drawLabel.getText());
-                GlyphLayout layoutWord = new GlyphLayout(wordLabel.getStyle().font, wordLabel.getText());
-                float textWidth = Math.max(layoutDraw.width, layoutWord.width) * drawFontScale;
-                float wordCenter = (finishButton.getX() + editToolButton.getX() + editToolButton.getWidth()) / 2f;
-                float wordCenterX = wordCenter - (textWidth / 2f);
+        stage.addActor(lbl1);
+        stage.addActor(lbl2);
 
-                drawLabel.setPosition(wordCenterX, screenHeight * 0.97f);
-                wordLabel.setPosition(wordCenterX, screenHeight * 0.945f);
-
-                stage.addActor(drawLabel);
-                stage.addActor(wordLabel);
-            }
-            @Override public void onFailure(Exception exception) {
-                Gdx.app.error("Firebase", "❌ Kunne ikke hente ord: " + exception.getMessage());
-            }
-        });
-
-        // Input
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(controller);
-        Gdx.input.setInputProcessor(multiplexer);
+        // 12) Input multiplexer
+        InputMultiplexer m = new InputMultiplexer();
+        m.addProcessor(stage);
+        m.addProcessor(controller);
+        Gdx.input.setInputProcessor(m);
     }
+
 
     private void finishDrawingAndAdvance() {
-        new PlayerController(game).finishDrawing(canvas);
-        game.setScreen(new WaitingScreen(game));
+        String myId = GameManager.getInstance().getPlayerId();
+        // Kall ny overload med callback:
+        new PlayerController(game).finishDrawing(canvas, () -> {
+            // Her er vi **sikre** på at Firebase har markert oss ferdige.
+            game.setScreen(new WaitingScreen(game, myId));
+        });
     }
+
 
     @Override public void render(float delta) {
         controller.updateCanvas();
         stage.act(delta);
         stage.draw();
-        undoButton.setTouchable(controller.canUndo() ? Touchable.enabled : Touchable.disabled);
-        undoButton.setColor(controller.canUndo() ? Color.WHITE : Color.LIGHT_GRAY);
+        undoButton.setTouchable(controller.canUndo()?Touchable.enabled:Touchable.disabled);
     }
-    @Override public void resize(int width, int height) {
+    @Override public void resize(int width, int height){
         stage.getViewport().update(width, height, true);
     }
     @Override public void show() {}
     @Override public void hide() { dispose(); }
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void dispose() {
+    @Override public void dispose(){
         stage.dispose();
         whiteboardTexture.dispose();
         canvasTexture.dispose();

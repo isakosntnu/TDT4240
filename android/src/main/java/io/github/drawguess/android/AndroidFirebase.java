@@ -59,8 +59,8 @@ public class AndroidFirebase implements FirebaseInterface {
                 .set(gameData)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firebase", "Game created: " + gameId);
-                    WordUploader.uploadWords(gameId); // 👈 Her legger vi til unike ord
-          
+                    uploadWordsToRealtime(gameId); // 👈 Her legger vi til unike ord
+
 
                     Map<String, Object> playerData = new HashMap<>();
                     playerData.put("name", hostName);
@@ -285,7 +285,7 @@ public class AndroidFirebase implements FirebaseInterface {
             })
             .addOnFailureListener(onFailure::onFailure);
     }
-    
+
 
     @Override
     public void setPlayerWord(String gameId, String playerId, String word) {

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+/**
+ * Singleton som holder en liste med ord.
+ * pullRandomWord() fjerner ordet fra lista slik at ingen får samme.
+ */
 public class WordBank {
     private static WordBank instance;
     private final List<String> words;
@@ -11,26 +16,26 @@ public class WordBank {
     private WordBank() {
         words = new ArrayList<>();
         Collections.addAll(words,
-            "apple", "airplane", "banana", "balloon", "bicycle",
-            "boat", "book", "bread", "bridge", "bus",
-            "camera", "car", "cat", "cloud", "cookie",
-            "cow", "cupcake", "dog", "door", "dragon",
-            "elephant", "eye", "fire", "fish", "flower",
-            "fork", "giraffe", "glasses", "hammer", "hat",
-            "house", "ice cream", "key", "ladder", "lamp",
-            "leaf", "lion", "moon", "mountain", "mushroom",
-            "pencil", "penguin", "pizza", "rain", "robot",
-            "shark", "shoe", "snake", "star", "tree",
-            "train", "turtle", "umbrella", "vampire", "violin",
-            "volcano", "watch", "whale", "window", "witch",
-            "zebra", "zoo", "backpack", "bat", "beach",
-            "bell", "bench", "bottle", "cactus", "candle",
-            "castle", "cheese", "chicken", "clock", "cookie",
-            "crayon", "crown", "desert", "diamond", "dolphin",
-            "drum", "fan", "feather", "fence", "flag",
-            "fridge", "ghost", "grapes", "guitar", "hamburger",
-            "helicopter", "honey", "jellyfish", "kangaroo", "kitchen",
-            "ladle", "lemon", "mirror", "motorcycle", "octopus"
+                "apple", "airplane", "banana", "balloon", "bicycle",
+                "boat", "book", "bread", "bridge", "bus",
+                "camera", "car", "cat", "cloud", "cookie",
+                "cow", "cupcake", "dog", "door", "dragon",
+                "elephant", "eye", "fire", "fish", "flower",
+                "fork", "giraffe", "glasses", "hammer", "hat",
+                "house", "ice cream", "key", "ladder", "lamp",
+                "leaf", "lion", "moon", "mountain", "mushroom",
+                "pencil", "penguin", "pizza", "rain", "robot",
+                "shark", "shoe", "snake", "star", "tree",
+                "train", "turtle", "umbrella", "vampire", "violin",
+                "volcano", "watch", "whale", "window", "witch",
+                "zebra", "zoo", "backpack", "bat", "beach",
+                "bell", "bench", "bottle", "cactus", "candle",
+                "castle", "cheese", "chicken", "clock", "cookie",
+                "crayon", "crown", "desert", "diamond", "dolphin",
+                "drum", "fan", "feather", "fence", "flag",
+                "fridge", "ghost", "grapes", "guitar", "hamburger",
+                "helicopter", "honey", "jellyfish", "kangaroo", "kitchen",
+                "ladle", "lemon", "mirror", "motorcycle", "octopus"
         );
     }
 
@@ -41,10 +46,15 @@ public class WordBank {
         return instance;
     }
 
+    /** Returnerer en kopi av alle gjenværende ord. */
     public List<String> getAllWords() {
         return new ArrayList<>(words);
     }
 
+    /**
+     * Trekker og fjerner et tilfeldig ord fra lista.
+     * @return et ord, eller null hvis tomt.
+     */
     public String pullRandomWord() {
         if (words.isEmpty()) return null;
         int index = new Random().nextInt(words.size());
