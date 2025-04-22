@@ -23,11 +23,16 @@ public class WaitingScreen implements Screen {
 
     private Texture backgroundTexture;
     private Image backgroundImage;
+    private Texture loadingTexture;
+    private Image loadingImage;
 
     private Table playerTable;
+    private Table rootTable;
+    private Table loadingTable;
     private Map<String, Label> statusLabels; // playerId → Label
 
     private Label messageLabel;
+    private Label countdownLabel;
 
     private float updateTimer = 0f;
     private static final float UPDATE_INTERVAL = 1.0f;
@@ -53,29 +58,47 @@ public class WaitingScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
 
-        // 1) Bakgrunn
+        // 1) Waiting background
         backgroundTexture = new Texture("board.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // 2) Root‑layout
-        Table root = new Table();
-        root.setFillParent(true);
-        root.top().padTop(sh * 0.12f);
-        stage.addActor(root);
+        // 2) Loading background (initially invisible)
+        loadingTexture = new Texture("canvas.png");
+        loadingImage = new Image(loadingTexture);
+        loadingImage.setFillParent(true);
+        loadingImage.setVisible(false); // Hide initially
+        stage.addActor(loadingImage);
 
-        // 3) Tabell over spillere + status
+        // 3) Root layout for player status
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.top().padTop(sh * 0.12f);
+        stage.addActor(rootTable);
+
+        // 4) Tabell over spillere + status
         playerTable = new Table();
-        root.add(playerTable);
-        root.row().padTop(40);
+        rootTable.add(playerTable);
+        rootTable.row().padTop(40);
 
-        // 4) Meldings‑felt under
+        // 5) Meldings‑felt under
         messageLabel = new Label(
                 isGuessPhase ? "Waiting for all guesses…" : "Waiting for all drawings…",
                 skin
         );
-        root.add(messageLabel).padBottom(20).row();
+        rootTable.add(messageLabel).padBottom(20).row();
+
+        // 6) Loading overlay with countdown (initially invisible)
+        loadingTable = new Table();
+        loadingTable.setFillParent(true);
+        loadingTable.center();
+        loadingTable.setVisible(false);
+        stage.addActor(loadingTable);
+
+        countdownLabel = new Label("", skin);
+        countdownLabel.setFontScale(3f);
+        loadingTable.add(countdownLabel);
 
         // start polling umiddelbart
         updatePlayerStatuses();
@@ -126,6 +149,9 @@ public class WaitingScreen implements Screen {
     /** Felles callback for begge faser. */
     private void onStatusReceived(Map<String, Boolean> playerStatuses) {
         Gdx.app.postRunnable(() -> {
+            // Skip if we're already in countdown
+            if (allFinished) return;
+            
             // legg til nye rader / oppdater eksisterende
             for (Map.Entry<String, Boolean> e : playerStatuses.entrySet()) {
                 String pid = e.getKey();
@@ -147,16 +173,23 @@ public class WaitingScreen implements Screen {
         });
     }
 
-    /** Teller ned 5 sek før neste skjerm. */
+    /** Teller ned 5 sek før neste skjerm. */
     private void startPauseCountdown() {
         pauseTimeLeft = 5;
-        messageLabel.setText("Next in " + pauseTimeLeft + "s");
+        
+        // Show loading screen and hide player information
+        backgroundImage.setVisible(false);
+        rootTable.setVisible(false);
+        loadingImage.setVisible(true);
+        loadingTable.setVisible(true);
+        
+        countdownLabel.setText("Next in " + pauseTimeLeft + "s");
 
         pauseTask = new Timer.Task() {
             @Override public void run() {
                 pauseTimeLeft--;
                 if (pauseTimeLeft > 0) {
-                    messageLabel.setText("Next in " + pauseTimeLeft + "s");
+                    countdownLabel.setText("Next in " + pauseTimeLeft + "s");
                 } else {
                     cancel();
                     goToNextPhase();
@@ -170,7 +203,7 @@ public class WaitingScreen implements Screen {
     private void goToNextPhase() {
         if (!isGuessPhase) {
             // === over til gjette‑fase ===
-            messageLabel.setText("Loading drawings…");
+            countdownLabel.setText("Loading drawings…");
             String gid = session.getGameId();
             String me  = GameManager.getInstance().getPlayerId();
             game.getFirebase().getDrawingsForGuessing(
@@ -179,7 +212,7 @@ public class WaitingScreen implements Screen {
                             game.setScreen(new DrawingViewerScreen(game, drawingsMap))
                     ),
                     err -> Gdx.app.postRunnable(() ->
-                            messageLabel.setText("Error loading drawings.")
+                            countdownLabel.setText("Error loading drawings.")
                     )
             );
         } else {
@@ -190,10 +223,13 @@ public class WaitingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        updateTimer += delta;
-        if (updateTimer >= UPDATE_INTERVAL) {
-            updateTimer = 0f;
-            updatePlayerStatuses();
+        // Only update player statuses if not in countdown mode
+        if (!allFinished) {
+            updateTimer += delta;
+            if (updateTimer >= UPDATE_INTERVAL) {
+                updateTimer = 0f;
+                updatePlayerStatuses();
+            }
         }
         stage.act(delta);
         stage.draw();
@@ -208,5 +244,6 @@ public class WaitingScreen implements Screen {
     public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
+        if (loadingTexture != null) loadingTexture.dispose();
     }
 }
