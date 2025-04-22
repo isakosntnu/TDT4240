@@ -377,4 +377,59 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
+    // 5) Hent alle spilleres poeng
+    @Override
+    public void getPlayersWithScores(String gameId,
+                                     SuccessCallback<Map<String,Integer>> onSuccess,
+                                     FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    Map<String, Integer> scores = new HashMap<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        Long scoreLong = doc.getLong("score");
+                        if (scoreLong != null) {
+                            scores.put(doc.getId(), scoreLong.intValue());
+                        } else {
+                            scores.put(doc.getId(), 0); // Default score
+                        }
+                    }
+                    onSuccess.onSuccess(scores);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 6) Hent alle spilleres profiler (navn og poeng)
+    @Override
+    public void getAllPlayerProfiles(String gameId,
+                                    SuccessCallback<List<Map<String,Object>>> onSuccess,
+                                    FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    List<Map<String,Object>> players = new ArrayList<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        Map<String,Object> player = new HashMap<>();
+                        
+                        // Add player ID
+                        player.put("id", doc.getId());
+                        
+                        // Add player name
+                        String name = doc.getString("name");
+                        player.put("name", name != null ? name : "Unknown");
+                        
+                        // Add player score
+                        Long scoreLong = doc.getLong("score");
+                        int score = scoreLong != null ? scoreLong.intValue() : 0;
+                        player.put("score", score);
+                        
+                        players.add(player);
+                    }
+                    onSuccess.onSuccess(players);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
 }

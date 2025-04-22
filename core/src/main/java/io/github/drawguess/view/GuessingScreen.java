@@ -171,6 +171,19 @@ public class GuessingScreen implements Screen {
     private void submitGuess(String guess) {
         Gdx.app.log("GuessingScreen", "Gjettet: " + guess);
         game.getFirebase().sendGuess(guess);
+        
+        // Mark player as done with guessing and transition to waiting screen
+        String gameId = GameManager.getInstance().getSession().getGameId();
+        String playerId = GameManager.getInstance().getPlayerId();
+        
+        game.getFirebase().setPlayerGuessDone(
+            gameId, 
+            playerId,
+            () -> Gdx.app.postRunnable(() -> 
+                game.setScreen(new WaitingScreen(game, true))
+            ),
+            err -> Gdx.app.error("GuessingScreen", "Failed to mark guess as done", err)
+        );
     }
 
     @Override public void show() {}

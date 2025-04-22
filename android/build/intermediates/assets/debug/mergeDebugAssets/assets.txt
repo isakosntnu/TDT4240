@@ -21,6 +21,7 @@ joingamebtn.png
 leaderboard.png
 left.png
 libgdx.png
+loading.png
 logo.png
 orange.png
 pen.png
