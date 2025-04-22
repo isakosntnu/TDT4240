@@ -42,33 +42,32 @@ public class AndroidFirebase implements FirebaseInterface {
 
     @Override
     public void createGame(GameSession session) {
-
+    
         String hostName = session.getHostPlayer().getName();
         String gameId = session.getGameId();
         String playerId = session.getHostPlayer().getId();
-
+    
         GameManager.getInstance().setPlayerId(playerId);
-
+    
         Map<String, Object> gameData = new HashMap<>();
         gameData.put("status", "waiting");
         gameData.put("host", hostName);
         gameData.put("gamePin", gameId);
         gameData.put("createdAt", FieldValue.serverTimestamp());
-
+    
         db.collection("games").document(gameId)
                 .set(gameData)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firebase", "Game created: " + gameId);
                     WordUploader.uploadWords(gameId); // 👈 Her legger vi til unike ord
-          
-
+    
                     Map<String, Object> playerData = new HashMap<>();
                     playerData.put("name", hostName);
                     playerData.put("joinedAt", FieldValue.serverTimestamp());
                     playerData.put("score", 0);
                     playerData.put("finished", false);
-
-
+                    playerData.put("isHost", true); // 🟢 Legger til host-feltet her!
+    
                     db.collection("games").document(gameId)
                             .collection("players").document(playerId)
                             .set(playerData)
@@ -77,6 +76,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 })
                 .addOnFailureListener(e -> Log.w("Firebase", "Failed to create game", e));
     }
+    
 
     private void uploadWordsToRealtime(String gameId) {
         Map<String, Object> wordsMap = new HashMap<>();
@@ -95,13 +95,14 @@ public class AndroidFirebase implements FirebaseInterface {
     @Override
     public void joinGame(String gameId, String playerName) {
         String playerId = GameManager.getInstance().getPlayerId();
-
+    
         Map<String, Object> playerData = new HashMap<>();
         playerData.put("name", playerName);
         playerData.put("joinedAt", FieldValue.serverTimestamp());
         playerData.put("score", 0);
         playerData.put("finished", false);
-
+        playerData.put("isHost", false); // 🔵 Spillere som joiner er ikke host
+    
         db.collection("games").document(gameId)
                 .collection("players").document(playerId)
                 .set(playerData)
@@ -109,6 +110,29 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> Log.w("Firebase", "Failed to add player", e));
     }
 
+    @Override
+    public void checkIfPlayerIsHost(String gameId,
+                                    SuccessCallback<Boolean> onSuccess,
+                                    FailureCallback onFailure) {
+        String playerId = GameManager.getInstance().getPlayerId();
+
+        db.collection("games")
+                .document(gameId)
+                .collection("players")
+                .document(playerId)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists() && snapshot.contains("isHost")) {
+                        Boolean isHost = snapshot.getBoolean("isHost");
+                        onSuccess.onSuccess(isHost != null && isHost);
+                    } else {
+                        onFailure.onFailure(new Exception("Player data not found or missing isHost field"));
+                    }
+                })
+                .addOnFailureListener(onFailure::onFailure);
+    }
+
+    
     @Override
     public void sendGuess(String guess) {
         Log.d("Firebase", "Guess sent: " + guess);
@@ -304,5 +328,33 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnSuccessListener(aVoid -> Log.d("Firebase", "📝 Ord satt for spiller: " + playerId))
                 .addOnFailureListener(e -> Log.e("Firebase", "❌ Klarte ikke sette ord for spiller", e));
     }
+
+
+    @Override
+    public void getAllPlayerDrawings(String gameId,
+                                    SuccessCallback<Map<String, String>> onSuccess,
+                                    FailureCallback onFailure) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    Map<String, String> playerDrawings = new HashMap<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String playerName = doc.getString("name");
+                        String drawingUrl = doc.getString("drawingUrl");
+
+                        if (playerName != null && drawingUrl != null) {
+                            playerDrawings.put(playerName, drawingUrl);
+                            Log.d("Firebase", "🎨 " + playerName + " -> " + drawingUrl);
+                        } else {
+                            Log.d("Firebase", "⚠️ " + playerName + " has no drawing uploaded yet.");
+                        }
+                    }
+
+                    onSuccess.onSuccess(playerDrawings);
+                })
+                .addOnFailureListener(onFailure::onFailure);
+    }
+
 
 }

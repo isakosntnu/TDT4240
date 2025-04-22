@@ -45,9 +45,10 @@ public interface FirebaseInterface {
     Object getFirestore();
     void getRandomWord(String gameId, FirebaseCallback<String> callback);
     void setPlayerWord(String gameId, String playerId, String word);
+    public void checkIfPlayerIsHost(String gameId, SuccessCallback<Boolean> onSuccess, FailureCallback onFailure);
 
     void getPlayersWithStatus(String gameId, SuccessCallback<Map<String, Boolean>> successCallback, FailureCallback failureCallback);
-
+    public void getAllPlayerDrawings(String gameId, SuccessCallback<Map<String, String>> onSuccess, FailureCallback onFailure);
 
 
 

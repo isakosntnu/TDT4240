@@ -125,25 +125,59 @@ public class WaitingScreen implements Screen {
     }
 
     private void showNextRoundButton() {
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        float screenHeight = Gdx.graphics.getHeight();
+        String gameId = session.getGameId();
+    
+        game.getFirebase().checkIfPlayerIsHost(gameId,
+            isHost -> {
+                if (!isHost) {
+                    Gdx.app.log("WaitingScreen", "🙅 Not host, button will not be shown.");
+                    return; // 🚫 Ikke host → ikke vis knappen
+                }
+    
+                // ✅ Hvis host → opprett knappen som før:
+                Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+                float screenHeight = Gdx.graphics.getHeight();
+    
+                nextRoundButton = new TextButton("Next Round", skin);
+                nextRoundButton.getLabel().setFontScale(screenHeight * 0.0015f);
+    
+                nextRoundButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        messageLabel.setText("Starting guessing phase...");
+                        nextRoundButton.setDisabled(true);
+    
+                        String gameId = session.getGameId();
+                        fetchDrawingUrls();
 
-        nextRoundButton = new TextButton("Next Round", skin);
-        nextRoundButton.getLabel().setFontScale(screenHeight * 0.0015f);
-
-        nextRoundButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                messageLabel.setText("Starting guessing phase...");
-                nextRoundButton.setDisabled(true);
-        
-                String gameId = session.getGameId();
-                game.getSocket().emitStartGuessingPhase(gameId);
+                    }
+                });
+    
+                rootTable.add(nextRoundButton).expandY().bottom().padBottom(30).row();
+            },
+            error -> {
+                Gdx.app.error("WaitingScreen", "❌ Failed to check if player is host", error);
             }
-        });
-
-        rootTable.add(nextRoundButton).expandY().bottom().padBottom(30).row();
+        );
     }
+    
+    private void fetchDrawingUrls() {
+        String gameId = session.getGameId();
+        game.getFirebase().getAllPlayerDrawings(
+            gameId,
+            drawingMap -> Gdx.app.postRunnable(() -> {
+                GameManager.getInstance().setPlayerDrawings(drawingMap);
+                Gdx.app.log("WaitingScreen", "✅ Drawing URLs cached in GameManager: " + drawingMap.size());
+                
+                // 👉 Nå kan vi bytte skjerm trygt:
+                game.setScreen(new ShowUrlScreen(game, gameId));
+            }),
+            error -> Gdx.app.error("WaitingScreen", "❌ Failed to fetch drawing URLs", error)
+        );
+    }
+    
+    
+    
 
     @Override
     public void render(float delta) {

@@ -2,6 +2,8 @@
 package io.github.drawguess;
 
 import com.badlogic.gdx.Game;
+
+import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.server.FirebaseInterface;
 import io.github.drawguess.server.SocketInterface;
 
@@ -25,7 +27,7 @@ public class DrawGuessMain extends Game {
 
     @Override
     public void create() {
-        // Startskjerm eller meny
+        GameManager.setGameInstance(this); 
         setScreen(new io.github.drawguess.view.MenuScreen(this));
     }
 
