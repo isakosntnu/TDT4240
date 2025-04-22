@@ -16,6 +16,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.database.*;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 
 
 import org.json.JSONObject;
@@ -297,6 +299,82 @@ public class AndroidFirebase implements FirebaseInterface {
                 .update(update)
                 .addOnSuccessListener(aVoid -> Log.d("Firebase", "📝 Ord satt for spiller: " + playerId))
                 .addOnFailureListener(e -> Log.e("Firebase", "❌ Klarte ikke sette ord for spiller", e));
+    }
+
+
+
+    // 1) Drawings for guessing: hent alle player‑dokumenter, filtrer ut deg selv, plukk ut drawingUrl
+    @Override
+    public void getDrawingsForGuessing(String gameId,
+                                       String myPlayerId,
+                                       SuccessCallback<Map<String,String>> onSuccess,
+                                       FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    Map<String, String> drawings = new HashMap<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        String pid = doc.getId();
+                        if (pid.equals(myPlayerId)) continue;
+                        String url = doc.getString("drawingUrl");
+                        if (url != null) drawings.put(pid, url);
+                    }
+                    onSuccess.onSuccess(drawings);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 2) Submit guess result: inkrementer score‐feltet atomisk
+    @Override
+    public void submitGuessResult(String gameId,
+                                  String playerId,
+                                  int points,
+                                  Runnable onSuccess,
+                                  FailureCallback onError) {
+        DocumentReference ref = db.collection("games")
+                .document(gameId)
+                .collection("players")
+                .document(playerId);
+        ref.update("score", FieldValue.increment(points))
+                .addOnSuccessListener(a -> onSuccess.run())
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 3) Sett gjett‑runde ferdig
+    @Override
+    public void setPlayerGuessDone(String gameId,
+                                   String playerId,
+                                   Runnable onSuccess,
+                                   FailureCallback onError) {
+        DocumentReference ref = db.collection("games")
+                .document(gameId)
+                .collection("players")
+                .document(playerId);
+        ref.update("guessFinished", true)
+                .addOnSuccessListener(a -> onSuccess.run())
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+    }
+
+    // 4) Hent alle med guessFinished
+    @Override
+    public void getPlayersGuessStatus(String gameId,
+                                      SuccessCallback<Map<String,Boolean>> onSuccess,
+                                      FailureCallback onError) {
+        db.collection("games").document(gameId)
+                .collection("players")
+                .get()
+                .addOnSuccessListener(qs -> {
+                    Map<String, Boolean> status = new HashMap<>();
+                    for (DocumentSnapshot doc : qs.getDocuments()) {
+                        Boolean done = doc.getBoolean("guessFinished");
+                        if (done != null) {
+                            status.put(doc.getId(), done);
+                        }
+                    }
+                    onSuccess.onSuccess(status);
+                })
+                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
 }

@@ -51,6 +51,31 @@ public interface FirebaseInterface {
 
 
 
+    // Henter alle tegninger for gjett‐runde (unntatt deg selv)
+    void getDrawingsForGuessing(String gameId,
+                                String myPlayerId,
+                                SuccessCallback<Map<String,String>> onSuccess,
+                                FailureCallback onError);
+
+    // Sender poeng du fikk for ett gjett
+    void submitGuessResult(String gameId,
+                           String playerId,
+                           int points,
+                           Runnable onSuccess,
+                           FailureCallback onError);
+
+    // Marker at du er ferdig med å gjette alle bilder
+    void setPlayerGuessDone(String gameId,
+                            String playerId,
+                            Runnable onSuccess,
+                            FailureCallback onError);
+
+    // Hent alle spilleres gjett‐status (true = ferdig)
+    void getPlayersGuessStatus(String gameId,
+                               SuccessCallback<Map<String,Boolean>> onSuccess,
+                               FailureCallback onError);
+
+
     interface SuccessCallback<T> {
         void onSuccess(T result);
     }

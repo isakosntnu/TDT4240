@@ -12,21 +12,20 @@ import io.github.drawguess.manager.GameManager;
 import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WaitingScreen implements Screen {
 
     private final DrawGuessMain game;
     private final Stage stage;
     private final GameSession session;
-    private final String drawingPlayerId;    // ← Hvem sin tegning skal vi hente videre
+    private final boolean isGuessPhase;
 
     private Texture backgroundTexture;
     private Image backgroundImage;
 
     private Table playerTable;
-    private Map<String, Label> statusLabels; // nøkler er playerId
+    private Map<String, Label> statusLabels; // playerId → Label
 
     private Label messageLabel;
 
@@ -38,9 +37,13 @@ public class WaitingScreen implements Screen {
     private int pauseTimeLeft;
     private Timer.Task pauseTask;
 
-    public WaitingScreen(DrawGuessMain game, String drawingPlayerId) {
+    /**
+     * @param game         referanse til hoved‑klassen
+     * @param isGuessPhase true = vi venter på gjett‑runde, false = vi venter på tegne‑runde
+     */
+    public WaitingScreen(DrawGuessMain game, boolean isGuessPhase) {
         this.game = game;
-        this.drawingPlayerId = drawingPlayerId;
+        this.isGuessPhase = isGuessPhase;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -48,7 +51,7 @@ public class WaitingScreen implements Screen {
         this.statusLabels = new HashMap<>();
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        float screenHeight = Gdx.graphics.getHeight();
+        float sh = Gdx.graphics.getHeight();
 
         // 1) Bakgrunn
         backgroundTexture = new Texture("board.png");
@@ -56,119 +59,133 @@ public class WaitingScreen implements Screen {
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // 2) Root‐layout
-        Table rootTable = new Table();
-        rootTable.setFillParent(true);
-        rootTable.top().padTop(screenHeight * 0.12f);
-        stage.addActor(rootTable);
+        // 2) Root‑layout
+        Table root = new Table();
+        root.setFillParent(true);
+        root.top().padTop(sh * 0.12f);
+        stage.addActor(root);
 
         // 3) Tabell over spillere + status
         playerTable = new Table();
-        rootTable.add(playerTable);
-        rootTable.row().padTop(40);
+        root.add(playerTable);
+        root.row().padTop(40);
 
-        // 4) Meldings‐felt under
-        messageLabel = new Label("", skin);
-        rootTable.add(messageLabel).padBottom(20).row();
+        // 4) Meldings‑felt under
+        messageLabel = new Label(
+                isGuessPhase ? "Waiting for all guesses…" : "Waiting for all drawings…",
+                skin
+        );
+        root.add(messageLabel).padBottom(20).row();
 
-        // Start første oppdatering umiddelbart
+        // start polling umiddelbart
         updatePlayerStatuses();
     }
 
-    /** Legger til én rad i tabellen, bruker playerId som nøkkel, men henter display‐navnet. */
+    /** Legger til én rad i tabellen. */
     private void addPlayerRow(String playerId, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float scale = Gdx.graphics.getHeight() * 0.0015f;
-
         Player p = session.getPlayerById(playerId);
         String displayName = (p != null) ? p.getName() : playerId;
 
-        Label nameLabel = new Label(displayName, skin);
-        nameLabel.setFontScale(scale);
+        Label name = new Label(displayName, skin);
+        name.setFontScale(scale);
+        Label status = new Label(isFinished ? "✔️" : "⌛", skin);
+        status.setFontScale(scale);
 
-        Label statusLabel = new Label(isFinished ? "Finished" : "Drawing", skin);
-        statusLabel.setFontScale(scale);
-
-        // Legg i map under playerId
-        statusLabels.put(playerId, statusLabel);
-
-        // Bygg raden
-        playerTable.add(nameLabel).padRight(40).left();
-        playerTable.add(statusLabel).right().row();
+        statusLabels.put(playerId, status);
+        playerTable.add(name).padRight(40).left();
+        playerTable.add(status).right().row();
     }
 
-    /** Oppdaterer én spiller‐rad hvis den finnes. */
+    /** Oppdaterer én spiller‑rad hvis den finnes. */
     private void updatePlayerStatus(String playerId, boolean isFinished) {
-        Label statusLabel = statusLabels.get(playerId);
-        if (statusLabel != null) {
-            statusLabel.setText(isFinished ? "Finished" : "Drawing");
+        Label lbl = statusLabels.get(playerId);
+        if (lbl != null) {
+            lbl.setText(isFinished ? "✔️" : "⌛");
         }
     }
 
-    /** Kaller Firebase for å hente alle spilleres ferdig‐status. */
+    /** Henter korrekt felt fra Firebase basert på fase. */
     private void updatePlayerStatuses() {
-        game.getFirebase().getPlayersWithStatus(
-                session.getGameId(),
-                playerStatuses -> Gdx.app.postRunnable(() -> {
-                    // Legg til rader for nye spillere, oppdater eksisterende
-                    for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
-                        String pid       = entry.getKey();
-                        boolean finished = entry.getValue();
-                        if (!statusLabels.containsKey(pid)) {
-                            addPlayerRow(pid, finished);
-                        } else {
-                            updatePlayerStatus(pid, finished);
-                        }
-                    }
-                    // Sjekk om alle er ferdige
-                    if (!allFinished) {
-                        boolean nowAll = playerStatuses.values().stream().allMatch(f -> f);
-                        if (nowAll) {
-                            allFinished = true;
-                            startPauseCountdown();
-                        }
-                    }
-                }),
-                error -> Gdx.app.error("WaitingScreen", "Kunne ikke hente status", error)
-        );
+        if (!isGuessPhase) {
+            game.getFirebase().getPlayersWithStatus(
+                    session.getGameId(),
+                    this::onStatusReceived,
+                    err -> Gdx.app.error("WaitingScreen", "Could not fetch drawing status", err)
+            );
+        } else {
+            game.getFirebase().getPlayersGuessStatus(
+                    session.getGameId(),
+                    this::onStatusReceived,
+                    err -> Gdx.app.error("WaitingScreen", "Could not fetch guess status", err)
+            );
+        }
     }
 
-    /** Teller ned før neste skjerm. */
+    /** Felles callback for begge faser. */
+    private void onStatusReceived(Map<String, Boolean> playerStatuses) {
+        Gdx.app.postRunnable(() -> {
+            // legg til nye rader / oppdater eksisterende
+            for (Map.Entry<String, Boolean> e : playerStatuses.entrySet()) {
+                String pid = e.getKey();
+                boolean done = e.getValue();
+                if (!statusLabels.containsKey(pid)) {
+                    addPlayerRow(pid, done);
+                } else {
+                    updatePlayerStatus(pid, done);
+                }
+            }
+            // sjekk om alle er ferdige
+            if (!allFinished) {
+                boolean nowAll = playerStatuses.values().stream().allMatch(b -> b);
+                if (nowAll) {
+                    allFinished = true;
+                    startPauseCountdown();
+                }
+            }
+        });
+    }
+
+    /** Teller ned 5 sek før neste skjerm. */
     private void startPauseCountdown() {
         pauseTimeLeft = 5;
-        messageLabel.setText("Next round in " + pauseTimeLeft + "s");
+        messageLabel.setText("Next in " + pauseTimeLeft + "s");
 
         pauseTask = new Timer.Task() {
             @Override public void run() {
                 pauseTimeLeft--;
                 if (pauseTimeLeft > 0) {
-                    messageLabel.setText("Next round in " + pauseTimeLeft + "s");
+                    messageLabel.setText("Next in " + pauseTimeLeft + "s");
                 } else {
                     cancel();
-                    goToNextRound();
+                    goToNextPhase();
                 }
             }
         };
         Timer.schedule(pauseTask, 1, 1, pauseTimeLeft);
     }
 
-    /** Går videre til DrawingViewerScreen når avtellingen er ferdig. */
-    private void goToNextRound() {
-        messageLabel.setText("Loading drawing...");
-        game.getFirebase().getPlayerDrawingUrl(
-                session.getGameId(),
-                drawingPlayerId,  // ← nå bruker vi ID-en vi fikk med fra DrawingScreen
-                url -> Gdx.app.postRunnable(() -> {
-                    if (url != null && !url.isEmpty()) {
-                        game.setScreen(new DrawingViewerScreen(game, url));
-                    } else {
-                        messageLabel.setText("Drawing not uploaded yet.");
-                    }
-                }),
-                err -> Gdx.app.postRunnable(() ->
-                        messageLabel.setText("Error loading drawing.")
-                )
-        );
+    /** Bytter skjerm avhengig av fase. */
+    private void goToNextPhase() {
+        if (!isGuessPhase) {
+            // === over til gjette‑fase ===
+            messageLabel.setText("Loading drawings…");
+            String gid = session.getGameId();
+            String me  = GameManager.getInstance().getPlayerId();
+            game.getFirebase().getDrawingsForGuessing(
+                    gid, me,
+                    drawingsMap -> Gdx.app.postRunnable(() ->
+                            game.setScreen(new DrawingViewerScreen(game, drawingsMap))
+                    ),
+                    err -> Gdx.app.postRunnable(() ->
+                            messageLabel.setText("Error loading drawings.")
+                    )
+            );
+        } else {
+            // === alle har gjettet ===
+            game.setScreen(new LeaderboardScreen(game));
+        }
     }
 
     @Override
@@ -182,14 +199,13 @@ public class WaitingScreen implements Screen {
         stage.draw();
     }
 
+    @Override public void resize(int w, int h) { stage.getViewport().update(w, h, true); }
     @Override public void show() {}
-    @Override public void resize(int w, int h) {
-        stage.getViewport().update(w, h, true);
-    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() { dispose(); }
-    @Override public void dispose() {
+    @Override
+    public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
     }
