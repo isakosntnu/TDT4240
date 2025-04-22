@@ -1,6 +1,6 @@
 # Draw & Guess Game
 
-This is a simple multiplayer drawing and guessing game built with LibGDX and Firebase.
+This is a simple multiplayer drawing and guessing game built with LibGDX and Firebase. The game is meant to be played i portrait mode.
 
 ## Building and Running
 
