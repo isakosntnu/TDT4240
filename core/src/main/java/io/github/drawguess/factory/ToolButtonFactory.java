@@ -19,7 +19,6 @@ public class ToolButtonFactory {
     private static Image eraserButton = null;
     private static float eraserOriginalY;
 
-    // 🎯 Marker initialt valgt fargeknapp
     public static void selectInitialColor(Color color) {
         for (PencilButton pb : penButtons) {
             if (pb.color.equals(color)) {
@@ -34,9 +33,7 @@ public class ToolButtonFactory {
         }
     }
 
-    /**
-     * Legger til en fargeblyant-knapp
-     */
+
     public static void addColorPenButton(Stage stage,
                                          DrawingController controller,
                                          Color color,
@@ -64,9 +61,7 @@ public class ToolButtonFactory {
         stage.addActor(button);
     }
 
-    /**
-     * Legger til viskelær-knapp
-     */
+
     public static void addEraserButton(Stage stage,
                                        DrawingController controller,
                                        String texturePath,
@@ -94,9 +89,7 @@ public class ToolButtonFactory {
         stage.addActor(button);
     }
 
-    /**
-     * Flytter valgt blyant oppover, og nullstiller andre
-     */
+
     private static void updateSelection(Image selected) {
         for (PencilButton pb : penButtons) {
             if (pb.image == selected) {
@@ -121,9 +114,7 @@ public class ToolButtonFactory {
         }
     }
 
-    /**
-     * Intern hjelpestruktur
-     */
+
     private static class PencilButton {
         Image image;
         float originalY;

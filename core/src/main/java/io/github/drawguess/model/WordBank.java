@@ -5,10 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Singleton som holder en liste med ord.
- * pullRandomWord() fjerner ordet fra lista slik at ingen får samme.
- */
+
 public class WordBank {
     private static WordBank instance;
     private final List<String> words;
@@ -46,15 +43,12 @@ public class WordBank {
         return instance;
     }
 
-    /** Returnerer en kopi av alle gjenværende ord. */
+
     public List<String> getAllWords() {
         return new ArrayList<>(words);
     }
 
-    /**
-     * Trekker og fjerner et tilfeldig ord fra lista.
-     * @return et ord, eller null hvis tomt.
-     */
+
     public String pullRandomWord() {
         if (words.isEmpty()) return null;
         int index = new Random().nextInt(words.size());

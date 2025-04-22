@@ -25,7 +25,6 @@ public class DrawGuessMain extends Game {
 
     @Override
     public void create() {
-        // Startskjerm eller meny
         setScreen(new io.github.drawguess.view.MenuScreen(this));
     }
 

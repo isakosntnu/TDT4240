@@ -49,48 +49,48 @@ public interface FirebaseInterface {
     void getPlayersWithStatus(String gameId, SuccessCallback<Map<String, Boolean>> successCallback, FailureCallback failureCallback);
 
 
-
-
-    // Henter alle tegninger for gjett‐runde (unntatt deg selv)
     void getDrawingsForGuessing(String gameId,
                                 String myPlayerId,
                                 SuccessCallback<Map<String,String>> onSuccess,
                                 FailureCallback onError);
 
-    // Sender poeng du fikk for ett gjett
+
     void submitGuessResult(String gameId,
                            String playerId,
                            int points,
                            Runnable onSuccess,
                            FailureCallback onError);
 
-    // Marker at du er ferdig med å gjette alle bilder
+
     void setPlayerGuessDone(String gameId,
                             String playerId,
                             Runnable onSuccess,
                             FailureCallback onError);
 
-    // Hent alle spilleres gjett‐status (true = ferdig)
+
     void getPlayersGuessStatus(String gameId,
                                SuccessCallback<Map<String,Boolean>> onSuccess,
                                FailureCallback onError);
 
-    // Hent alle spilleres poeng
+
     void getPlayersWithScores(String gameId,
                              SuccessCallback<Map<String,Integer>> onSuccess,
                              FailureCallback onError);
 
-    // Hent alle spilleres profiler (navn og poeng)
+
     void getAllPlayerProfiles(String gameId,
                              SuccessCallback<List<Map<String,Object>>> onSuccess,
                              FailureCallback onError);
 
-    // Delete all game data (Firestore document and Storage folder)
+
     void deleteGameData(String gameId,
                         Runnable onSuccess,
                         FailureCallback onError);
 
 
+    void checkGameExists(String gameId,
+                         SuccessCallback<Boolean> onSuccess,
+                         FailureCallback onError);
     interface SuccessCallback<T> {
         void onSuccess(T result);
     }

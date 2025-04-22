@@ -41,12 +41,12 @@ public class LobbyScreen implements Screen {
     private static final float UPDATE_INTERVAL = 0.5f;
 
     private float screenHeight = Gdx.graphics.getHeight();
-    private float screenWidth = Gdx.graphics.getWidth(); // Added for player table padding
-    private float baseFontScale = screenHeight * 0.0018f; // Base font scale
+    private float screenWidth = Gdx.graphics.getWidth(); 
+    private float baseFontScale = screenHeight * 0.0018f; 
 
     public LobbyScreen(DrawGuessMain game) {
         this.game = game;
-        this.socketHandler = game.getSocket(); // <--- kommer fra Android-implementasjonen
+        this.socketHandler = game.getSocket(); 
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         instance = this;
@@ -99,13 +99,12 @@ public class LobbyScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 String gameId = session.getGameId();
-                socketHandler.emitStartGame(gameId); // 🔥 Emit event
+                socketHandler.emitStartGame(gameId); 
             }
         });
         
     }
 
-    // Kalles fra AndroidSocketHandler når en ny spiller joiner
     public static void onPlayerJoined(String playerName) {
         if (instance != null) {
             Gdx.app.postRunnable(() -> {
@@ -115,7 +114,7 @@ public class LobbyScreen implements Screen {
         }
     }
 
-    // Kalles fra AndroidSocketHandler når join avvises
+
     public static void onJoinRejected(String reason) {
         if (instance != null) {
             Gdx.app.postRunnable(() -> instance.showPopup(reason));
@@ -145,7 +144,7 @@ public class LobbyScreen implements Screen {
                 startGameButton.setVisible(canStart);
                 waitingMessageLabel.setVisible(!canStart);
             }),
-            e -> Gdx.app.log("LobbyScreen", "❌ Feil ved henting av spillere: " + e.getMessage())
+            e -> Gdx.app.log("LobbyScreen", "error" + e.getMessage())
         );
     }
 
@@ -159,7 +158,7 @@ public class LobbyScreen implements Screen {
         playerNames.add(name);
         playerTable.add(playerLabel).padBottom(Gdx.graphics.getHeight() * 0.01f).row();
 
-        Gdx.app.log("LobbyScreen", "👤 Spiller lagt til: " + name);
+        Gdx.app.log("LobbyScreen", "Player added" + name);
     }
 
     public static void onGameStarted() {
@@ -169,10 +168,10 @@ public class LobbyScreen implements Screen {
     
                 GameController controller = GameManager.getInstance().getGameController();
                 if (controller != null) {
-                    Gdx.app.log("LobbyScreen", "🎮 Bruker eksisterende GameController");
+                    Gdx.app.log("LobbyScreen", "Using existing GameController");
                     controller.startGame(game);
                 } else {
-                    Gdx.app.log("LobbyScreen", "⚠️ Ingen GameController – fallback til bare DrawingScreen");
+                    Gdx.app.log("LobbyScreen", "Fallback to DrawingScreen");
                     game.setScreen(new DrawingScreen(game));
                 }
             });

@@ -61,7 +61,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .set(gameData)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firebase", "Game created: " + gameId);
-                    uploadWordsToRealtime(gameId); // 👈 Her legger vi til unike ord
+                    uploadWordsToRealtime(gameId); 
 
 
                     Map<String, Object> playerData = new HashMap<>();
@@ -91,8 +91,8 @@ public class AndroidFirebase implements FirebaseInterface {
 
         realtimeDb.child("games").child(gameId).child("available_words")
                 .setValue(wordsMap)
-                .addOnSuccessListener(aVoid -> Log.d("Firebase", "🟢 WordBank-ord lastet opp til Realtime DB"))
-                .addOnFailureListener(e -> Log.e("Firebase", "❌ Feil ved opplasting av ord", e));
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Word uploaded"))
+                .addOnFailureListener(e -> Log.e("Firebase", "Word upload error", e));
     }
 
     @Override
@@ -194,7 +194,7 @@ public class AndroidFirebase implements FirebaseInterface {
             data.put("username", username);
             SocketManager.getSocket().emit("joinGame", data);
         } catch (Exception e) {
-            Log.e("SOCKET", "❌ Feil ved joinGame-emission", e);
+            Log.e("SOCKET", "join game error", e);
         }
     }
 
@@ -242,10 +242,10 @@ public class AndroidFirebase implements FirebaseInterface {
                 List<String> words = new ArrayList<>(wordMap.keySet());
                 String selectedWord = words.get(new Random().nextInt(words.size()));
 
-                // Fjern det valgte ordet
+
                 currentData.child(selectedWord).setValue(null);
 
-                // Midlertidig legg det i et spesialfelt vi henter i onComplete
+
                 currentData.child("_selected").setValue(selectedWord);
 
                 return Transaction.success(currentData);
@@ -254,7 +254,7 @@ public class AndroidFirebase implements FirebaseInterface {
             @Override
             public void onComplete(DatabaseError error, boolean committed, DataSnapshot currentData) {
                 if (error != null || !committed || currentData == null) {
-                    callback.onFailure(new Exception("Klarte ikke hente ord"));
+                    callback.onFailure(new Exception("Could not get word"));
                     return;
                 }
 
@@ -262,7 +262,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 if (selectedWord != null) {
                     callback.onSuccess(selectedWord);
                 } else {
-                    callback.onFailure(new Exception("Ingen ord tilgjengelig"));
+                    callback.onFailure(new Exception("No words available"));
                 }
             }
         });
@@ -290,6 +290,16 @@ public class AndroidFirebase implements FirebaseInterface {
             .addOnFailureListener(onFailure::onFailure);
     }
 
+    public void checkGameExists(String gameId,
+                                SuccessCallback<Boolean> onSuccess,
+                                FailureCallback onError) {
+        db.collection("games")
+        .document(gameId)
+        .get()
+        .addOnSuccessListener(doc -> onSuccess.onSuccess(doc.exists()))
+        .addOnFailureListener(onError::onFailure);
+    }
+
 
     @Override
     public void setPlayerWord(String gameId, String playerId, String word) {
@@ -299,13 +309,13 @@ public class AndroidFirebase implements FirebaseInterface {
         db.collection("games").document(gameId)
                 .collection("players").document(playerId)
                 .update(update)
-                .addOnSuccessListener(aVoid -> Log.d("Firebase", "📝 Ord satt for spiller: " + playerId))
-                .addOnFailureListener(e -> Log.e("Firebase", "❌ Klarte ikke sette ord for spiller", e));
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Success" + playerId))
+                .addOnFailureListener(e -> Log.e("Firebase", "error", e));
     }
 
 
 
-    // 1) Drawings for guessing: hent alle player‑dokumenter, filtrer ut deg selv, plukk ut drawingUrl
+
     @Override
     public void getDrawingsForGuessing(String gameId,
                                        String myPlayerId,
@@ -327,7 +337,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
-    // 2) Submit guess result: inkrementer score‐feltet atomisk
+
     @Override
     public void submitGuessResult(String gameId,
                                   String playerId,
@@ -343,7 +353,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
-    // 3) Sett gjett‑runde ferdig
+
     @Override
     public void setPlayerGuessDone(String gameId,
                                    String playerId,
@@ -356,7 +366,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .collection("players")
                 .document(playerId);
         
-        // First check if the document exists to avoid errors
+
         ref.get().addOnSuccessListener(document -> {
             if (document.exists()) {
                 // Document exists, update the field
@@ -393,7 +403,7 @@ public class AndroidFirebase implements FirebaseInterface {
         });
     }
 
-    // 4) Hent alle med guessFinished
+
     @Override
     public void getPlayersGuessStatus(String gameId,
                                       SuccessCallback<Map<String,Boolean>> onSuccess,
@@ -413,7 +423,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
-    // 5) Hent alle spilleres poeng
+
     @Override
     public void getPlayersWithScores(String gameId,
                                      SuccessCallback<Map<String,Integer>> onSuccess,
@@ -436,7 +446,7 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
-    // 6) Hent alle spilleres profiler (navn og poeng)
+
     @Override
     public void getAllPlayerProfiles(String gameId,
                                     SuccessCallback<List<Map<String,Object>>> onSuccess,
@@ -488,7 +498,7 @@ public class AndroidFirebase implements FirebaseInterface {
                         List<StorageReference> items = listResult.getItems();
                         if (items.isEmpty()) {
                             Log.d("Firebase", "No drawings to delete in Storage for game: " + gameId);
-                            onSuccess.run(); // No drawings, proceed
+                            onSuccess.run(); 
                             return;
                         }
 

@@ -1,13 +1,12 @@
 package io.github.drawguess.model;
 
-/** Representerer én spiller i en GameSession. */
 public class Player {
 
-    private final String id;        // Firebase‑dokument‑ID eller generert UUID
-    private final String name;      // Spillernavn
-    private int score;              // Poengsum
-    private boolean host;           // True hvis denne spilleren er host
-    private boolean finishedDrawing; // True hvis spilleren er ferdig å tegne
+    private final String id;        
+    private final String name;      
+    private int score;              
+    private boolean host;           
+    private boolean finishedDrawing; 
 
     public Player(String id, String name, int initialScore, boolean host) {
         this.id = id;
@@ -33,10 +32,4 @@ public class Player {
         this.finishedDrawing = finishedDrawing;
     }
 
-    /* ---------- Convenience ---------- */
-
-    @Override
-    public String toString() {
-        return (host ? "⭐ " : "") + name + " (" + score + " pts)";
-    }
 }
