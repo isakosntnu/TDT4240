@@ -85,6 +85,11 @@ public interface FirebaseInterface {
                              SuccessCallback<List<Map<String,Object>>> onSuccess,
                              FailureCallback onError);
 
+    // Delete all game data (Firestore document and Storage folder)
+    void deleteGameData(String gameId,
+                        Runnable onSuccess,
+                        FailureCallback onError);
+
 
     interface SuccessCallback<T> {
         void onSuccess(T result);

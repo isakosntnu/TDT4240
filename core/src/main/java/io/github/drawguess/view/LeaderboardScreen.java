@@ -34,44 +34,59 @@ public class LeaderboardScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float screenHeight = Gdx.graphics.getHeight();
         float screenWidth = Gdx.graphics.getWidth();
-        float baseFontScale = screenHeight * 0.0018f; // Base font scale
-        float titleScale = baseFontScale * 1.3f; // Larger scale for title
-        float statusScale = baseFontScale * 0.9f; // Smaller scale for status
+        float baseFontScale = screenHeight * 0.0018f; 
+        float titleScale = baseFontScale * 1.3f; 
+        float statusScale = baseFontScale * 0.9f; 
 
-        // 1) bakgrunn
         backgroundTexture = new Texture("board.png");
         Image bg = new Image(backgroundTexture);
         bg.setFillParent(true);
         stage.addActor(bg);
 
-        // 2) layout
         Table root = new Table();
         root.setFillParent(true);
         root.top().padTop(screenHeight * 0.2f);
         stage.addActor(root);
 
-        // 3) tittel
         Label title = new Label("LEADERBOARD", skin);
         title.setFontScale(titleScale);
         root.add(title).padBottom(screenHeight * 0.05f).row();
 
-        // 4) player table placeholder
+
         playerTable = new Table();
         root.add(playerTable).width(screenWidth * 0.9f).row();
         
-        // 5) status label
         statusLabel = new Label("Loading scores...", skin);
         statusLabel.setFontScale(statusScale);
         root.add(statusLabel).padTop(screenHeight * 0.02f).row();
 
-        // 6) tilbake‑knapp
+
         Texture backTex = new Texture("backbtn.png");
         Image backBtn = new Image(backTex);
         backBtn.setSize(screenWidth * 0.15f, screenHeight * 0.07f);
         backBtn.setPosition(screenWidth * 0.03f, screenHeight - backBtn.getHeight() - screenHeight * 0.03f);
         backBtn.addListener(new InputListener() {
             @Override public boolean touchDown(InputEvent e, float x, float y, int ptr, int btn) {
-                game.setScreen(new MenuScreen(game));
+                String gameId = GameManager.getInstance().getSession().getGameId();
+                game.getFirebase().deleteGameData(
+                    gameId,
+                    () -> {
+                        // On successful deletion, navigate to MenuScreen
+                        Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen(game)));
+                    },
+                    error -> {
+                        // Handle deletion error (e.g., show a message, log)
+                        Gdx.app.error("LeaderboardScreen", "Failed to delete game data", error);
+                        // Optionally, still navigate back or show an error message to the user
+                        Gdx.app.postRunnable(() -> {
+                            // Example: Show error message (requires adding a Label to the screen)
+                            // statusLabel.setText("Error deleting game. Please try again."); 
+                            // statusLabel.setColor(1, 0, 0, 1); // Red color
+                            // Or just navigate back anyway:
+                            game.setScreen(new MenuScreen(game));
+                        });
+                    }
+                );
                 return true;
             }
         });

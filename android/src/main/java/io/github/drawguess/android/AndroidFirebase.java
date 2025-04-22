@@ -468,4 +468,63 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
     }
 
+    @Override
+    public void deleteGameData(String gameId,
+                               Runnable onSuccess,
+                               FailureCallback onError) {
+        // 1. Delete Firestore game document
+        db.collection("games").document(gameId)
+            .delete()
+            .addOnSuccessListener(aVoid -> {
+                Log.d("Firebase", "Deleted Firestore game document: " + gameId);
+                
+                // 2. Delete drawings folder in Storage
+                String storagePath = "drawings/" + gameId;
+                StorageReference storageRef = storage.getReference().child(storagePath);
+
+                // List all items in the folder and delete them
+                storageRef.listAll()
+                    .addOnSuccessListener(listResult -> {
+                        List<StorageReference> items = listResult.getItems();
+                        if (items.isEmpty()) {
+                            Log.d("Firebase", "No drawings to delete in Storage for game: " + gameId);
+                            onSuccess.run(); // No drawings, proceed
+                            return;
+                        }
+
+                        final int totalItems = items.size();
+                        final int[] deletedCount = {0};
+                        final boolean[] errorOccurred = {false};
+
+                        for (StorageReference item : items) {
+                            item.delete().addOnSuccessListener(taskSnapshot -> {
+                                synchronized (deletedCount) {
+                                    deletedCount[0]++;
+                                    if (!errorOccurred[0] && deletedCount[0] == totalItems) {
+                                        Log.d("Firebase", "Deleted Storage drawings for game: " + gameId);
+                                        onSuccess.run();
+                                    }
+                                }
+                            }).addOnFailureListener(e -> {
+                                synchronized (errorOccurred) {
+                                    if (!errorOccurred[0]) {
+                                        errorOccurred[0] = true;
+                                        Log.e("Firebase", "Failed to delete item " + item.getPath(), e);
+                                        onError.onFailure(new Exception("Failed to delete a drawing: " + e.getMessage()));
+                                    }
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firebase", "Failed to list items in Storage for game: " + gameId, e);
+                        onError.onFailure(new Exception("Failed to list drawings: " + e.getMessage()));
+                    });
+            })
+            .addOnFailureListener(e -> {
+                Log.e("Firebase", "Failed to delete Firestore game document: " + gameId, e);
+                onError.onFailure(new Exception("Failed to delete game document: " + e.getMessage()));
+            });
+    }
+
 }
