@@ -14,6 +14,7 @@ import io.github.drawguess.model.Player;
 
 import java.util.*;
 import java.util.List;
+import java.util.Objects; // Import Objects for deep equality check
 
 public class WaitingScreen implements Screen {
 
@@ -30,6 +31,7 @@ public class WaitingScreen implements Screen {
     private Table rootTable;
     private Table loadingTable;
     private Map<String, Label> statusLabels; // playerId → Label
+    private Map<String, Boolean> previousPlayerStatuses; // Store previous statuses
 
     private Label messageLabel;
     private Label countdownLabel;
@@ -49,6 +51,7 @@ public class WaitingScreen implements Screen {
 
         this.session = GameManager.getInstance().getSession();
         this.statusLabels = new HashMap<>();
+        this.previousPlayerStatuses = new HashMap<>(); // Initialize the map
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
@@ -134,20 +137,29 @@ public class WaitingScreen implements Screen {
     }
 
     /** Callback når spillerstatus er hentet. */
-    private void onStatusReceived(Map<String, Boolean> playerStatuses) {
+    private void onStatusReceived(Map<String, Boolean> currentPlayerStatuses) {
+        // Check if the statuses have actually changed since the last update
+        if (Objects.equals(previousPlayerStatuses, currentPlayerStatuses)) {
+            Gdx.app.debug("WaitingScreen", "No status change detected, skipping UI update.");
+            return; // No change, no need to update UI
+        }
+
+        // Statuses have changed, update the stored map
+        previousPlayerStatuses = new HashMap<>(currentPlayerStatuses); // Store a copy
+
         Gdx.app.postRunnable(() -> {
             // Skip if we're already in countdown
             if (allFinished) return;
 
             // Use the size of the map from Firebase as the total player count
-            int totalPlayers = playerStatuses.size();
-            
+            int totalPlayers = currentPlayerStatuses.size();
+
             // Clear player table to rebuild it
             playerTable.clear();
             statusLabels.clear();
 
             // Debug log - print the number of players found in Firebase
-            Gdx.app.debug("WaitingScreen", "Checking statuses for " + totalPlayers + " players from Firebase:");
+            Gdx.app.debug("WaitingScreen", "Status changed! Checking statuses for " + totalPlayers + " players from Firebase:");
 
             // Get all player names from Firebase at once
             String gameId = session.getGameId();
@@ -163,27 +175,28 @@ public class WaitingScreen implements Screen {
                             playerNames.put(id, name);
                         }
                     }
-                    
+
                     // Now update the UI with player names and statuses
                     Gdx.app.postRunnable(() -> {
                         int countFinished = 0; // Create a new counter inside this lambda
-                        for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                        // Use the currentPlayerStatuses map received by this method
+                        for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
                             String pid = entry.getKey();
                             boolean done = entry.getValue();
-                            
+
                             // Get player name from the profiles we fetched
                             String playerName = playerNames.getOrDefault(pid, pid);
-                            
+
                             // Add to the UI
                             addPlayerRow(pid, playerName, done);
-                            
+
                             if (done) {
                                 countFinished++; // Use the local counter
                             }
                         }
-                        
+
                         // Update the message and check if all are finished
-                        updateCompletionStatus(playerStatuses.size(), countFinished);
+                        updateCompletionStatus(currentPlayerStatuses.size(), countFinished);
                     });
                 },
                 error -> {
@@ -191,23 +204,24 @@ public class WaitingScreen implements Screen {
                     Gdx.app.error("WaitingScreen", "Failed to get player profiles: " + error.getMessage());
                     Gdx.app.postRunnable(() -> {
                         int countFinished = 0; // Create a new counter inside this lambda
-                        for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                        // Use the currentPlayerStatuses map received by this method
+                        for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
                             String pid = entry.getKey();
                             boolean done = entry.getValue();
-                            
+
                             // Fallback to player ID if we can't get the name
                             Player player = session.getPlayerById(pid);
                             String displayName = (player != null) ? player.getName() : pid;
-                            
+
                             addPlayerRow(pid, displayName, done);
-                            
+
                             if (done) {
                                 countFinished++; // Use the local counter
                             }
                         }
-                        
+
                         // Update message and check if all are finished
-                        updateCompletionStatus(playerStatuses.size(), countFinished);
+                        updateCompletionStatus(currentPlayerStatuses.size(), countFinished);
                     });
                 }
             );

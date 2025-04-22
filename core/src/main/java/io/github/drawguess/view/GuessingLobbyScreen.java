@@ -13,6 +13,8 @@ import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
 
 import java.util.*;
+import java.util.List;
+import java.util.Objects; // Import Objects for deep equality check
 
 public class GuessingLobbyScreen implements Screen {
 
@@ -30,6 +32,7 @@ public class GuessingLobbyScreen implements Screen {
     private Table rootTable;
     private Table loadingTable;
     private Map<String, Label> statusLabels; // playerId → Label
+    private Map<String, Boolean> previousPlayerStatuses; // Store previous statuses
 
     private Label messageLabel;
     private Label countdownLabel;
@@ -54,6 +57,7 @@ public class GuessingLobbyScreen implements Screen {
 
         this.session = GameManager.getInstance().getSession();
         this.statusLabels = new HashMap<>();
+        this.previousPlayerStatuses = new HashMap<>(); // Initialize the map
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
@@ -105,15 +109,18 @@ public class GuessingLobbyScreen implements Screen {
     }
 
     /** Legger til én rad i tabellen. */
-    private void addPlayerRow(String playerId, boolean isFinished) {
+    private void addPlayerRow(String playerId, String displayName, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float scale = Gdx.graphics.getHeight() * 0.0015f;
-        Player p = session.getPlayerById(playerId);
-        String displayName = (p != null) ? p.getName() : playerId;
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
-        Label status = new Label(isFinished ? "✔️" : "⌛", skin);
+        
+        // Set status text based on phase and completion
+        String statusText = isGuessPhase 
+                ? (isFinished ? "✅ DONE" : "⏳ GUESSING") 
+                : (isFinished ? "✅ DONE" : "✏️ DRAWING");
+        Label status = new Label(statusText, skin);
         status.setFontScale(scale);
 
         statusLabels.put(playerId, status);
@@ -125,52 +132,128 @@ public class GuessingLobbyScreen implements Screen {
     private void updatePlayerStatus(String playerId, boolean isFinished) {
         Label lbl = statusLabels.get(playerId);
         if (lbl != null) {
-            lbl.setText(isFinished ? "✔️" : "⌛");
+            // Update status text based on phase and completion
+            String statusText = isGuessPhase 
+                ? (isFinished ? "✅ DONE" : "⏳ GUESSING") 
+                : (isFinished ? "✅ DONE" : "✏️ DRAWING");
+            lbl.setText(statusText);
         }
     }
 
     /** Henter korrekt felt fra Firebase basert på fase. */
     private void updatePlayerStatuses() {
+        String gameId = session.getGameId();
         if (!isGuessPhase) {
             game.getFirebase().getPlayersWithStatus(
-                    session.getGameId(),
-                    this::onStatusReceived,
-                    err -> Gdx.app.error("WaitingScreen", "Could not fetch drawing status", err)
+                gameId,
+                this::onStatusReceived,
+                err -> Gdx.app.error("GuessingLobbyScreen", "Could not fetch drawing status", err)
             );
         } else {
             game.getFirebase().getPlayersGuessStatus(
-                    session.getGameId(),
-                    this::onStatusReceived,
-                    err -> Gdx.app.error("WaitingScreen", "Could not fetch guess status", err)
+                gameId,
+                this::onStatusReceived,
+                err -> Gdx.app.error("GuessingLobbyScreen", "Could not fetch guess status", err)
             );
         }
     }
 
     /** Felles callback for begge faser. */
-    private void onStatusReceived(Map<String, Boolean> playerStatuses) {
+    private void onStatusReceived(Map<String, Boolean> currentPlayerStatuses) {
+        // Check if the statuses have actually changed since the last update
+        if (Objects.equals(previousPlayerStatuses, currentPlayerStatuses)) {
+             Gdx.app.debug("GuessingLobbyScreen", "No status change detected, skipping UI update.");
+            return; // No change, no need to update UI
+        }
+
+        // Statuses have changed, update the stored map
+        previousPlayerStatuses = new HashMap<>(currentPlayerStatuses); // Store a copy
+
         Gdx.app.postRunnable(() -> {
             // Skip if we're already in countdown
             if (allFinished) return;
-            
-            // legg til nye rader / oppdater eksisterende
-            for (Map.Entry<String, Boolean> e : playerStatuses.entrySet()) {
-                String pid = e.getKey();
-                boolean done = e.getValue();
-                if (!statusLabels.containsKey(pid)) {
-                    addPlayerRow(pid, done);
-                } else {
-                    updatePlayerStatus(pid, done);
+
+            int totalPlayers = currentPlayerStatuses.size();
+
+            // Clear the table to rebuild it
+            playerTable.clear();
+            statusLabels.clear();
+
+            Gdx.app.debug("GuessingLobbyScreen", "Status changed! Updating status for " + totalPlayers + " players in phase: " + (isGuessPhase ? "Guessing" : "Drawing"));
+
+            // Fetch player profiles to get names
+            String gameId = session.getGameId();
+            game.getFirebase().getAllPlayerProfiles(
+                gameId,
+                playerProfiles -> {
+                    Map<String, String> playerNames = new HashMap<>();
+                    for (Map<String, Object> profile : playerProfiles) {
+                        String id = (String) profile.get("id");
+                        String name = (String) profile.get("name");
+                        if (id != null && name != null) {
+                            playerNames.put(id, name);
+                        }
+                    }
+
+                    // Update UI with names and statuses
+                    Gdx.app.postRunnable(() -> {
+                        int countFinished = 0;
+                        // Use the currentPlayerStatuses map received by this method
+                        for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
+                            String pid = entry.getKey();
+                            boolean done = entry.getValue();
+                            String playerName = playerNames.getOrDefault(pid, pid); // Use ID as fallback
+
+                            addPlayerRow(pid, playerName, done);
+
+                            if (done) {
+                                countFinished++;
+                            }
+                        }
+
+                        updateCompletionStatus(totalPlayers, countFinished);
+                    });
+                },
+                error -> {
+                    Gdx.app.error("GuessingLobbyScreen", "Failed to get player profiles: " + error.getMessage());
+                    // Fallback: Update UI using only player IDs
+                    Gdx.app.postRunnable(() -> {
+                        int countFinished = 0;
+                        // Use the currentPlayerStatuses map received by this method
+                        for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
+                            String pid = entry.getKey();
+                            boolean done = entry.getValue();
+                            Player player = session.getPlayerById(pid);
+                            String displayName = (player != null) ? player.getName() : pid;
+
+                            addPlayerRow(pid, displayName, done);
+
+                            if (done) {
+                                countFinished++;
+                            }
+                        }
+
+                        updateCompletionStatus(totalPlayers, countFinished);
+                    });
                 }
-            }
-            // sjekk om alle er ferdige
-            if (!allFinished) {
-                boolean nowAll = playerStatuses.values().stream().allMatch(b -> b);
-                if (nowAll) {
-                    allFinished = true;
-                    startPauseCountdown();
-                }
-            }
+            );
         });
+    }
+
+    /** Updates the completion status message and checks if all players are done */
+    private void updateCompletionStatus(int totalPlayers, int finishedPlayers) {
+        String phaseText = isGuessPhase ? "guessing" : "drawing";
+        messageLabel.setText("Waiting for all players to finish " + phaseText + "... (" + finishedPlayers + "/" + totalPlayers + ")");
+        
+        boolean nowAll = (finishedPlayers == totalPlayers);
+        
+        if (nowAll && totalPlayers > 0 && !allFinished) {
+            Gdx.app.log("GuessingLobbyScreen", "All players (" + totalPlayers + ") have finished " + phaseText + "! Starting countdown...");
+            allFinished = true;
+            startPauseCountdown();
+        } else if (!allFinished) {
+            Gdx.app.debug("GuessingLobbyScreen", finishedPlayers + "/" + totalPlayers + " players finished. Waiting...");
+        }
     }
 
     /** Teller ned 5 sek før neste skjerm. */
