@@ -89,9 +89,10 @@ public class DrawingViewerScreen implements Screen {
         });
         stage.addActor(guessButton);
 
-        // Resultat‑label
+        // Resultat‑label - centered and positioned higher for better visibility
         resultLabel = new Label("", skin);
-        resultLabel.setPosition(20, sh * 0.2f);
+        resultLabel.setPosition(sw / 2f, sh * 0.3f);
+        resultLabel.setAlignment(com.badlogic.gdx.utils.Align.center);
         stage.addActor(resultLabel);
     }
 
@@ -107,6 +108,7 @@ public class DrawingViewerScreen implements Screen {
         guessTimeLeft  = 30;
         timerLabel.setText(String.valueOf(guessTimeLeft));
         resultLabel.setText("");
+        resultLabel.setColor(1, 1, 1, 1); // Reset to white color
         guessInput.setText("");
         guessInput.setDisabled(false);
         guessButton.setDisabled(false);
@@ -145,11 +147,28 @@ public class DrawingViewerScreen implements Screen {
                 correctWord -> {
                     boolean correct = correctWord.equalsIgnoreCase(guess);
                     int points = correct ? 10 + (guessTimeLeft * 2) : 0;
+                    
+                    // Create message with uppercase text and set appropriate color
                     String msg = correct
-                            ? "✅ Correct! +" + points + "p"
-                            : "❌ Wrong! was: " + correctWord;
-
-                    Gdx.app.postRunnable(() -> resultLabel.setText(msg));
+                            ? "CORRECT! +" + points + "P"
+                            : "WRONG! WAS: " + correctWord.toUpperCase();
+                    
+                    Gdx.app.postRunnable(() -> {
+                        // Set result label text
+                        resultLabel.setText(msg);
+                        
+                        // Set color: green for correct, red for wrong
+                        if (correct) {
+                            resultLabel.setColor(0, 0.8f, 0, 1); // Green
+                        } else {
+                            resultLabel.setColor(1, 0, 0, 1); // Red
+                        }
+                        
+                        // Adjust font scale based on screen size
+                        float screenHeight = Gdx.graphics.getHeight();
+                        float resultFontScale = screenHeight * 0.0025f; // Slightly larger for better visibility
+                        resultLabel.setFontScale(resultFontScale);
+                    });
 
                     // Oppdater poeng
                     String me = GameManager.getInstance().getPlayerId();
