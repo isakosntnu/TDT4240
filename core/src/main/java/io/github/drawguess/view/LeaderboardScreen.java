@@ -32,6 +32,11 @@ public class LeaderboardScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = Gdx.graphics.getWidth();
+        float baseFontScale = screenHeight * 0.0018f; // Base font scale
+        float titleScale = baseFontScale * 1.3f; // Larger scale for title
+        float statusScale = baseFontScale * 0.9f; // Smaller scale for status
 
         // 1) bakgrunn
         backgroundTexture = new Texture("board.png");
@@ -42,27 +47,28 @@ public class LeaderboardScreen implements Screen {
         // 2) layout
         Table root = new Table();
         root.setFillParent(true);
-        root.top().padTop(150);
+        root.top().padTop(screenHeight * 0.2f);
         stage.addActor(root);
 
         // 3) tittel
         Label title = new Label("LEADERBOARD", skin);
-        title.setFontScale(2f);
-        root.add(title).padBottom(40).row();
+        title.setFontScale(titleScale);
+        root.add(title).padBottom(screenHeight * 0.05f).row();
 
         // 4) player table placeholder
         playerTable = new Table();
-        root.add(playerTable).width(Gdx.graphics.getWidth() * 0.9f).row();
+        root.add(playerTable).width(screenWidth * 0.9f).row();
         
         // 5) status label
         statusLabel = new Label("Loading scores...", skin);
-        root.add(statusLabel).padTop(20).row();
+        statusLabel.setFontScale(statusScale);
+        root.add(statusLabel).padTop(screenHeight * 0.02f).row();
 
         // 6) tilbake‑knapp
         Texture backTex = new Texture("backbtn.png");
         Image backBtn = new Image(backTex);
-        backBtn.setSize(100,70);
-        backBtn.setPosition(30, Gdx.graphics.getHeight() - 100);
+        backBtn.setSize(screenWidth * 0.15f, screenHeight * 0.07f);
+        backBtn.setPosition(screenWidth * 0.03f, screenHeight - backBtn.getHeight() - screenHeight * 0.03f);
         backBtn.addListener(new InputListener() {
             @Override public boolean touchDown(InputEvent e, float x, float y, int ptr, int btn) {
                 game.setScreen(new MenuScreen(game));
@@ -104,6 +110,13 @@ public class LeaderboardScreen implements Screen {
      */
     private void buildLeaderboardTable(List<Map<String, Object>> playerProfiles) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = Gdx.graphics.getWidth();
+        float baseFontScale = screenHeight * 0.0018f; // Base font scale (match constructor)
+        float headerScale = baseFontScale * 1.1f; // Scale for headers
+        float rowScale = baseFontScale * 1.2f;    // Scale for player rows
+        float horizontalPadding = screenWidth * 0.1f; // Padding for table content
+
         playerTable.clear();
         statusLabel.setText("");
         
@@ -117,11 +130,11 @@ public class LeaderboardScreen implements Screen {
         // Add header row
         Label nameHeader = new Label("PLAYER", skin);
         Label scoreHeader = new Label("SCORE", skin);
-        nameHeader.setFontScale(1.2f);
-        scoreHeader.setFontScale(1.2f);
+        nameHeader.setFontScale(headerScale);
+        scoreHeader.setFontScale(headerScale);
         
-        playerTable.add(nameHeader).expandX().left().padLeft(100).padBottom(20);
-        playerTable.add(scoreHeader).right().padRight(100).padBottom(20).row();
+        playerTable.add(nameHeader).expandX().left().padLeft(horizontalPadding).padBottom(screenHeight * 0.02f);
+        playerTable.add(scoreHeader).right().padRight(horizontalPadding).padBottom(screenHeight * 0.02f).row();
         
         // Add player rows
         for (Map<String, Object> profile : playerProfiles) {
@@ -130,8 +143,8 @@ public class LeaderboardScreen implements Screen {
             
             Label nameLabel = new Label(name, skin);
             Label scoreLabel = new Label(score.toString(), skin);
-            nameLabel.setFontScale(1.5f);
-            scoreLabel.setFontScale(1.5f);
+            nameLabel.setFontScale(rowScale);
+            scoreLabel.setFontScale(rowScale);
             
             // Highlight current player
             String currentPlayerId = GameManager.getInstance().getPlayerId();
@@ -142,13 +155,13 @@ public class LeaderboardScreen implements Screen {
             playerTable.add(nameLabel)
                     .expandX()
                     .left()
-                    .padBottom(15)
-                    .padLeft(100)
-                    .spaceRight(150);
+                    .padBottom(screenHeight * 0.015f)
+                    .padLeft(horizontalPadding)
+                    .spaceRight(screenWidth * 0.1f);
             playerTable.add(scoreLabel)
                     .right()
-                    .padBottom(15)
-                    .padRight(100);
+                    .padBottom(screenHeight * 0.015f)
+                    .padRight(horizontalPadding);
             playerTable.row();
         }
     }
@@ -158,6 +171,13 @@ public class LeaderboardScreen implements Screen {
      */
     private void buildLeaderboardWithLocalPlayers(List<Player> players) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        float screenHeight = Gdx.graphics.getHeight();
+        float screenWidth = Gdx.graphics.getWidth();
+        float baseFontScale = screenHeight * 0.0018f; // Base font scale (match constructor)
+        float headerScale = baseFontScale * 1.1f; // Scale for headers
+        float rowScale = baseFontScale * 1.2f;    // Scale for player rows
+        float horizontalPadding = screenWidth * 0.1f; // Padding for table content
+
         playerTable.clear();
         
         // Sort by score in descending order
@@ -166,28 +186,28 @@ public class LeaderboardScreen implements Screen {
         // Add header row
         Label nameHeader = new Label("PLAYER", skin);
         Label scoreHeader = new Label("SCORE", skin);
-        nameHeader.setFontScale(1.2f);
-        scoreHeader.setFontScale(1.2f);
+        nameHeader.setFontScale(headerScale);
+        scoreHeader.setFontScale(headerScale);
         
-        playerTable.add(nameHeader).expandX().left().padLeft(100).padBottom(20);
-        playerTable.add(scoreHeader).right().padRight(100).padBottom(20).row();
+        playerTable.add(nameHeader).expandX().left().padLeft(horizontalPadding).padBottom(screenHeight * 0.02f);
+        playerTable.add(scoreHeader).right().padRight(horizontalPadding).padBottom(screenHeight * 0.02f).row();
         
         for (Player p : players) {
             Label name = new Label(p.getName(), skin);
-            name.setFontScale(1.5f);
+            name.setFontScale(rowScale);
             Label score = new Label(String.valueOf(p.getScore()), skin);
-            score.setFontScale(1.5f);
+            score.setFontScale(rowScale);
 
             playerTable.add(name)
                     .expandX()
                     .left()
-                    .padBottom(15)
-                    .padLeft(100)
-                    .spaceRight(150);
+                    .padBottom(screenHeight * 0.015f)
+                    .padLeft(horizontalPadding)
+                    .spaceRight(screenWidth * 0.1f);
             playerTable.add(score)
                     .right()
-                    .padBottom(15)
-                    .padRight(100);
+                    .padBottom(screenHeight * 0.015f)
+                    .padRight(horizontalPadding);
             playerTable.row();
         }
     }

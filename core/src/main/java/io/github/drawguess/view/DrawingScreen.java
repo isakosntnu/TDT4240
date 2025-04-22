@@ -58,6 +58,18 @@ public class DrawingScreen implements Screen {
 
         float W = Gdx.graphics.getWidth();
         float H = Gdx.graphics.getHeight();
+        
+        // Define vertical boundaries based on screen height percentage
+        float wordTopY = H * 0.97f; 
+        float wordBottomY = H * 0.93f; 
+        float timerTopY = H * 0.86f; 
+        float timerBottomY = H * 0.82f; 
+        
+        float wordAreaHeight = wordTopY - wordBottomY; // Available height for word
+        float timerAreaHeight = timerTopY - timerBottomY; // Available height for timer
+
+        float baseFontScale = H * 0.002f; // For other elements like DONE button
+        float padding = H * 0.005f; 
         float iconSize = H * 0.08f;
 
         // 1) Bakgrunn
@@ -80,10 +92,28 @@ public class DrawingScreen implements Screen {
         // 3) UI Skin
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        // 4) TIMER midt øverst
+        // --- WORD --- Placed at the very top (1%-5%)
+        String playerId = GameManager.getInstance().getPlayerId();
+        String word = GameManager.getInstance().getSession().getWordForPlayer(playerId);
+        Label.LabelStyle wordLabelStyle = skin.get(Label.LabelStyle.class);
+        Label lblWord = new Label(word, wordLabelStyle);
+        
+        // Calculate font scale to fit word in its designated area
+        // (This is approximate, adjust multiplier 0.8f as needed)
+        float wordFontScale = calculateFitScale(lblWord.getStyle().font, word, W * 0.8f, wordAreaHeight * 0.8f);
+        lblWord.setFontScale(wordFontScale);
+        lblWord.setAlignment(Align.center);
+        // Position top-center within the 1%-5% band
+        lblWord.setPosition(W / 2f, wordTopY, Align.top | Align.center);
+        stage.addActor(lblWord);
+
+        // --- TIMER --- Placed below the word (8%-12%)
         timerLabel = new Label(String.valueOf(drawTimeLeft), skin);
-        timerLabel.setFontScale(2f);
-        timerLabel.setPosition(W/2f, H - 20, Align.top | Align.center);
+        // Calculate font scale to fit timer in its area
+        float timerFontScale = calculateFitScale(timerLabel.getStyle().font, "00", W * 0.2f, timerAreaHeight * 0.8f);
+        timerLabel.setFontScale(timerFontScale);
+        // Position top-center within the 8%-12% band
+        timerLabel.setPosition(W / 2f, timerTopY, Align.top | Align.center);
         stage.addActor(timerLabel);
 
         drawTimerTask = new Timer.Task() {
@@ -98,28 +128,57 @@ public class DrawingScreen implements Screen {
         };
         Timer.schedule(drawTimerTask, 1, 1, drawTimeLeft - 1);
 
-        // 5) Edit‑panel
+        // 5) Edit‑panel - Scaled based on screen size
         editPanelTexture = new Texture("editpanel.png");
         editPanelBackground = new Image(editPanelTexture);
-        editPanelBackground.setSize(W * 0.6f, H * 0.2f);
+        // Define panel size relative to screen
+        float panelWidth = W * 0.8f; // e.g., 80% of screen width
+        float panelHeight = H * 0.15f; // e.g., 15% of screen height
+        editPanelBackground.setSize(panelWidth, panelHeight);
+
         editPanelGroup = new Group();
-        editPanelGroup.setSize(editPanelBackground.getWidth(), editPanelBackground.getHeight());
-        editPanelGroup.setPosition((W - editPanelGroup.getWidth())/2f,
-                (H - editPanelGroup.getHeight())/2f);
+        editPanelGroup.setSize(panelWidth, panelHeight);
+        // Center the panel on the screen
+        editPanelGroup.setPosition((W - panelWidth) / 2f, (H - panelHeight) / 2f);
         editPanelGroup.setVisible(false);
         editPanelGroup.addActor(editPanelBackground);
         stage.addActor(editPanelGroup);
 
-        // 6) Størrelses‑knapper
+        // 6) Størrelses‑knapper - SizeController will handle layout
         Texture[] sizeTex = {
                 new Texture("size1.png"), new Texture("size2.png"),
                 new Texture("size3.png"), new Texture("size4.png")
         };
         int[] sizes = {1,3,6,12};
-        new SizeController(editPanelGroup, sizeTex, sizes, s -> {
-            currentSize = s;
-            controller.selectPen(controller.getSelectedColor(), currentSize);
-        });
+        
+        // Create size buttons directly in DrawingScreen for better control
+        float buttonSize = panelHeight * 0.30f; 
+        float spacing = (panelWidth - (buttonSize * 4)) / 10; 
+        float buttonStartX = spacing * 3; 
+        float buttonY = panelHeight * 0.30f; 
+        
+        for (int i = 0; i < sizeTex.length; i++) {
+            final int sizeIndex = i;
+            Image sizeButton = new Image(sizeTex[i]);
+            sizeButton.setSize(buttonSize, buttonSize);
+            sizeButton.setPosition(buttonStartX + (spacing + buttonSize) * i, buttonY);
+            sizeButton.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    currentSize = sizes[sizeIndex];
+                    controller.selectPen(controller.getSelectedColor(), currentSize);
+                    return true;
+                }
+            });
+            editPanelGroup.addActor(sizeButton);
+        }
+        
+        // We're manually creating the size buttons above, so we don't need the SizeController anymore
+        // We're keeping the variable declaration in case it's referenced elsewhere
+        //new SizeController(editPanelGroup, sizeTex, sizes, s -> {
+        //    currentSize = s;
+        //    controller.selectPen(controller.getSelectedColor(), currentSize);
+        //});
 
         // 7) Edit‑tool knapp
         editToolTexture = new Texture("edittool.png");
@@ -174,10 +233,12 @@ public class DrawingScreen implements Screen {
         ToolButtonFactory.selectInitialColor(controller.getSelectedColor());
         controller.selectPen(controller.getSelectedColor(), currentSize);
 
-        // 10) Finish‑knapp
-        TextButton finish = new TextButton("FINISH DRAWING", skin);
+        // 10) Finish‑knapp - Position remains top-left
+        TextButton finish = new TextButton("DONE", skin);
         finish.setSize(W*0.28f, H*0.075f);
-        finish.setPosition(20, H - H*0.075f - 20);
+        finish.setPosition(padding * 3, H - finish.getHeight() - padding * 3);
+        finish.getLabel().setFontScale(baseFontScale * 0.8f); 
+        finish.getLabel().setAlignment(Align.center);
         finish.addListener(new InputListener(){
             @Override public boolean touchDown(InputEvent e, float x, float y, int p, int b) {
                 drawTimerTask.cancel();
@@ -187,36 +248,12 @@ public class DrawingScreen implements Screen {
         });
         stage.addActor(finish);
 
-        // 11) Vis ord hentet fra GameSession
-        String playerId = GameManager.getInstance().getPlayerId();
-        String word = GameManager.getInstance()
-                .getSession()
-                .getWordForPlayer(playerId);
-        Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-        Label lbl1 = new Label("Draw:", style);
-        Label lbl2 = new Label(word, style);
-
-        float scale = H * 0.0016f;
-        lbl1.setFontScale(scale);
-        lbl2.setFontScale(scale);
-
-        GlyphLayout g1 = new GlyphLayout(lbl1.getStyle().font, lbl1.getText());
-        GlyphLayout g2 = new GlyphLayout(lbl2.getStyle().font, lbl2.getText());
-        float textW = Math.max(g1.width, g2.width) * scale;
-
-        lbl1.setPosition(W/2f - textW/2f, H - 60, Align.left);
-        lbl2.setPosition(W/2f - textW/2f, H - 80, Align.left);
-
-        stage.addActor(lbl1);
-        stage.addActor(lbl2);
-
-        // 12) Input multiplexer
+        // 11) Input multiplexer
         InputMultiplexer m = new InputMultiplexer();
         m.addProcessor(stage);
         m.addProcessor(controller);
         Gdx.input.setInputProcessor(m);
     }
-
 
     private void finishDrawingAndAdvance() {
         String myId = GameManager.getInstance().getPlayerId();
@@ -226,7 +263,6 @@ public class DrawingScreen implements Screen {
             game.setScreen(new GuessingLobbyScreen(game, false));
         });
     }
-
 
     @Override public void render(float delta) {
         controller.updateCanvas();
@@ -250,5 +286,27 @@ public class DrawingScreen implements Screen {
         eraserTexture.dispose();
         editToolTexture.dispose();
         editPanelTexture.dispose();
+    }
+
+    /** Helper method to calculate font scale to fit text within bounds */
+    private float calculateFitScale(BitmapFont font, String text, float targetWidth, float targetHeight) {
+        BitmapFont.BitmapFontData fontData = font.getData();
+        float originalScaleX = fontData.scaleX;
+        float originalScaleY = fontData.scaleY;
+        
+        // Start with a reasonable guess
+        float scale = 1.0f; 
+        fontData.setScale(scale);
+        GlyphLayout layout = new GlyphLayout(font, text);
+        
+        // Adjust scale based on width and height constraints
+        float scaleX = (targetWidth / layout.width) * scale;
+        float scaleY = (targetHeight / layout.height) * scale;
+        scale = Math.min(scaleX, scaleY); // Use the smaller scale factor to fit both dimensions
+        
+        // Reset original scale before returning
+        fontData.setScale(originalScaleX, originalScaleY);
+        
+        return Math.max(0.1f, scale); // Return calculated scale, ensure it's not too small
     }
 }

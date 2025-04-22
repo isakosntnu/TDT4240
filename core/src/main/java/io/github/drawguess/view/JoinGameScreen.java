@@ -3,10 +3,12 @@ package io.github.drawguess.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.manager.GameManager;
@@ -39,6 +41,15 @@ public class JoinGameScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+        float horizontalPadding = screenWidth * 0.03f; // Relative horizontal padding
+        float verticalPadding = screenHeight * 0.03f; // Relative vertical padding
+        float elementWidth = screenWidth * 0.6f; // Width for text fields and button
+        float elementHeight = screenHeight * 0.08f; // Height for text fields and button
+        float fieldSpacing = screenHeight * 0.02f; // Spacing between elements
+        float baseFontScale = screenHeight * 0.002f; // Base font scale factor
+
         // (1) Bakgrunn
         backgroundTexture = new Texture("canvas.png");
         backgroundImage = new Image(backgroundTexture);
@@ -48,8 +59,8 @@ public class JoinGameScreen implements Screen {
         // (2) Tilbake-knapp
         backButtonTexture = new Texture("backbtn.png");
         backButtonImage = new Image(backButtonTexture);
-        backButtonImage.setSize(100, 50);
-        backButtonImage.setPosition(30, Gdx.graphics.getHeight() - backButtonImage.getHeight() - 30);
+        backButtonImage.setSize(screenWidth * 0.15f, screenHeight * 0.07f); // Relative size
+        backButtonImage.setPosition(horizontalPadding, screenHeight - backButtonImage.getHeight() - verticalPadding);
         backButtonImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -59,26 +70,40 @@ public class JoinGameScreen implements Screen {
         });
         stage.addActor(backButtonImage);
 
-        float screenCenterX = Gdx.graphics.getWidth() / 2f;
+        float screenCenterX = screenWidth / 2f;
+        float startY = screenHeight / 2f + elementHeight; // Starting Y position, adjusted
 
         // (3) Game PIN
         gamePinField = new TextField("", skin);
         gamePinField.setMessageText("Enter Game PIN");
-        gamePinField.setSize(250, 80);
-        gamePinField.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f + 40);
+        gamePinField.setSize(elementWidth, elementHeight);
+        gamePinField.setPosition(screenCenterX - elementWidth / 2f, startY);
+
+        // Apply base font scaling and alignment
+        gamePinField.getStyle().font.getData().setScale(baseFontScale);
+        gamePinField.setAlignment(Align.center); // Sentrert tekst
         stage.addActor(gamePinField);
 
         // (4) Navn
         nameField = new TextField("", skin);
         nameField.setMessageText("Enter Your Name");
-        nameField.setSize(250, 80);
-        nameField.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f - 60);
+        nameField.setSize(elementWidth, elementHeight);
+        nameField.setPosition(screenCenterX - elementWidth / 2f, startY - elementHeight - fieldSpacing);
+
+        // Apply base font scaling and alignment
+        nameField.getStyle().font.getData().setScale(baseFontScale);
+        nameField.setAlignment(Align.center); // Sentrert tekst
         stage.addActor(nameField);
 
         // (5) Join Game-knapp
         joinButton = new TextButton("Join Game", skin);
-        joinButton.setSize(250, 80);
-        joinButton.setPosition(screenCenterX - 125, Gdx.graphics.getHeight() / 2f - 160);
+        joinButton.setSize(elementWidth, elementHeight);
+        joinButton.setPosition(screenCenterX - elementWidth / 2f, startY - (elementHeight * 2) - (fieldSpacing * 2));
+
+        // Apply base font scaling and alignment to button label
+        joinButton.getLabel().setFontScale(baseFontScale);
+        joinButton.getLabel().setAlignment(Align.center);
+
         stage.addActor(joinButton);
 
         joinButton.addListener(new ClickListener() {

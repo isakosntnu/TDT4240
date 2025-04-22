@@ -55,6 +55,8 @@ public class WaitingScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
+        float sw = Gdx.graphics.getWidth(); // Added screen width
+        float baseFontScale = sh * 0.0015f; // Base font scale
 
         // 1) Waiting background
         backgroundTexture = new Texture("board.png");
@@ -72,22 +74,25 @@ public class WaitingScreen implements Screen {
         // 3) Root layout for player status
         rootTable = new Table();
         rootTable.setFillParent(true);
-        rootTable.top().padTop(sh * 0.12f);
+        // Use relative top padding
+        rootTable.top().padTop(sh * 0.2f);
         stage.addActor(rootTable);
 
         // 4) Title
         Label titleLabel = new Label("WAITING FOR ALL PLAYERS", skin);
-        titleLabel.setFontScale(1.8f);
-        rootTable.add(titleLabel).padBottom(30).row();
+        // Apply base font scaling
+        titleLabel.setFontScale(baseFontScale * 1.1f); // Adjust multiplier as needed
+        rootTable.add(titleLabel).padBottom(sh * 0.04f).row();
 
         // 5) Tabell over spillere + status
         playerTable = new Table();
-        rootTable.add(playerTable).padBottom(30).row();
+        rootTable.add(playerTable).padBottom(sh * 0.04f).row();
 
         // 6) Meldings‑felt under
         messageLabel = new Label("Waiting for all players to finish guessing...", skin);
-        messageLabel.setFontScale(1.2f);
-        rootTable.add(messageLabel).padBottom(20).row();
+        // Apply base font scaling
+        messageLabel.setFontScale(baseFontScale);
+        rootTable.add(messageLabel).padBottom(sh * 0.03f).row();
 
         // 7) Loading overlay with countdown (initially invisible)
         loadingTable = new Table();
@@ -97,7 +102,8 @@ public class WaitingScreen implements Screen {
         stage.addActor(loadingTable);
 
         countdownLabel = new Label("", skin);
-        countdownLabel.setFontScale(3f);
+        // Apply base font scaling (larger for countdown)
+        countdownLabel.setFontScale(baseFontScale * 2.0f);
         loadingTable.add(countdownLabel);
 
         // start polling umiddelbart
@@ -107,23 +113,26 @@ public class WaitingScreen implements Screen {
     /** Legger til én rad i tabellen. */
     private void addPlayerRow(String playerId, String displayName, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        float scale = Gdx.graphics.getHeight() * 0.0015f;
+        // Use base font scale defined in constructor
+        float scale = Gdx.graphics.getHeight() * 0.0018f; // Match baseFontScale
+        float horizontalPadding = Gdx.graphics.getWidth() * 0.05f; // Horizontal padding within row
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
-        Label status = new Label(isFinished ? "✅ DONE" : "⏳ GUESSING", skin);
+        Label status = new Label(isFinished ? "DONE" : "GUESSING", skin);
+        // Apply scale to status label too
         status.setFontScale(scale);
 
         statusLabels.put(playerId, status);
-        playerTable.add(name).padRight(40).left();
-        playerTable.add(status).right().row();
+        playerTable.add(name).padRight(horizontalPadding).left();
+        playerTable.add(status).right().row(); 
     }
 
     /** Oppdaterer én spiller‑rad hvis den finnes. */
     private void updatePlayerStatus(String playerId, boolean isFinished) {
         Label lbl = statusLabels.get(playerId);
         if (lbl != null) {
-            lbl.setText(isFinished ? "✅ DONE" : "⏳ GUESSING");
+            lbl.setText(isFinished ? "DONE" : "GUESSING");
         }
     }
 
@@ -231,7 +240,7 @@ public class WaitingScreen implements Screen {
     /** Updates the completion status message and checks if all players are done */
     private void updateCompletionStatus(int totalPlayers, int finishedPlayers) {
         // Update the message to show progress based on Firebase data
-        messageLabel.setText("Waiting for all players to finish guessing... (" + finishedPlayers + "/" + totalPlayers + ")");
+        messageLabel.setText("Players done (" + finishedPlayers + "/" + totalPlayers + ")");
         
         // Check if all are finished
         boolean nowAll = (finishedPlayers == totalPlayers);

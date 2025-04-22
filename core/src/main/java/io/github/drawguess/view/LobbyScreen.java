@@ -39,6 +39,10 @@ public class LobbyScreen implements Screen {
     private float updateTimer = 0f;
     private static final float UPDATE_INTERVAL = 0.5f;
 
+    private float screenHeight = Gdx.graphics.getHeight();
+    private float screenWidth = Gdx.graphics.getWidth(); // Added for player table padding
+    private float baseFontScale = screenHeight * 0.0018f; // Base font scale
+
     public LobbyScreen(DrawGuessMain game) {
         this.game = game;
         this.socketHandler = game.getSocket(); // <--- kommer fra Android-implementasjonen
@@ -53,7 +57,6 @@ public class LobbyScreen implements Screen {
         updateLobbyFromFirestore();
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        float screenHeight = Gdx.graphics.getHeight();
 
         backgroundTexture = new Texture("board.png");
         backgroundImage = new Image(backgroundTexture);
@@ -62,16 +65,16 @@ public class LobbyScreen implements Screen {
 
         Table rootTable = new Table();
         rootTable.setFillParent(true);
-        rootTable.top().padTop(screenHeight * 0.15f);
+        rootTable.top().padTop(screenHeight * 0.2f);
         stage.addActor(rootTable);
 
         Label pinLabel = new Label("GAME PIN: " + session.getGameId(), skin);
-        pinLabel.setFontScale(screenHeight * 0.002f);
-        rootTable.add(pinLabel).padBottom(40).row();
+        pinLabel.setFontScale(baseFontScale * 1.1f); // Slightly larger for PIN
+        rootTable.add(pinLabel).padBottom(screenHeight * 0.05f).row();
 
         Label title = new Label("Waiting on players...", skin);
-        title.setFontScale(screenHeight * 0.0015f);
-        rootTable.add(title).padBottom(50).row();
+        title.setFontScale(baseFontScale);
+        rootTable.add(title).padBottom(screenHeight * 0.06f).row();
 
         playerTable = new Table();
         rootTable.add(playerTable);
@@ -81,9 +84,9 @@ public class LobbyScreen implements Screen {
         }
 
         startGameButton = new TextButton("Start Game", skin);
-        startGameButton.getLabel().setFontScale(screenHeight * 0.0015f);
-        rootTable.row().padTop(60);
-        rootTable.add(startGameButton).expandY().bottom().padBottom(30);
+        startGameButton.getLabel().setFontScale(baseFontScale);
+        rootTable.row().padTop(screenHeight * 0.07f);
+        rootTable.add(startGameButton).expandY().bottom().padBottom(screenHeight * 0.04f);
 
         startGameButton.addListener(new ClickListener() {
             @Override
@@ -140,10 +143,10 @@ public class LobbyScreen implements Screen {
         if (playerNames.contains(name)) return;
 
         Label playerLabel = new Label(name, skin);
-        playerLabel.setFontScale(Gdx.graphics.getHeight() * 0.0015f);
+        playerLabel.setFontScale(baseFontScale);
 
         playerNames.add(name);
-        playerTable.add(playerLabel).padBottom(8).row();
+        playerTable.add(playerLabel).padBottom(Gdx.graphics.getHeight() * 0.01f).row();
 
         Gdx.app.log("LobbyScreen", "👤 Spiller lagt til: " + name);
     }

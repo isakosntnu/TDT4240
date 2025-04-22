@@ -61,6 +61,8 @@ public class GuessingLobbyScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
+        float sw = Gdx.graphics.getWidth(); // Added screen width
+        float baseFontScale = sh * 0.0014f; // Base font scale
 
         // 1) Waiting background
         backgroundTexture = new Texture("board.png");
@@ -78,20 +80,27 @@ public class GuessingLobbyScreen implements Screen {
         // 3) Root layout for player status
         rootTable = new Table();
         rootTable.setFillParent(true);
-        rootTable.top().padTop(sh * 0.12f);
+        // Use relative top padding
+        rootTable.top().padTop(sh * 0.1f);
         stage.addActor(rootTable);
+
+        // --- Add Title --- 
+        Label titleLabel = new Label(isGuessPhase ? "WAITING FOR GUESSES" : "WAITING FOR DRAWINGS", skin);
+        titleLabel.setFontScale(baseFontScale * 1.2f); // Slightly larger title
+        rootTable.add(titleLabel).padBottom(sh * 0.04f).row(); // Add title to the layout
 
         // 4) Tabell over spillere + status
         playerTable = new Table();
-        rootTable.add(playerTable);
-        rootTable.row().padTop(40);
+        rootTable.add(playerTable).padBottom(sh * 0.05f).row(); // Adjusted padding
 
         // 5) Meldings‑felt under
         messageLabel = new Label(
                 isGuessPhase ? "Waiting for all guesses…" : "Waiting for all drawings…",
                 skin
         );
-        rootTable.add(messageLabel).padBottom(20).row();
+        // Apply base font scaling
+        messageLabel.setFontScale(baseFontScale);
+        rootTable.add(messageLabel).padBottom(sh * 0.03f).row();
 
         // 6) Loading overlay with countdown (initially invisible)
         loadingTable = new Table();
@@ -101,7 +110,8 @@ public class GuessingLobbyScreen implements Screen {
         stage.addActor(loadingTable);
 
         countdownLabel = new Label("", skin);
-        countdownLabel.setFontScale(3f);
+        // Apply base font scaling (larger for countdown)
+        countdownLabel.setFontScale(baseFontScale * 2.0f);
         loadingTable.add(countdownLabel);
 
         // start polling umiddelbart
@@ -111,21 +121,23 @@ public class GuessingLobbyScreen implements Screen {
     /** Legger til én rad i tabellen. */
     private void addPlayerRow(String playerId, String displayName, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        float scale = Gdx.graphics.getHeight() * 0.0015f;
+        // Use base font scale defined in constructor
+        float scale = Gdx.graphics.getHeight() * 0.0018f; // Match baseFontScale
+        float horizontalPadding = Gdx.graphics.getWidth() * 0.05f; // Horizontal padding within row
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
         
         // Set status text based on phase and completion
         String statusText = isGuessPhase 
-                ? (isFinished ? "✅ DONE" : "⏳ GUESSING") 
-                : (isFinished ? "✅ DONE" : "✏️ DRAWING");
+                ? (isFinished ? "DONE" : "GUESSING") 
+                : (isFinished ? "DONE" : "DRAWING");
         Label status = new Label(statusText, skin);
-        status.setFontScale(scale);
+        status.setFontScale(scale); // Apply scale to status label too
 
         statusLabels.put(playerId, status);
-        playerTable.add(name).padRight(40).left();
-        playerTable.add(status).right().row();
+        playerTable.add(name).padRight(horizontalPadding).left();
+        playerTable.add(status).right().row(); // Maybe add padLeft for status if needed
     }
 
     /** Oppdaterer én spiller‑rad hvis den finnes. */
@@ -134,8 +146,8 @@ public class GuessingLobbyScreen implements Screen {
         if (lbl != null) {
             // Update status text based on phase and completion
             String statusText = isGuessPhase 
-                ? (isFinished ? "✅ DONE" : "⏳ GUESSING") 
-                : (isFinished ? "✅ DONE" : "✏️ DRAWING");
+                ? (isFinished ? "DONE" : "GUESSING") 
+                : (isFinished ? "DONE" : "DRAWING");
             lbl.setText(statusText);
         }
     }
@@ -243,7 +255,7 @@ public class GuessingLobbyScreen implements Screen {
     /** Updates the completion status message and checks if all players are done */
     private void updateCompletionStatus(int totalPlayers, int finishedPlayers) {
         String phaseText = isGuessPhase ? "guessing" : "drawing";
-        messageLabel.setText("Waiting for all players to finish " + phaseText + "... (" + finishedPlayers + "/" + totalPlayers + ")");
+        messageLabel.setText("Players done " + phaseText + "... (" + finishedPlayers + "/" + totalPlayers + ")");
         
         boolean nowAll = (finishedPlayers == totalPlayers);
         
@@ -266,13 +278,13 @@ public class GuessingLobbyScreen implements Screen {
         loadingImage.setVisible(true);
         loadingTable.setVisible(true);
         
-        countdownLabel.setText("Next in " + pauseTimeLeft + "s");
+        countdownLabel.setText("Guessing in " + pauseTimeLeft + "s");
 
         pauseTask = new Timer.Task() {
             @Override public void run() {
                 pauseTimeLeft--;
                 if (pauseTimeLeft > 0) {
-                    countdownLabel.setText("Next in " + pauseTimeLeft + "s");
+                    countdownLabel.setText("Guessing in " + pauseTimeLeft + "s");
                 } else {
                     cancel();
                     goToNextPhase();
