@@ -3,6 +3,7 @@ package io.github.drawguess.server;
 
 
 import java.util.List;
+import java.util.Map;
 
 import io.github.drawguess.model.GameSession;
 
@@ -42,6 +43,38 @@ public interface FirebaseInterface {
                            FailureCallback failureCallback);
 
     Object getFirestore();
+    void getRandomWord(String gameId, FirebaseCallback<String> callback);
+    void setPlayerWord(String gameId, String playerId, String word);
+
+    void getPlayersWithStatus(String gameId, SuccessCallback<Map<String, Boolean>> successCallback, FailureCallback failureCallback);
+
+
+
+
+    // Henter alle tegninger for gjett‐runde (unntatt deg selv)
+    void getDrawingsForGuessing(String gameId,
+                                String myPlayerId,
+                                SuccessCallback<Map<String,String>> onSuccess,
+                                FailureCallback onError);
+
+    // Sender poeng du fikk for ett gjett
+    void submitGuessResult(String gameId,
+                           String playerId,
+                           int points,
+                           Runnable onSuccess,
+                           FailureCallback onError);
+
+    // Marker at du er ferdig med å gjette alle bilder
+    void setPlayerGuessDone(String gameId,
+                            String playerId,
+                            Runnable onSuccess,
+                            FailureCallback onError);
+
+    // Hent alle spilleres gjett‐status (true = ferdig)
+    void getPlayersGuessStatus(String gameId,
+                               SuccessCallback<Map<String,Boolean>> onSuccess,
+                               FailureCallback onError);
+
 
     interface SuccessCallback<T> {
         void onSuccess(T result);

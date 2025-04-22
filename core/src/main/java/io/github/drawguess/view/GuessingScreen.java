@@ -6,17 +6,17 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import io.github.drawguess.DrawGuessMain;
+import io.github.drawguess.manager.GameManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
-
-import io.github.drawguess.DrawGuessMain;
-import io.github.drawguess.manager.GameManager;
 
 public class GuessingScreen implements Screen {
 
@@ -36,6 +36,11 @@ public class GuessingScreen implements Screen {
     private int totalPlayers = 8;
     private int playersAnswered = 5;
 
+    // —— TIMER FIELDS ——
+    private Label timerLabel;
+    private int guessTimeLeft = 30;
+    private Timer.Task guessTimerTask;
+
     public GuessingScreen(DrawGuessMain game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -49,7 +54,7 @@ public class GuessingScreen implements Screen {
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Placeholder som blir erstattet når bildet lastes
+        // Placeholder for drawing
         drawingTexture = new Texture("placeholder.png");
         drawingImage = new Image(drawingTexture);
         drawingImage.setScaling(Scaling.fit);
@@ -60,35 +65,35 @@ public class GuessingScreen implements Screen {
         );
         stage.addActor(drawingImage);
 
-        // Tabell nederst for input og labels
+        // Bottom table
         Table sheetTable = new Table();
         sheetTable.setFillParent(true);
         sheetTable.bottom().padBottom(50);
         stage.addActor(sheetTable);
 
-        // Spørsmålstekst
+        // Question
         questionLabel = new Label("What is this?", skin);
         questionLabel.setFontScale(1.4f);
         sheetTable.add(questionLabel).padBottom(20).row();
 
-        // Spillerteller
+        // Player counter
         playerCounter = new Label(playersAnswered + " of " + totalPlayers + " has answered", skin);
         sheetTable.add(playerCounter).padBottom(20).row();
 
-        // Gjetting
+        // Guess input
         guessInput = new TextField("", skin);
         guessInput.setMessageText("Write down your guess here...");
         guessInput.setMaxLength(40);
         guessInput.getStyle().font.getData().setScale(1.2f);
         sheetTable.add(guessInput).width(400).height(80).padBottom(20).row();
 
-        // Send knapp
+        // Submit button
         submitButton = new TextButton("Guess", skin);
         submitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
+            @Override public void clicked(InputEvent event, float x, float y) {
                 if (!hasGuessed && !guessInput.getText().trim().isEmpty()) {
                     hasGuessed = true;
+                    guessTimerTask.cancel();
                     submitButton.setText("Sent!");
                     guessInput.setDisabled(true);
                     submitGuess(guessInput.getText().trim());
@@ -97,14 +102,38 @@ public class GuessingScreen implements Screen {
         });
         sheetTable.add(submitButton).width(150).height(50);
 
-        // Hent og vis bildet fra Firebase
+        // —— TIMER LABEL & TASK ——
+        timerLabel = new Label(String.valueOf(guessTimeLeft), skin);
+        timerLabel.setFontScale(2f);
+        timerLabel.setPosition(
+                Gdx.graphics.getWidth() - 60,
+                Gdx.graphics.getHeight() - 40
+        );
+        stage.addActor(timerLabel);
+
+        guessTimerTask = new Timer.Task() {
+            @Override public void run() {
+                guessTimeLeft--;
+                timerLabel.setText(String.valueOf(guessTimeLeft));
+                if (guessTimeLeft <= 0) {
+                    cancel();
+                    if (!hasGuessed) {
+                        submitButton.setText("Time!");
+                        guessInput.setDisabled(true);
+                        submitGuess("");
+                    }
+                }
+            }
+        };
+        Timer.schedule(guessTimerTask, 1, 1, guessTimeLeft - 1);
+
+        // Fetch and display the drawing
         fetchDrawingFromFirebase();
     }
 
     private void fetchDrawingFromFirebase() {
         String gameId = GameManager.getInstance().getSession().getGameId();
-        String drawingPlayerId = GameManager.getInstance().getSession().getHostPlayer().getId(); // eller annen spiller
-
+        String drawingPlayerId = GameManager.getInstance().getSession().getHostPlayer().getId();
         game.getFirebase().getPlayerDrawingUrl(
                 gameId,
                 drawingPlayerId,
@@ -117,7 +146,6 @@ public class GuessingScreen implements Screen {
         new Thread(() -> {
             try {
                 InputStream input = new URL(imageUrl).openStream();
-
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 byte[] data = new byte[1024];
                 int nRead;
@@ -126,18 +154,14 @@ public class GuessingScreen implements Screen {
                 }
                 buffer.flush();
                 byte[] bytes = buffer.toByteArray();
-
                 Pixmap pixmap = new Pixmap(bytes, 0, bytes.length);
-
                 Texture texture = new Texture(pixmap);
                 pixmap.dispose();
-
                 Gdx.app.postRunnable(() -> {
                     if (drawingTexture != null) drawingTexture.dispose();
                     drawingTexture = texture;
                     drawingImage.setDrawable(new TextureRegionDrawable(drawingTexture));
                 });
-
             } catch (Exception e) {
                 Gdx.app.error("GuessingScreen", "Failed to load image from URL", e);
             }
@@ -145,7 +169,7 @@ public class GuessingScreen implements Screen {
     }
 
     private void submitGuess(String guess) {
-        System.out.println("Gjettet: " + guess);
+        Gdx.app.log("GuessingScreen", "Gjettet: " + guess);
         game.getFirebase().sendGuess(guess);
     }
 
