@@ -8,6 +8,8 @@ public class Player {
     private int score;              // Poengsum
     private boolean host;           // True hvis denne spilleren er host
     private boolean finishedDrawing; // True hvis spilleren er ferdig å tegne
+    private String word;
+
 
     public Player(String id, String name, int initialScore, boolean host) {
         this.id = id;
@@ -15,6 +17,7 @@ public class Player {
         this.score = initialScore;
         this.host = host;
         this.finishedDrawing = false;
+        this.word = "x";
     }
 
     /* ---------- Getters / Setters ---------- */

@@ -100,12 +100,12 @@ public class DrawingScreen implements Screen {
 
         // Pen size buttons
         Texture[] sizeTextures = {
-            new Texture("size1.png"),
-            new Texture("size2.png"),
-            new Texture("size3.png"),
-            new Texture("size4.png")
+                new Texture("size1.png"),
+                new Texture("size2.png"),
+                new Texture("size3.png"),
+                new Texture("size4.png")
         };
-        int[] sizes = {1, 3, 6, 12};
+        int[] sizes = { 1, 3, 6, 12 };
 
         new SizeController(editPanelGroup, sizeTextures, sizes, size -> {
             currentSize = size;
@@ -171,7 +171,8 @@ public class DrawingScreen implements Screen {
         int index = 0;
         for (Map.Entry<Color, String> entry : colors.entrySet()) {
             float x = startX + index * buttonWidth;
-            ToolButtonFactory.addColorPenButton(stage, controller, entry.getKey(), entry.getValue(), x, penY, buttonWidth, buttonHeight, () -> currentSize);
+            ToolButtonFactory.addColorPenButton(stage, controller, entry.getKey(), entry.getValue(), x, penY,
+                    buttonWidth, buttonHeight, () -> currentSize);
             index++;
         }
 
@@ -201,6 +202,7 @@ public class DrawingScreen implements Screen {
         String playerId = GameManager.getInstance().getPlayerId();
 
         game.getFirebase().getRandomWord(gameId, new FirebaseCallback<String>() {
+
             @Override
             public void onSuccess(String wordToDraw) {
                 GameManager.getInstance().getSession().setWordForPlayer(playerId, wordToDraw);
@@ -248,12 +250,30 @@ public class DrawingScreen implements Screen {
         undoButton.setColor(controller.canUndo() ? Color.WHITE : Color.LIGHT_GRAY);
     }
 
-    @Override public void resize(int width, int height) { stage.getViewport().update(width, height, true); }
-    @Override public void show() {}
-    @Override public void hide() { dispose(); }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void dispose() {
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void dispose() {
         stage.dispose();
         whiteboardTexture.dispose();
         canvasTexture.dispose();

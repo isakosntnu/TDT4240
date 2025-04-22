@@ -10,7 +10,7 @@ import io.github.drawguess.DrawGuessMain;
 import io.github.drawguess.android.manager.SocketManager;
 import io.github.drawguess.view.LobbyScreen;
 import io.github.drawguess.android.manager.AndroidSocketHandler;
-import io.github.drawguess.android.WordUploader;
+
 
 import org.json.JSONObject;
 import io.socket.client.Socket;
