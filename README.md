@@ -5,6 +5,11 @@ This is a simple multiplayer drawing and guessing game built with LibGDX and Fir
 ## Building and Running
 
 ### Compilation
+
+If you are using the Firebase Functions backend, or running the web version of the game, make sure to install the Node.js dependencies:
+
+npm install
+
 Once the project has been opened and Gradle has finished syncing, Android Studio will automatically index the project and make it ready for compilation. To compile the project:
 1. Open Android Studio
 2. Click Build > Make Project in the top menu

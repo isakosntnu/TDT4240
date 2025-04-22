@@ -21,7 +21,7 @@ public class PlayerController {
         this.game = game;
         this.session = GameManager.getInstance().getSession();
 
-        // Hvis denne spilleren ikke har fått et ord enda, trekk ett fra WordBank og sett på session:
+        // Grabbing a word from wordbank to a player
         String myId   = GameManager.getInstance().getPlayerId();
         String current = session.getWordForPlayer(myId);
         if (current == null || current.isEmpty() || "unknown".equals(current)) {

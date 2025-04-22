@@ -10,7 +10,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*", // Endre til spesifikk URL i prod
+        origin: "*", 
         methods: ["GET", "POST"]
     }
 });
@@ -18,33 +18,32 @@ const io = new Server(server, {
 // --------------------------------------------------------------
 
 io.on("connection", (socket) => {
-    console.log("✅ Bruker tilkoblet:", socket.id);
+    console.log("Bruker tilkoblet:", socket.id);
 
     socket.on("joinGame", (data) => {
         try {
-            console.log("🧪 Mottatt data fra klient:", data);
+            console.log("Mottatt data fra klient:", data);
 
-            // Hvis data er JSONObject fra Android, må vi kanskje parse det
             const gameId = data.gameId || (data.get && data.get("gameId"));
             const username = data.username || (data.get && data.get("username"));
 
             if (!gameId || !username) {
-                console.error("🚫 Ugyldig joinGame-data:", data);
+                console.error("Ugyldig joinGame-data:", data);
                 return;
             }
 
-            console.log(`📥 ${username} joinet game ${gameId}`);
+            console.log(` ${username} joinet game ${gameId}`);
             socket.join(gameId);
             io.to(gameId).emit("userJoined", { username });
 
         } catch (err) {
-            console.error("❌ Feil i joinGame-handling:", err);
+            console.error("Feil i joinGame-handling:", err);
         }
     });
 
     socket.on("startGame", ({ gameId }) => {
         console.log(`🚀 Starter spillet i rommet: ${gameId}`);
-        io.to(gameId).emit("gameStarted"); // Send til ALLE i rommet
+        io.to(gameId).emit("gameStarted"); 
     });
 
     socket.on("draw", ({ gameId, drawingData }) => {
@@ -56,7 +55,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log("❌ Bruker frakoblet:", socket.id);
+        console.log("Bruker frakoblet:", socket.id);
     });
 });
 
@@ -64,5 +63,5 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`🎉 Server kjører på port ${PORT}`);
+    console.log(`Server kjører på port ${PORT}`);
 });

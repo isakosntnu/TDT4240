@@ -25,16 +25,16 @@ public class AndroidLauncher extends AndroidApplication {
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useImmersiveMode = true;
 
-        // 1. Init Socket.IO-tilkobling
+        // 1. Init Socket.IO
         SocketManager.init();
 
-        // 2. Lagre spillinstans i GameManager
+        // 2. GameManager init
         DrawGuessMain game = new DrawGuessMain(new AndroidFirebase(), new AndroidSocketHandler());
         io.github.drawguess.manager.GameManager.setGameInstance(game); // Denne er kritisk
 
         
 
-        // 3. Start LibGDX-spillet
+        // 3. Start LibGDX-game
         initialize(game, config);
 
     }

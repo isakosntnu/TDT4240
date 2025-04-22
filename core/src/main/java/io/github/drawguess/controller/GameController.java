@@ -41,7 +41,7 @@ public class GameController {
     
                     @Override
                     public void onFailure(Exception exception) {
-                        System.out.println("❌ Klarte ikke hente ord for spiller: " + exception.getMessage());
+                        System.out.println("Couldnt get words for players " + exception.getMessage());
                     }
                 });
             }
@@ -52,7 +52,7 @@ public class GameController {
 
     
         }, e -> {
-            System.out.println("❌ Klarte ikke hente spillere: " + e.getMessage());
+            System.out.println("Couldnt get players " + e.getMessage());
         });
     }
     

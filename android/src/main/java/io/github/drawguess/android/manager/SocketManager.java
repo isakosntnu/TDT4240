@@ -16,15 +16,15 @@ public class SocketManager {
             socket.connect();
 
             socket.on(Socket.EVENT_CONNECT, args -> {
-                Log.d("SOCKET", "✅ Tilkoblet til Socket.IO-server!");
+                Log.d("SOCKET", "Tilkoblet til Socket.IO-server!");
             });
 
             socket.on(Socket.EVENT_DISCONNECT, args -> {
-                Log.d("SOCKET", "❌ Frakoblet fra Socket.IO-server!");
+                Log.d("SOCKET", "Frakoblet fra Socket.IO-server!");
             });
 
         } catch (URISyntaxException e) {
-            Log.e("SOCKET", "⚠️ URI error: " + e.getMessage());
+            Log.e("SOCKET", "URI error: " + e.getMessage());
         }
     }
 

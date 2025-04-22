@@ -49,14 +49,14 @@ public class AndroidSocketHandler implements SocketInterface {
     public void registerLobbyListeners() {
         socket.on("userJoined", onUserJoined);
         socket.on("joinRejected", onJoinRejected);
-        socket.on("gameStarted", onGameStarted); // 🔥 NY
+        socket.on("gameStarted", onGameStarted); 
     }
     
     @Override
     public void unregisterLobbyListeners() {
         socket.off("userJoined", onUserJoined);
         socket.off("joinRejected", onJoinRejected);
-        socket.off("gameStarted", onGameStarted); // 🔥 NY
+        socket.off("gameStarted", onGameStarted); 
     }
     
 
@@ -69,7 +69,7 @@ public class AndroidSocketHandler implements SocketInterface {
             socket.emit("joinGame", data);
             Log.d("SOCKET", "Emit joinGame: " + username + " → " + gameId);
         } catch (Exception e) {
-            Log.e("SOCKET", "Feil ved joinGame-emission", e);
+            Log.e("SOCKET", "error joinGame-emission", e);
         }
     }
 
@@ -79,9 +79,9 @@ public class AndroidSocketHandler implements SocketInterface {
             JSONObject data = new JSONObject();
             data.put("gameId", gameId);
             socket.emit("startGame", data);
-            Log.d("SOCKET", "🚀 Emit startGame → " + gameId);
+            Log.d("SOCKET", "Emit startGame → " + gameId);
         } catch (Exception e) {
-            Log.e("SOCKET", "❌ Feil ved startGame-emission", e);
+            Log.e("SOCKET", "error emit startGame", e);
         }
     }
     

@@ -35,13 +35,13 @@ public class MenuScreen implements Screen {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        // (1) Bakgrunn
+
         backgroundTexture = new Texture("bgmenu.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // (2) Logo
+
         logoTexture = new Texture("logo.png");
         logoImage = new Image(logoTexture);
         float logoWidth = screenWidth * 0.6f;
@@ -53,7 +53,7 @@ public class MenuScreen implements Screen {
         );
         stage.addActor(logoImage);
 
-        // (3) Start Game-knapp
+        // Start game
         buttonTexture = new Texture("startgamebtn.png");
         buttonImage = new Image(buttonTexture);
         float buttonWidth = screenWidth * 0.6f;
@@ -72,7 +72,7 @@ public class MenuScreen implements Screen {
         });
         stage.addActor(buttonImage);
 
-        // (4) Join Game-knapp
+        // Join Game
         joinButtonTexture = new Texture("joingamebtn.png");
         joinButtonImage = new Image(joinButtonTexture);
         joinButtonImage.setSize(buttonWidth, buttonHeight);

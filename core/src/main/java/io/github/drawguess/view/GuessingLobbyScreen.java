@@ -14,7 +14,7 @@ import io.github.drawguess.model.Player;
 
 import java.util.*;
 import java.util.List;
-import java.util.Objects; // Import Objects for deep equality check
+import java.util.Objects; 
 
 public class GuessingLobbyScreen implements Screen {
 
@@ -31,8 +31,8 @@ public class GuessingLobbyScreen implements Screen {
     private Table playerTable;
     private Table rootTable;
     private Table loadingTable;
-    private Map<String, Label> statusLabels; // playerId → Label
-    private Map<String, Boolean> previousPlayerStatuses; // Store previous statuses
+    private Map<String, Label> statusLabels; 
+    private Map<String, Boolean> previousPlayerStatuses; 
 
     private Label messageLabel;
     private Label countdownLabel;
@@ -45,10 +45,7 @@ public class GuessingLobbyScreen implements Screen {
     private int pauseTimeLeft;
     private Timer.Task pauseTask;
 
-    /**
-     * @param game         referanse til hoved‑klassen
-     * @param isGuessPhase true = vi venter på gjett‑runde, false = vi venter på tegne‑runde
-     */
+
     public GuessingLobbyScreen(DrawGuessMain game, boolean isGuessPhase) {
         this.game = game;
         this.isGuessPhase = isGuessPhase;
@@ -57,52 +54,51 @@ public class GuessingLobbyScreen implements Screen {
 
         this.session = GameManager.getInstance().getSession();
         this.statusLabels = new HashMap<>();
-        this.previousPlayerStatuses = new HashMap<>(); // Initialize the map
+        this.previousPlayerStatuses = new HashMap<>(); 
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float sh = Gdx.graphics.getHeight();
-        float sw = Gdx.graphics.getWidth(); // Added screen width
-        float baseFontScale = sh * 0.0014f; // Base font scale
+        float sw = Gdx.graphics.getWidth(); 
+        float baseFontScale = sh * 0.0014f; 
 
-        // 1) Waiting background
+
         backgroundTexture = new Texture("board.png");
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // 2) Loading background (initially invisible)
+
         loadingTexture = new Texture("canvas.png");
         loadingImage = new Image(loadingTexture);
         loadingImage.setFillParent(true);
         loadingImage.setVisible(false); // Hide initially
         stage.addActor(loadingImage);
 
-        // 3) Root layout for player status
+
         rootTable = new Table();
         rootTable.setFillParent(true);
-        // Use relative top padding
         rootTable.top().padTop(sh * 0.2f);
         stage.addActor(rootTable);
 
-        // --- Add Title --- 
+
         Label titleLabel = new Label(isGuessPhase ? "WAITING FOR GUESSES" : "WAITING FOR DRAWINGS", skin);
         titleLabel.setFontScale(baseFontScale * 1.2f); // Slightly larger title
         rootTable.add(titleLabel).padBottom(sh * 0.04f).row(); // Add title to the layout
 
-        // 4) Tabell over spillere + status
+
         playerTable = new Table();
         rootTable.add(playerTable).padBottom(sh * 0.05f).row(); // Adjusted padding
 
-        // 5) Meldings‑felt under
+
         messageLabel = new Label(
                 isGuessPhase ? "Waiting for all guesses…" : "Waiting for all drawings…",
                 skin
         );
-        // Apply base font scaling
+
         messageLabel.setFontScale(baseFontScale);
         rootTable.add(messageLabel).padBottom(sh * 0.03f).row();
 
-        // 6) Loading overlay with countdown (initially invisible)
+
         loadingTable = new Table();
         loadingTable.setFillParent(true);
         loadingTable.center();
@@ -110,20 +106,18 @@ public class GuessingLobbyScreen implements Screen {
         stage.addActor(loadingTable);
 
         countdownLabel = new Label("", skin);
-        // Apply base font scaling (larger for countdown)
         countdownLabel.setFontScale(baseFontScale * 2.0f);
         loadingTable.add(countdownLabel);
 
-        // start polling umiddelbart
+        // start polling 
         updatePlayerStatuses();
     }
 
-    /** Legger til én rad i tabellen. */
+
     private void addPlayerRow(String playerId, String displayName, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        // Use base font scale defined in constructor
-        float scale = Gdx.graphics.getHeight() * 0.0018f; // Match baseFontScale
-        float horizontalPadding = Gdx.graphics.getWidth() * 0.05f; // Horizontal padding within row
+        float scale = Gdx.graphics.getHeight() * 0.0018f; 
+        float horizontalPadding = Gdx.graphics.getWidth() * 0.05f; 
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
@@ -133,26 +127,13 @@ public class GuessingLobbyScreen implements Screen {
                 ? (isFinished ? "DONE" : "GUESSING") 
                 : (isFinished ? "DONE" : "DRAWING");
         Label status = new Label(statusText, skin);
-        status.setFontScale(scale); // Apply scale to status label too
+        status.setFontScale(scale); 
 
         statusLabels.put(playerId, status);
         playerTable.add(name).padRight(horizontalPadding).left();
-        playerTable.add(status).right().row(); // Maybe add padLeft for status if needed
+        playerTable.add(status).right().row(); 
     }
 
-    /** Oppdaterer én spiller‑rad hvis den finnes. */
-    private void updatePlayerStatus(String playerId, boolean isFinished) {
-        Label lbl = statusLabels.get(playerId);
-        if (lbl != null) {
-            // Update status text based on phase and completion
-            String statusText = isGuessPhase 
-                ? (isFinished ? "DONE" : "GUESSING") 
-                : (isFinished ? "DONE" : "DRAWING");
-            lbl.setText(statusText);
-        }
-    }
-
-    /** Henter korrekt felt fra Firebase basert på fase. */
     private void updatePlayerStatuses() {
         String gameId = session.getGameId();
         if (!isGuessPhase) {
@@ -170,9 +151,8 @@ public class GuessingLobbyScreen implements Screen {
         }
     }
 
-    /** Felles callback for begge faser. */
+
     private void onStatusReceived(Map<String, Boolean> currentPlayerStatuses) {
-        // Check if the statuses have actually changed since the last update
         if (Objects.equals(previousPlayerStatuses, currentPlayerStatuses)) {
              Gdx.app.debug("GuessingLobbyScreen", "No status change detected, skipping UI update.");
             return; // No change, no need to update UI
@@ -182,7 +162,6 @@ public class GuessingLobbyScreen implements Screen {
         previousPlayerStatuses = new HashMap<>(currentPlayerStatuses); // Store a copy
 
         Gdx.app.postRunnable(() -> {
-            // Skip if we're already in countdown
             if (allFinished) return;
 
             int totalPlayers = currentPlayerStatuses.size();
@@ -206,15 +185,12 @@ public class GuessingLobbyScreen implements Screen {
                             playerNames.put(id, name);
                         }
                     }
-
-                    // Update UI with names and statuses
                     Gdx.app.postRunnable(() -> {
                         int countFinished = 0;
-                        // Use the currentPlayerStatuses map received by this method
                         for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
                             String pid = entry.getKey();
                             boolean done = entry.getValue();
-                            String playerName = playerNames.getOrDefault(pid, pid); // Use ID as fallback
+                            String playerName = playerNames.getOrDefault(pid, pid); 
 
                             addPlayerRow(pid, playerName, done);
 
@@ -228,10 +204,8 @@ public class GuessingLobbyScreen implements Screen {
                 },
                 error -> {
                     Gdx.app.error("GuessingLobbyScreen", "Failed to get player profiles: " + error.getMessage());
-                    // Fallback: Update UI using only player IDs
                     Gdx.app.postRunnable(() -> {
                         int countFinished = 0;
-                        // Use the currentPlayerStatuses map received by this method
                         for (Map.Entry<String, Boolean> entry : currentPlayerStatuses.entrySet()) {
                             String pid = entry.getKey();
                             boolean done = entry.getValue();
@@ -268,9 +242,9 @@ public class GuessingLobbyScreen implements Screen {
         }
     }
 
-    /** Teller ned 5 sek før neste skjerm. */
+
     private void startPauseCountdown() {
-        pauseTimeLeft = 5;
+        pauseTimeLeft = 3;
         
         // Show loading screen and hide player information
         backgroundImage.setVisible(false);
@@ -311,7 +285,7 @@ public class GuessingLobbyScreen implements Screen {
                     )
             );
         } else {
-            // === alle har gjettet ===
+            // Everybody is done
             game.setScreen(new LeaderboardScreen(game));
         }
     }

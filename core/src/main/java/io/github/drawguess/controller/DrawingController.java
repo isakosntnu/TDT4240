@@ -20,13 +20,13 @@ public class DrawingController extends InputAdapter {
     private final Texture drawingTexture;
     private final SpriteBatch batch;
     private Entity selectedTool;
-    private float lastX = -1, lastY = -1; // Endret til float
+    private float lastX = -1, lastY = -1; 
     private boolean isDrawing = false;
     private boolean hasDrawnThisStroke = false;
     private final List<Pixmap> undoStack = new ArrayList<>();
     private boolean isToolPanelOpen = false;
 
-    private final float minX, maxX, minY, maxY; // Endret til float
+    private final float minX, maxX, minY, maxY; 
 
     public DrawingController(Pixmap canvas, Texture drawingTexture,
                              float minX, float maxX, float minY, float maxY) {
