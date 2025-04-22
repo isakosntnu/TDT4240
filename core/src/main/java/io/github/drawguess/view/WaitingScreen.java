@@ -102,11 +102,9 @@ public class WaitingScreen implements Screen {
     }
 
     /** Legger til én rad i tabellen. */
-    private void addPlayerRow(String playerId, boolean isFinished) {
+    private void addPlayerRow(String playerId, String displayName, boolean isFinished) {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float scale = Gdx.graphics.getHeight() * 0.0015f;
-        Player p = session.getPlayerById(playerId);
-        String displayName = (p != null) ? p.getName() : playerId;
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
@@ -143,53 +141,96 @@ public class WaitingScreen implements Screen {
 
             // Use the size of the map from Firebase as the total player count
             int totalPlayers = playerStatuses.size();
-            int finishedPlayers = 0;
+            
+            // Clear player table to rebuild it
+            playerTable.clear();
+            statusLabels.clear();
 
             // Debug log - print the number of players found in Firebase
             Gdx.app.debug("WaitingScreen", "Checking statuses for " + totalPlayers + " players from Firebase:");
 
-            // legg til nye rader / oppdater eksisterende basert på Firebase data
-            for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
-                String pid = entry.getKey();
-                boolean done = entry.getValue();
-
-                // Attempt to get player name from local session, fallback to ID if not found
-                Player player = session.getPlayerById(pid);
-                String playerName = (player != null) ? player.getName() : ("Player " + pid.substring(0, 4)); // Use partial ID if no name
-
-                // Debug log each player's status from Firebase
-                Gdx.app.debug("WaitingScreen", "Player: " + playerName + " (ID: " + pid + ") - Done: " + done);
-
-                if (!statusLabels.containsKey(pid)) {
-                    // Pass the resolved player name or fallback ID to addPlayerRow
-                    addPlayerRow(pid, done); // Note: addPlayerRow internally gets the name again, maybe optimize later
-                } else {
-                    updatePlayerStatus(pid, done);
+            // Get all player names from Firebase at once
+            String gameId = session.getGameId();
+            game.getFirebase().getAllPlayerProfiles(
+                gameId,
+                playerProfiles -> {
+                    // Create a map of player IDs to names for easy lookup
+                    Map<String, String> playerNames = new HashMap<>();
+                    for (Map<String, Object> profile : playerProfiles) {
+                        String id = (String) profile.get("id");
+                        String name = (String) profile.get("name");
+                        if (id != null && name != null) {
+                            playerNames.put(id, name);
+                        }
+                    }
+                    
+                    // Now update the UI with player names and statuses
+                    Gdx.app.postRunnable(() -> {
+                        int countFinished = 0; // Create a new counter inside this lambda
+                        for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                            String pid = entry.getKey();
+                            boolean done = entry.getValue();
+                            
+                            // Get player name from the profiles we fetched
+                            String playerName = playerNames.getOrDefault(pid, pid);
+                            
+                            // Add to the UI
+                            addPlayerRow(pid, playerName, done);
+                            
+                            if (done) {
+                                countFinished++; // Use the local counter
+                            }
+                        }
+                        
+                        // Update the message and check if all are finished
+                        updateCompletionStatus(playerStatuses.size(), countFinished);
+                    });
+                },
+                error -> {
+                    // Fallback to using just player IDs if we can't get names
+                    Gdx.app.error("WaitingScreen", "Failed to get player profiles: " + error.getMessage());
+                    Gdx.app.postRunnable(() -> {
+                        int countFinished = 0; // Create a new counter inside this lambda
+                        for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                            String pid = entry.getKey();
+                            boolean done = entry.getValue();
+                            
+                            // Fallback to player ID if we can't get the name
+                            Player player = session.getPlayerById(pid);
+                            String displayName = (player != null) ? player.getName() : pid;
+                            
+                            addPlayerRow(pid, displayName, done);
+                            
+                            if (done) {
+                                countFinished++; // Use the local counter
+                            }
+                        }
+                        
+                        // Update message and check if all are finished
+                        updateCompletionStatus(playerStatuses.size(), countFinished);
+                    });
                 }
-
-                if (done) {
-                    finishedPlayers++;
-                }
-            }
-
-            // sjekk om alle er ferdige - basert på Firebase data
-            if (!allFinished) {
-                boolean nowAll = (finishedPlayers == totalPlayers);
-
-                // Update the message to show progress based on Firebase data
-                messageLabel.setText("Waiting for all players to finish guessing... (" + finishedPlayers + "/" + totalPlayers + ")");
-
-                // Only proceed when ALL players reported by Firebase have finished
-                if (nowAll && totalPlayers > 0) {
-                    Gdx.app.log("WaitingScreen", "All players (" + totalPlayers + ") have finished guessing! Starting countdown...");
-                    allFinished = true;
-                    startPauseCountdown();
-                } else {
-                    // Optional: Log if not all finished yet
-                    Gdx.app.debug("WaitingScreen", finishedPlayers + "/" + totalPlayers + " players finished. Waiting...");
-                }
-            }
+            );
         });
+    }
+    
+    /** Updates the completion status message and checks if all players are done */
+    private void updateCompletionStatus(int totalPlayers, int finishedPlayers) {
+        // Update the message to show progress based on Firebase data
+        messageLabel.setText("Waiting for all players to finish guessing... (" + finishedPlayers + "/" + totalPlayers + ")");
+        
+        // Check if all are finished
+        boolean nowAll = (finishedPlayers == totalPlayers);
+        
+        // Only proceed when ALL players reported by Firebase have finished
+        if (nowAll && totalPlayers > 0 && !allFinished) {
+            Gdx.app.log("WaitingScreen", "All players (" + totalPlayers + ") have finished guessing! Starting countdown...");
+            allFinished = true;
+            startPauseCountdown();
+        } else if (!allFinished) {
+            // Optional: Log if not all finished yet
+            Gdx.app.debug("WaitingScreen", finishedPlayers + "/" + totalPlayers + " players finished. Waiting...");
+        }
     }
 
     /** Teller ned 5 sek før neste skjerm. */
