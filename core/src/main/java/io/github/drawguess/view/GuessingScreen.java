@@ -94,7 +94,7 @@ public class GuessingScreen implements Screen {
                 if (!hasGuessed && !guessInput.getText().trim().isEmpty()) {
                     hasGuessed = true;
                     guessTimerTask.cancel();
-                    submitButton.setText("Sent!");
+                    submitButton.setText("Finishing...");
                     guessInput.setDisabled(true);
                     submitGuess(guessInput.getText().trim());
                 }
@@ -176,12 +176,43 @@ public class GuessingScreen implements Screen {
         String gameId = GameManager.getInstance().getSession().getGameId();
         String playerId = GameManager.getInstance().getPlayerId();
         
+        // Disable input while we save the state
+        guessInput.setDisabled(true);
+        submitButton.setText("Finishing...");
+        
+        Gdx.app.log("GuessingScreen", "Marking player " + playerId + " as finished guessing");
+        
         game.getFirebase().setPlayerGuessDone(
             gameId, 
             playerId,
-            () -> Gdx.app.postRunnable(() -> 
-                game.setScreen(new WaitingScreen(game, true))
-            ),
+            () -> {
+                // Double-check that the status was saved by retrieving it
+                game.getFirebase().getPlayersGuessStatus(
+                    gameId,
+                    statuses -> {
+                        Boolean myStatus = statuses.get(playerId);
+                        Gdx.app.log("GuessingScreen", "Player " + playerId + " guess status: " + myStatus);
+                        
+                        // Only proceed if we can confirm we're marked as done
+                        if (myStatus != null && myStatus) {
+                            Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen(game)));
+                        } else {
+                            // Try again
+                            Gdx.app.error("GuessingScreen", "Failed to confirm guess status, retrying...");
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    submitGuess(guess);
+                                }
+                            }, 1);
+                        }
+                    },
+                    err -> {
+                        Gdx.app.error("GuessingScreen", "Could not verify guess-done status", err);
+                        Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen(game)));
+                    }
+                );
+            },
             err -> Gdx.app.error("GuessingScreen", "Failed to mark guess as done", err)
         );
     }

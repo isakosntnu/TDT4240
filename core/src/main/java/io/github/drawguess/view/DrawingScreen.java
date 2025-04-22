@@ -223,7 +223,7 @@ public class DrawingScreen implements Screen {
         // Kall ny overload med callback:
         new PlayerController(game).finishDrawing(canvas, () -> {
             // Her er vi **sikre** på at Firebase har markert oss ferdige.
-            game.setScreen(new WaitingScreen(game, false));
+            game.setScreen(new GuessingLobbyScreen(game, false));
         });
     }
 

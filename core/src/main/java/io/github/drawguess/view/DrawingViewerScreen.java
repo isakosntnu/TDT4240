@@ -176,11 +176,43 @@ public class DrawingViewerScreen implements Screen {
         String gameId = GameManager.getInstance().getSession().getGameId();
         String me     = GameManager.getInstance().getPlayerId();
 
+        // Show a temporary "please wait" message
+        resultLabel.setText("Finishing up...");
+        guessInput.setDisabled(true);
+        guessButton.setDisabled(true);
+
+        Gdx.app.log("DrawingViewer", "Marking player " + me + " as finished guessing");
+        
         game.getFirebase().setPlayerGuessDone(
                 gameId, me,
-                () -> Gdx.app.postRunnable(() ->
-                        game.setScreen(new WaitingScreen(game, true))
-                ),
+                () -> {
+                    // Double-check that the status was saved by retrieving it
+                    game.getFirebase().getPlayersGuessStatus(
+                        gameId,
+                        statuses -> {
+                            Boolean myStatus = statuses.get(me);
+                            Gdx.app.log("DrawingViewer", "Player " + me + " guess status: " + myStatus);
+                            
+                            // Only proceed if we can confirm we're marked as done
+                            if (myStatus != null && myStatus) {
+                                Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen(game)));
+                            } else {
+                                // Try again
+                                Gdx.app.error("DrawingViewer", "Failed to confirm guess status, retrying...");
+                                Timer.schedule(new Timer.Task() {
+                                    @Override
+                                    public void run() {
+                                        finishGuessingRound();
+                                    }
+                                }, 1);
+                            }
+                        },
+                        err -> {
+                            Gdx.app.error("DrawingViewer", "Could not verify guess-done status", err);
+                            Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen(game)));
+                        }
+                    );
+                },
                 err -> Gdx.app.error("DrawingViewer","Could not set guess-done",err)
         );
     }

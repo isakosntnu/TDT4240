@@ -69,6 +69,7 @@ public class AndroidFirebase implements FirebaseInterface {
                     playerData.put("joinedAt", FieldValue.serverTimestamp());
                     playerData.put("score", 0);
                     playerData.put("finished", false);
+                    playerData.put("guessFinished", false);
 
 
                     db.collection("games").document(gameId)
@@ -103,6 +104,7 @@ public class AndroidFirebase implements FirebaseInterface {
         playerData.put("joinedAt", FieldValue.serverTimestamp());
         playerData.put("score", 0);
         playerData.put("finished", false);
+        playerData.put("guessFinished", false);
 
         db.collection("games").document(gameId)
                 .collection("players").document(playerId)
@@ -347,13 +349,48 @@ public class AndroidFirebase implements FirebaseInterface {
                                    String playerId,
                                    Runnable onSuccess,
                                    FailureCallback onError) {
+        Log.d("AndroidFirebase", "Setting guessFinished=true for player " + playerId + " in game " + gameId);
+        
         DocumentReference ref = db.collection("games")
                 .document(gameId)
                 .collection("players")
                 .document(playerId);
-        ref.update("guessFinished", true)
-                .addOnSuccessListener(a -> onSuccess.run())
-                .addOnFailureListener(e -> onError.onFailure(new Exception(e)));
+        
+        // First check if the document exists to avoid errors
+        ref.get().addOnSuccessListener(document -> {
+            if (document.exists()) {
+                // Document exists, update the field
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("guessFinished", true);
+                
+                ref.update(updates)
+                   .addOnSuccessListener(aVoid -> {
+                       Log.d("AndroidFirebase", "Successfully marked player " + playerId + " as done guessing");
+                       onSuccess.run();
+                   })
+                   .addOnFailureListener(e -> {
+                       Log.e("AndroidFirebase", "Failed to mark player as done guessing", e);
+                       onError.onFailure(new Exception("Failed to update guessFinished status: " + e.getMessage()));
+                   });
+            } else {
+                // Document doesn't exist, create it
+                Map<String, Object> playerData = new HashMap<>();
+                playerData.put("guessFinished", true);
+                
+                ref.set(playerData)
+                   .addOnSuccessListener(aVoid -> {
+                       Log.d("AndroidFirebase", "Created player document and marked as done guessing");
+                       onSuccess.run();
+                   })
+                   .addOnFailureListener(e -> {
+                       Log.e("AndroidFirebase", "Failed to create player document", e);
+                       onError.onFailure(new Exception("Failed to create player document: " + e.getMessage()));
+                   });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("AndroidFirebase", "Error checking if player document exists", e);
+            onError.onFailure(new Exception("Error checking if player document exists: " + e.getMessage()));
+        });
     }
 
     // 4) Hent alle med guessFinished
@@ -367,10 +404,9 @@ public class AndroidFirebase implements FirebaseInterface {
                 .addOnSuccessListener(qs -> {
                     Map<String, Boolean> status = new HashMap<>();
                     for (DocumentSnapshot doc : qs.getDocuments()) {
+                        // Include all players, defaulting to false if guessFinished is not set
                         Boolean done = doc.getBoolean("guessFinished");
-                        if (done != null) {
-                            status.put(doc.getId(), done);
-                        }
+                        status.put(doc.getId(), done != null ? done : false);
                     }
                     onSuccess.onSuccess(status);
                 })

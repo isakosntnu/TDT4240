@@ -13,13 +13,13 @@ import io.github.drawguess.model.GameSession;
 import io.github.drawguess.model.Player;
 
 import java.util.*;
+import java.util.List;
 
 public class WaitingScreen implements Screen {
 
     private final DrawGuessMain game;
     private final Stage stage;
     private final GameSession session;
-    private final boolean isGuessPhase;
 
     private Texture backgroundTexture;
     private Image backgroundImage;
@@ -35,20 +35,15 @@ public class WaitingScreen implements Screen {
     private Label countdownLabel;
 
     private float updateTimer = 0f;
-    private static final float UPDATE_INTERVAL = 1.0f;
+    private static final float UPDATE_INTERVAL = 0.5f;
 
     // —— AUTO‑ADVANCE FIELDS ——
     private boolean allFinished = false;
     private int pauseTimeLeft;
     private Timer.Task pauseTask;
 
-    /**
-     * @param game         referanse til hoved‑klassen
-     * @param isGuessPhase true = vi venter på gjett‑runde, false = vi venter på tegne‑runde
-     */
-    public WaitingScreen(DrawGuessMain game, boolean isGuessPhase) {
+    public WaitingScreen(DrawGuessMain game) {
         this.game = game;
-        this.isGuessPhase = isGuessPhase;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -77,19 +72,21 @@ public class WaitingScreen implements Screen {
         rootTable.top().padTop(sh * 0.12f);
         stage.addActor(rootTable);
 
-        // 4) Tabell over spillere + status
-        playerTable = new Table();
-        rootTable.add(playerTable);
-        rootTable.row().padTop(40);
+        // 4) Title
+        Label titleLabel = new Label("WAITING FOR ALL PLAYERS", skin);
+        titleLabel.setFontScale(1.8f);
+        rootTable.add(titleLabel).padBottom(30).row();
 
-        // 5) Meldings‑felt under
-        messageLabel = new Label(
-                isGuessPhase ? "Waiting for all guesses…" : "Waiting for all drawings…",
-                skin
-        );
+        // 5) Tabell over spillere + status
+        playerTable = new Table();
+        rootTable.add(playerTable).padBottom(30).row();
+
+        // 6) Meldings‑felt under
+        messageLabel = new Label("Waiting for all players to finish guessing...", skin);
+        messageLabel.setFontScale(1.2f);
         rootTable.add(messageLabel).padBottom(20).row();
 
-        // 6) Loading overlay with countdown (initially invisible)
+        // 7) Loading overlay with countdown (initially invisible)
         loadingTable = new Table();
         loadingTable.setFillParent(true);
         loadingTable.center();
@@ -113,7 +110,7 @@ public class WaitingScreen implements Screen {
 
         Label name = new Label(displayName, skin);
         name.setFontScale(scale);
-        Label status = new Label(isFinished ? "✔️" : "⌛", skin);
+        Label status = new Label(isFinished ? "✅ DONE" : "⏳ GUESSING", skin);
         status.setFontScale(scale);
 
         statusLabels.put(playerId, status);
@@ -125,49 +122,71 @@ public class WaitingScreen implements Screen {
     private void updatePlayerStatus(String playerId, boolean isFinished) {
         Label lbl = statusLabels.get(playerId);
         if (lbl != null) {
-            lbl.setText(isFinished ? "✔️" : "⌛");
+            lbl.setText(isFinished ? "✅ DONE" : "⏳ GUESSING");
         }
     }
 
-    /** Henter korrekt felt fra Firebase basert på fase. */
+    /** Henter status for alle spillere fra Firebase. */
     private void updatePlayerStatuses() {
-        if (!isGuessPhase) {
-            game.getFirebase().getPlayersWithStatus(
-                    session.getGameId(),
-                    this::onStatusReceived,
-                    err -> Gdx.app.error("WaitingScreen", "Could not fetch drawing status", err)
-            );
-        } else {
-            game.getFirebase().getPlayersGuessStatus(
-                    session.getGameId(),
-                    this::onStatusReceived,
-                    err -> Gdx.app.error("WaitingScreen", "Could not fetch guess status", err)
-            );
-        }
+        game.getFirebase().getPlayersGuessStatus(
+                session.getGameId(),
+                this::onStatusReceived,
+                err -> Gdx.app.error("WaitingScreen", "Could not fetch guess status", err)
+        );
     }
 
-    /** Felles callback for begge faser. */
+    /** Callback når spillerstatus er hentet. */
     private void onStatusReceived(Map<String, Boolean> playerStatuses) {
         Gdx.app.postRunnable(() -> {
             // Skip if we're already in countdown
             if (allFinished) return;
-            
-            // legg til nye rader / oppdater eksisterende
-            for (Map.Entry<String, Boolean> e : playerStatuses.entrySet()) {
-                String pid = e.getKey();
-                boolean done = e.getValue();
+
+            // Use the size of the map from Firebase as the total player count
+            int totalPlayers = playerStatuses.size();
+            int finishedPlayers = 0;
+
+            // Debug log - print the number of players found in Firebase
+            Gdx.app.debug("WaitingScreen", "Checking statuses for " + totalPlayers + " players from Firebase:");
+
+            // legg til nye rader / oppdater eksisterende basert på Firebase data
+            for (Map.Entry<String, Boolean> entry : playerStatuses.entrySet()) {
+                String pid = entry.getKey();
+                boolean done = entry.getValue();
+
+                // Attempt to get player name from local session, fallback to ID if not found
+                Player player = session.getPlayerById(pid);
+                String playerName = (player != null) ? player.getName() : ("Player " + pid.substring(0, 4)); // Use partial ID if no name
+
+                // Debug log each player's status from Firebase
+                Gdx.app.debug("WaitingScreen", "Player: " + playerName + " (ID: " + pid + ") - Done: " + done);
+
                 if (!statusLabels.containsKey(pid)) {
-                    addPlayerRow(pid, done);
+                    // Pass the resolved player name or fallback ID to addPlayerRow
+                    addPlayerRow(pid, done); // Note: addPlayerRow internally gets the name again, maybe optimize later
                 } else {
                     updatePlayerStatus(pid, done);
                 }
+
+                if (done) {
+                    finishedPlayers++;
+                }
             }
-            // sjekk om alle er ferdige
+
+            // sjekk om alle er ferdige - basert på Firebase data
             if (!allFinished) {
-                boolean nowAll = playerStatuses.values().stream().allMatch(b -> b);
-                if (nowAll) {
+                boolean nowAll = (finishedPlayers == totalPlayers);
+
+                // Update the message to show progress based on Firebase data
+                messageLabel.setText("Waiting for all players to finish guessing... (" + finishedPlayers + "/" + totalPlayers + ")");
+
+                // Only proceed when ALL players reported by Firebase have finished
+                if (nowAll && totalPlayers > 0) {
+                    Gdx.app.log("WaitingScreen", "All players (" + totalPlayers + ") have finished guessing! Starting countdown...");
                     allFinished = true;
                     startPauseCountdown();
+                } else {
+                    // Optional: Log if not all finished yet
+                    Gdx.app.debug("WaitingScreen", finishedPlayers + "/" + totalPlayers + " players finished. Waiting...");
                 }
             }
         });
@@ -175,55 +194,45 @@ public class WaitingScreen implements Screen {
 
     /** Teller ned 5 sek før neste skjerm. */
     private void startPauseCountdown() {
-        pauseTimeLeft = 5;
-        
-        // Show loading screen and hide player information
-        backgroundImage.setVisible(false);
-        rootTable.setVisible(false);
-        loadingImage.setVisible(true);
-        loadingTable.setVisible(true);
-        
-        countdownLabel.setText("Next in " + pauseTimeLeft + "s");
+        // Add a short delay to make sure all Firebase updates are processed
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                pauseTimeLeft = 5;
+                
+                // Show loading screen and hide player information
+                backgroundImage.setVisible(false);
+                rootTable.setVisible(false);
+                loadingImage.setVisible(true);
+                loadingTable.setVisible(true);
+                
+                countdownLabel.setText("Results in " + pauseTimeLeft + "s");
 
-        pauseTask = new Timer.Task() {
-            @Override public void run() {
-                pauseTimeLeft--;
-                if (pauseTimeLeft > 0) {
-                    countdownLabel.setText("Next in " + pauseTimeLeft + "s");
-                } else {
-                    cancel();
-                    goToNextPhase();
-                }
+                pauseTask = new Timer.Task() {
+                    @Override public void run() {
+                        pauseTimeLeft--;
+                        if (pauseTimeLeft > 0) {
+                            countdownLabel.setText("Results in " + pauseTimeLeft + "s");
+                        } else {
+                            cancel();
+                            goToLeaderboard();
+                        }
+                    }
+                };
+                Timer.schedule(pauseTask, 1, 1, pauseTimeLeft);
             }
-        };
-        Timer.schedule(pauseTask, 1, 1, pauseTimeLeft);
+        }, 2); // 2-second delay before starting countdown
     }
 
-    /** Bytter skjerm avhengig av fase. */
-    private void goToNextPhase() {
-        if (!isGuessPhase) {
-            // === over til gjette‑fase ===
-            countdownLabel.setText("Loading drawings…");
-            String gid = session.getGameId();
-            String me  = GameManager.getInstance().getPlayerId();
-            game.getFirebase().getDrawingsForGuessing(
-                    gid, me,
-                    drawingsMap -> Gdx.app.postRunnable(() ->
-                            game.setScreen(new DrawingViewerScreen(game, drawingsMap))
-                    ),
-                    err -> Gdx.app.postRunnable(() ->
-                            countdownLabel.setText("Error loading drawings.")
-                    )
-            );
-        } else {
-            // === alle har gjettet ===
-            game.setScreen(new LeaderboardScreen(game));
-        }
+    /** Go to leaderboard when all players are done. */
+    private void goToLeaderboard() {
+        countdownLabel.setText("Loading results...");
+        game.setScreen(new LeaderboardScreen(game));
     }
 
     @Override
     public void render(float delta) {
-        // Only update player statuses if not in countdown mode
+        // Update player statuses regularly, but not in countdown mode
         if (!allFinished) {
             updateTimer += delta;
             if (updateTimer >= UPDATE_INTERVAL) {
@@ -246,4 +255,4 @@ public class WaitingScreen implements Screen {
         backgroundTexture.dispose();
         if (loadingTexture != null) loadingTexture.dispose();
     }
-}
+} 
