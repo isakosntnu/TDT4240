@@ -32,6 +32,7 @@ public class LobbyScreen implements Screen {
     private List<String> playerNames;
     private GameSession session;
     private TextButton startGameButton;
+    private Label waitingMessageLabel;
 
     private final SocketInterface socketHandler;
     private static LobbyScreen instance;
@@ -86,7 +87,13 @@ public class LobbyScreen implements Screen {
         startGameButton = new TextButton("Start Game", skin);
         startGameButton.getLabel().setFontScale(baseFontScale);
         rootTable.row().padTop(screenHeight * 0.07f);
-        rootTable.add(startGameButton).expandY().bottom().padBottom(screenHeight * 0.04f);
+        rootTable.add(startGameButton).expandY().bottom().padBottom(screenHeight * 0.01f);
+
+        waitingMessageLabel = new Label("Cannot start without two or more players", skin);
+        waitingMessageLabel.setFontScale(baseFontScale * 0.9f);
+        waitingMessageLabel.setColor(1, 0.8f, 0.8f, 1);
+        rootTable.row();
+        rootTable.add(waitingMessageLabel).padBottom(screenHeight * 0.04f);
 
         startGameButton.addListener(new ClickListener() {
             @Override
@@ -133,6 +140,10 @@ public class LobbyScreen implements Screen {
                 for (String player : players) {
                     addPlayer(player);
                 }
+                boolean canStart = players.size() >= 2;
+                startGameButton.setDisabled(!canStart);
+                startGameButton.setVisible(canStart);
+                waitingMessageLabel.setVisible(!canStart);
             }),
             e -> Gdx.app.log("LobbyScreen", "❌ Feil ved henting av spillere: " + e.getMessage())
         );

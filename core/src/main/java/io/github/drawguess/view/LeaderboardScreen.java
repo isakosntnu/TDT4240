@@ -71,18 +71,11 @@ public class LeaderboardScreen implements Screen {
                 game.getFirebase().deleteGameData(
                     gameId,
                     () -> {
-                        // On successful deletion, navigate to MenuScreen
                         Gdx.app.postRunnable(() -> game.setScreen(new MenuScreen(game)));
                     },
                     error -> {
-                        // Handle deletion error (e.g., show a message, log)
                         Gdx.app.error("LeaderboardScreen", "Failed to delete game data", error);
-                        // Optionally, still navigate back or show an error message to the user
                         Gdx.app.postRunnable(() -> {
-                            // Example: Show error message (requires adding a Label to the screen)
-                            // statusLabel.setText("Error deleting game. Please try again."); 
-                            // statusLabel.setColor(1, 0, 0, 1); // Red color
-                            // Or just navigate back anyway:
                             game.setScreen(new MenuScreen(game));
                         });
                     }
@@ -91,28 +84,21 @@ public class LeaderboardScreen implements Screen {
             }
         });
         stage.addActor(backBtn);
-        
-        // Fetch latest scores from Firebase
         fetchAllPlayerScores();
     }
     
-    /**
-     * Fetches all players and their scores from Firebase and updates the UI
-     */
     private void fetchAllPlayerScores() {
         String gameId = GameManager.getInstance().getSession().getGameId();
         
         game.getFirebase().getAllPlayerProfiles(
             gameId,
             playerProfiles -> {
-                // Build the leaderboard with all player data from Firebase
                 Gdx.app.postRunnable(() -> buildLeaderboardTable(playerProfiles));
             },
             e -> {
                 Gdx.app.error("LeaderboardScreen", "Failed to fetch player profiles", e);
                 Gdx.app.postRunnable(() -> {
                     statusLabel.setText("Failed to load scores. Using local data.");
-                    // Fallback to using local player data
                     List<Player> localPlayers = GameManager.getInstance().getSession().getPlayers();
                     buildLeaderboardWithLocalPlayers(localPlayers);
                 });
@@ -127,10 +113,10 @@ public class LeaderboardScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float screenHeight = Gdx.graphics.getHeight();
         float screenWidth = Gdx.graphics.getWidth();
-        float baseFontScale = screenHeight * 0.0018f; // Base font scale (match constructor)
-        float headerScale = baseFontScale * 1.1f; // Scale for headers
-        float rowScale = baseFontScale * 1.2f;    // Scale for player rows
-        float horizontalPadding = screenWidth * 0.1f; // Padding for table content
+        float baseFontScale = screenHeight * 0.0018f; 
+        float headerScale = baseFontScale * 1.1f; 
+        float rowScale = baseFontScale * 1.2f;    
+        float horizontalPadding = screenWidth * 0.1f; 
 
         playerTable.clear();
         statusLabel.setText("");
@@ -139,10 +125,9 @@ public class LeaderboardScreen implements Screen {
         Collections.sort(playerProfiles, (p1, p2) -> {
             Integer score1 = (Integer) p1.get("score");
             Integer score2 = (Integer) p2.get("score");
-            return score2.compareTo(score1); // Descending order
+            return score2.compareTo(score1); 
         });
 
-        // Add header row
         Label nameHeader = new Label("PLAYER", skin);
         Label scoreHeader = new Label("SCORE", skin);
         nameHeader.setFontScale(headerScale);
@@ -151,7 +136,6 @@ public class LeaderboardScreen implements Screen {
         playerTable.add(nameHeader).expandX().left().padLeft(horizontalPadding).padBottom(screenHeight * 0.02f);
         playerTable.add(scoreHeader).right().padRight(horizontalPadding).padBottom(screenHeight * 0.02f).row();
         
-        // Add player rows
         for (Map<String, Object> profile : playerProfiles) {
             String name = (String) profile.get("name");
             Integer score = (Integer) profile.get("score");
@@ -161,7 +145,6 @@ public class LeaderboardScreen implements Screen {
             nameLabel.setFontScale(rowScale);
             scoreLabel.setFontScale(rowScale);
             
-            // Highlight current player
             String currentPlayerId = GameManager.getInstance().getPlayerId();
             if (currentPlayerId != null && currentPlayerId.equals(profile.get("id"))) {
                 nameLabel.setText("➤ " + name);
@@ -188,17 +171,16 @@ public class LeaderboardScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         float screenHeight = Gdx.graphics.getHeight();
         float screenWidth = Gdx.graphics.getWidth();
-        float baseFontScale = screenHeight * 0.0018f; // Base font scale (match constructor)
-        float headerScale = baseFontScale * 1.1f; // Scale for headers
-        float rowScale = baseFontScale * 1.2f;    // Scale for player rows
-        float horizontalPadding = screenWidth * 0.1f; // Padding for table content
+        float baseFontScale = screenHeight * 0.0018f; 
+        float headerScale = baseFontScale * 1.1f; 
+        float rowScale = baseFontScale * 1.2f;    
+        float horizontalPadding = screenWidth * 0.1f; 
 
         playerTable.clear();
         
         // Sort by score in descending order
         Collections.sort(players, Comparator.comparingInt(Player::getScore).reversed());
 
-        // Add header row
         Label nameHeader = new Label("PLAYER", skin);
         Label scoreHeader = new Label("SCORE", skin);
         nameHeader.setFontScale(headerScale);

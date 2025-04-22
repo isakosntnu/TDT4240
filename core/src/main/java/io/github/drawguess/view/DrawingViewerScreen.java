@@ -25,11 +25,10 @@ public class DrawingViewerScreen implements Screen {
     private final Stage stage;
     private final Skin skin;
 
-    // Alle tegninger som skal gjettes: liste av (ownerId, url)
     private final List<Map.Entry<String,String>> drawings;
     private int currentIndex = 0;
 
-    // UI‑elementer
+    // UI‑elements
     private Image imageDisplay;
     private Texture finalTexture;
     private Label timerLabel;
@@ -47,15 +46,13 @@ public class DrawingViewerScreen implements Screen {
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
-
-        // Konverter map til liste for sekvensiell visning
         this.drawings = new ArrayList<>(drawingsMap.entrySet());
 
         buildUi();
         loadCurrentDrawing();
     }
 
-    /** Bygger opp scenen. */
+
     private void buildUi() {
         float sw = Gdx.graphics.getWidth();
         float sh = Gdx.graphics.getHeight();
@@ -76,7 +73,7 @@ public class DrawingViewerScreen implements Screen {
         guessInput.setPosition((sw - guessInput.getWidth())/2f, sh * 0.12f);
         stage.addActor(guessInput);
 
-        // Guess‑knapp
+        // Guess‑button
         guessButton = new TextButton("Guess", skin);
         guessButton.setSize(sw * 0.35f, sh * 0.065f);
         guessButton.setPosition((sw - guessButton.getWidth())/2f, sh * 0.04f);
@@ -89,14 +86,13 @@ public class DrawingViewerScreen implements Screen {
         });
         stage.addActor(guessButton);
 
-        // Resultat‑label - centered and positioned higher for better visibility
         resultLabel = new Label("", skin);
         resultLabel.setPosition(sw / 2f, sh * 0.3f);
         resultLabel.setAlignment(com.badlogic.gdx.utils.Align.center);
         stage.addActor(resultLabel);
     }
 
-    /** Laster det neste bildet. */
+
     private void loadCurrentDrawing() {
         if (currentIndex >= drawings.size()) {
             finishGuessingRound();
@@ -113,11 +109,11 @@ public class DrawingViewerScreen implements Screen {
         guessInput.setDisabled(false);
         guessButton.setDisabled(false);
 
-        // Last ned bildet
+        // Download url
         String url = drawings.get(currentIndex).getValue();
         new Thread(() -> loadImage(url)).start();
 
-        // Start nedtelling
+        // Starts counter
         guessTimerTask = new Timer.Task() {
             @Override public void run() {
                 guessTimeLeft--;
@@ -131,7 +127,7 @@ public class DrawingViewerScreen implements Screen {
         Timer.schedule(guessTimerTask, 1, 1, guessTimeLeft - 1);
     }
 
-    /** Sender gjetningen til Firebase og stopper timer. */
+    //Sends guess to firebase and stops timer. 
     private void submitGuessAndStopTimer(String guess) {
         hasGuessed = true;
         if (guessTimerTask != null) guessTimerTask.cancel();
@@ -147,8 +143,6 @@ public class DrawingViewerScreen implements Screen {
                 correctWord -> {
                     boolean correct = correctWord.equalsIgnoreCase(guess);
                     int points = correct ? 10 + (guessTimeLeft * 2) : 0;
-                    
-                    // Create message with uppercase text and set appropriate color
                     String msg = correct
                             ? "CORRECT! +" + points + "P"
                             : "WRONG! WAS: " + correctWord.toUpperCase();
@@ -156,26 +150,22 @@ public class DrawingViewerScreen implements Screen {
                     Gdx.app.postRunnable(() -> {
                         // Set result label text
                         resultLabel.setText(msg);
-                        
-                        // Set color: green for correct, red for wrong
                         if (correct) {
                             resultLabel.setColor(0, 0.8f, 0, 1); // Green
                         } else {
                             resultLabel.setColor(1, 0, 0, 1); // Red
                         }
                         
-                        // Adjust font scale based on screen size
+
                         float screenHeight = Gdx.graphics.getHeight();
-                        float resultFontScale = screenHeight * 0.0025f; // Slightly larger for better visibility
+                        float resultFontScale = screenHeight * 0.0025f; 
                         resultLabel.setFontScale(resultFontScale);
                     });
 
-                    // Oppdater poeng
                     String me = GameManager.getInstance().getPlayerId();
                     game.getFirebase().submitGuessResult(
                             gameId, me, points,
                             () -> {
-                                // 5s pause før neste
                                 Timer.schedule(new Timer.Task(){
                                     @Override public void run() {
                                         currentIndex++;
@@ -190,12 +180,11 @@ public class DrawingViewerScreen implements Screen {
         );
     }
 
-    /** Når alle bilder er gjettet. */
+
     private void finishGuessingRound() {
         String gameId = GameManager.getInstance().getSession().getGameId();
         String me     = GameManager.getInstance().getPlayerId();
 
-        // Show a temporary "please wait" message
         resultLabel.setText("Finishing up...");
         guessInput.setDisabled(true);
         guessButton.setDisabled(true);
@@ -205,18 +194,16 @@ public class DrawingViewerScreen implements Screen {
         game.getFirebase().setPlayerGuessDone(
                 gameId, me,
                 () -> {
-                    // Double-check that the status was saved by retrieving it
                     game.getFirebase().getPlayersGuessStatus(
                         gameId,
                         statuses -> {
                             Boolean myStatus = statuses.get(me);
                             Gdx.app.log("DrawingViewer", "Player " + me + " guess status: " + myStatus);
                             
-                            // Only proceed if we can confirm we're marked as done
+
                             if (myStatus != null && myStatus) {
                                 Gdx.app.postRunnable(() -> game.setScreen(new WaitingScreen(game)));
                             } else {
-                                // Try again
                                 Gdx.app.error("DrawingViewer", "Failed to confirm guess status, retrying...");
                                 Timer.schedule(new Timer.Task() {
                                     @Override
@@ -236,7 +223,6 @@ public class DrawingViewerScreen implements Screen {
         );
     }
 
-    /** Laster ned bilde fra URL. */
     private void loadImage(String url) {
         try (InputStream in = new URL(url).openStream();
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {
