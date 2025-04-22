@@ -109,28 +109,65 @@ public class JoinGameScreen implements Screen {
         joinButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                String gameId = gamePinField.getText().trim();
+                String gameId     = gamePinField.getText().trim();
                 String playerName = nameField.getText().trim();
-
+        
                 if (gameId.isEmpty() || playerName.isEmpty()) return;
-
-                String playerId = UUID.randomUUID().toString();
-
-                Player player = new Player(playerId, playerName, 0, false); // 👤 Ikke host, 0 poeng
-                List<Player> players = new ArrayList<>();
-                players.add(player);
-
-                GameSession session = new GameSession(gameId, player, players, GameSession.Status.WAITING_FOR_PLAYERS);
-
-
-                GameManager.getInstance().setSession(session);
-                GameManager.getInstance().setPlayerId(playerId);
-
-                game.getFirebase().joinGame(gameId, playerName);
-                game.setScreen(new LobbyScreen(game));
+        
+                joinButton.setDisabled(true); // Hindre dobbelklikk
+        
+                // 1) Sjekk om spillet finnes
+                game.getFirebase().checkGameExists(
+                    gameId,
+                    exists -> {
+                        if (!exists) {
+                            // Game‑pin ugyldig → popup & re‑enable knapp
+                            Gdx.app.postRunnable(() -> {
+                                showPopup("Game Not Found",
+                                          "Game PIN '" + gameId + "' does not exist.");
+                                joinButton.setDisabled(false);
+                            });
+                            return;
+                        }
+        
+                        // 2) Game finnes → gå videre som før
+                        String playerId = UUID.randomUUID().toString();
+                        Player me = new Player(playerId, playerName, 0, false);
+        
+                        List<Player> list = new ArrayList<>();
+                        list.add(me);
+        
+                        GameSession session = new GameSession(
+                                gameId, me, list, GameSession.Status.WAITING_FOR_PLAYERS);
+        
+                        GameManager.getInstance().setSession(session);
+                        GameManager.getInstance().setPlayerId(playerId);
+        
+                        game.getFirebase().joinGame(gameId, playerName);
+        
+                        Gdx.app.postRunnable(() -> game.setScreen(new LobbyScreen(game)));
+                    },
+                    err -> Gdx.app.postRunnable(() -> {
+                        showPopup("Connection Error",
+                                  "Could not verify Game PIN. Please try again.");
+                        joinButton.setDisabled(false);
+                    })
+                );
             }
         });
+        
     }
+
+
+    private void showPopup(String title, String message) {
+        Dialog dlg = new Dialog(title, new Skin(Gdx.files.internal("uiskin.json")));
+        dlg.text(message);
+        dlg.button("OK");
+        dlg.key(com.badlogic.gdx.Input.Keys.ENTER, true);
+        dlg.key(com.badlogic.gdx.Input.Keys.ESCAPE, true);
+        dlg.show(stage);
+    }
+
 
     @Override
     public void render(float delta) {

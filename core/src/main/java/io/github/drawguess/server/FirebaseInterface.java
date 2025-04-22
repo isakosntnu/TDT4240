@@ -90,7 +90,10 @@ public interface FirebaseInterface {
                         Runnable onSuccess,
                         FailureCallback onError);
 
-
+                        
+    void checkGameExists(String gameId,
+                         SuccessCallback<Boolean> onSuccess,
+                         FailureCallback onError);
     interface SuccessCallback<T> {
         void onSuccess(T result);
     }

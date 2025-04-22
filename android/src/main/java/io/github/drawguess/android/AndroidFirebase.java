@@ -290,6 +290,16 @@ public class AndroidFirebase implements FirebaseInterface {
             .addOnFailureListener(onFailure::onFailure);
     }
 
+    public void checkGameExists(String gameId,
+                                SuccessCallback<Boolean> onSuccess,
+                                FailureCallback onError) {
+        db.collection("games")
+        .document(gameId)
+        .get()
+        .addOnSuccessListener(doc -> onSuccess.onSuccess(doc.exists()))
+        .addOnFailureListener(onError::onFailure);
+    }
+
 
     @Override
     public void setPlayerWord(String gameId, String playerId, String word) {
