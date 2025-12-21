@@ -1,4 +1,4 @@
-# Draw & Guess Game
+# DrawGuess
 
 This is a simple multiplayer drawing and guessing game built with LibGDX and Firebase. The game is meant to be played i portrait mode.
 
@@ -77,7 +77,7 @@ Here's a step-by-step guide on how a typical game session flows:
     - Your name is highlighted with an arrow (➤).
     - The **Host** can click the **Back** button to return to the Main Menu. **Important**: Clicking Back on the Leaderboard screen will also **delete** the game session data (scores, drawings) from Firebase.
 
-Enjoy playing Draw & Guess!
+Enjoy playing DrawGuess!
 
 ## Platforms
 
